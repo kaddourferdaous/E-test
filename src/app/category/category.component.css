@@ -1,0 +1,49 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+   
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 40px;
+    
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.card p {
+    margin: 0;
+    color: #666;
+}
+
+.card-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.data-processing { border-left: 4px solid #007bff; }
+.data-visualization { border-left: 4px solid #a700ff; }
+.machine-learning { border-left: 4px solid #ff4500; }
+.statistical-analysis { border-left: 4px solid #00d084; }

@@ -1,0 +1,123 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f0f7ff, #d9eaff); /* Gradient background */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1400px; /* Adjust width as needed */
+  margin: 0 auto; /* Center the content */
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
+  gap: 120px;
+  margin-left: -440px;
+}
+
+.card {
+  background: linear-gradient(145deg, #ffffff, #f0f4f8); /* Gradient for cards */
+  padding: 20px;
+  border-radius: 15px;
+  border-left: 5px solid #007bff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 250px;
+  width: 500px; /* Increased height */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 2.1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #070707;
+  margin-left: 10px;
+  margin-top: 70px;
+}
+
+.card-description {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.card button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.card button:hover {
+  background-color: #0056b3;
+}
+
+h3 {
+  color: #003366;
+  margin-bottom: 15px;
+  margin-top: 80px;
+  transition: color 0.3s, transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  position: relative;
+  margin-left: -440px;
+  text-align: left; /* Aligner le texte à gauche */
+}
+
+h3::after {
+  content: '';
+  display: block;
+  width: 200px;
+  height: 4px;
+  background-color: #007bff;
+  margin-top: 20px;
+  transition: width 0.3s, background-color 0.3s;
+}
+
+h3:hover::after {
+  width: 200px;
+  background-color: #0056b3;
+}
+
+h3:hover {
+  color: #0056b3;
+  transform: scale(1.05);
+  background-color: #e0eaff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+  padding-left: 15px; /* Slight padding shift to enhance hover */
+}
+
+.card.expanded {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centrage */
+  width: 80%;
+  height: 80%;
+  z-index: 1000;
+  background-color: white;
+  overflow-y: auto;
+  margin: 0;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+}
+
+.card-title {
+  cursor: pointer;
+}

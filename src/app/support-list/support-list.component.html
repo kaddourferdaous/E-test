@@ -1,0 +1,50 @@
+<div class="container">
+    <div *ngFor="let day of objectKeys(groupedMetadata)">
+      <h3>Jour {{ day }}</h3>
+  
+      <!-- Vérifie si des supports existent pour ce jour -->
+      <div *ngIf="groupedMetadata[day] && objectKeys(groupedMetadata[day]).length > 0">
+        <div class="card-container">
+          <!-- Parcours des modèles pour chaque jour -->
+          <div *ngFor="let modelName of objectKeys(groupedMetadata[day])" 
+               class="card" 
+               [class.expanded]="expandedModel === modelName">
+            
+               <h2 (click)="toggleModel(modelName)" class="card-title">
+                {{ modelName }}
+              </h2>
+  
+            <!-- Contenu du modèle (affiché uniquement si le modèle est agrandi) -->
+            <div *ngIf="expandedModel === modelName">
+              <!-- Parcours des supports pour ce modèle -->
+              <div *ngFor="let support of groupedMetadata[day][modelName]">
+                <div>
+                  <h5>{{ support.filename }}</h5>
+                  <p class="card-description">{{ support.expectation }}</p>
+  
+                  <!-- Affichage conditionnel en fonction du type de fichier -->
+                  <div *ngIf="support.filename?.endsWith('.pdf')">
+                    <button (click)="viewSupport(support)">Voir le PDF</button>
+                  </div>
+  
+                  <div *ngIf="support.filename?.endsWith('.jpg') || support.filename?.endsWith('.png')">
+                    <img [src]="support.url" alt="{{ support.filename }}" width="100%" />
+                    <button (click)="viewSupport(support)">Voir l'image</button>
+                  </div>
+  
+                  <div *ngIf="support.filename?.endsWith('.mp4') || support.filename?.endsWith('.mov')">
+                    <button (click)="viewSupport(support)">Voir la vidéo</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  
+  
+
+
+  

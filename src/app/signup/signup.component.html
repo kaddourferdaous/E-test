@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Signup-Eduguard</title>
+        <link rel="stylesheet" href="signup.component.css" />
+        <link rel="icon" type="image/png" href="assets/images/favicon/favicon.png" />
+    </head>
+
+    <body >
+      
+     
+
+        <!-- SignUp Area Starts Here -->
+        <section class="section" style="width:40%;margin-top:20px;height:25%;margin-left: 550px;">
+            <div class="container">
+                <div class="row align-items-center justify-content-md-center">
+                    <div class="col-lg-5 order-2 order-lg-0">
+                        <div class="signup-area-textwrapper">
+                            <h2 class="font-title--md mb-0">Sign Up</h2>
+                            <p class="mt-2 mb-lg-4 mb-3">Already have an account? 
+                                <a href="/login" class="text-black-50">Sign In</a>
+
+
+                              </p>
+                              
+                              <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+                                <div class="form-element">
+                                  <div class="form-alert">
+                                    <label for="name">Full Name</label>
+                                  </div>
+                                  <div class="form-alert-input">
+                                    <input type="text" id="name" formControlName="nom" />
+                                  </div>
+                                </div>
+                              
+                                <div class="form-element">
+                                  <label for="email">Email</label>
+                                  <div class="form-alert-input">
+                                    <input type="email" id="email" formControlName="email" />
+                                  </div>
+                                </div>
+                              
+                                <div class="form-element">
+                                  <label for="password" class="w-100" style="text-align: left;">Password</label>
+                                  <div class="form-alert-input">
+                                    <input type="password" id="password" formControlName="password" />
+                                    <div class="form-alert-icon" (click)="showPassword('password', $event)">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+                              
+                                <div class="form-element">
+                                  <label for="confirm-password" class="w-100" style="text-align: left;">Confirm Password</label>
+                                  <div class="form-alert-input">
+                                    <input type="password" id="confirm-password" formControlName="confirmPassword" />
+                                    <div class="form-alert-icon" (click)="showPassword('confirm-password', $event)">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+                              
+                                <div class="form-element d-flex align-items-center terms">
+                                  <label for="agree" class="text-secondary mb-0" style="font: sans-serif;">Accept the <a href="#" style="text-decoration: underline;">Terms</a> and <a href="#" style="text-decoration: underline;">Privacy Policy</a></label>
+                                  <input class="checkbox-primary me-1" type="checkbox" id="agree" formControlName="agree" />
+                                </div>
+                              
+                                <div class="form-element">
+                                  <button type="submit" class="button button-lg button--primary w-100">Sign Up</button>
+                                </div>
+                              
+                                <span class="d-block text-center text-secondary">or sign up with</span>
+                                <div class="d-flex align-items-center flex-wrap mt-3 signinButtons">
+                                  <a href="#" class="d-flex text-secondary align-items-center justify-content-center signup-with border fb rounded-1">
+                                    <svg class="me-2" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M18 9C18 4.02891 13.9711 0 9 0C4.02891 0 0 4.02891 0 9C0 13.9711 4.02891 18 9 18C9.05273 18 9.10547 18 9.1582 17.9965V10.9934H7.22461V8.73984H9.1582V7.08047C9.1582 5.15742 10.3324 4.10977 12.048 4.10977C12.8707 4.10977 13.5773 4.16953 13.7812 4.19766V6.20859H12.6C11.6684 6.20859 11.4855 6.65156 11.4855 7.30195V8.73633H13.718L13.4262 10.9898H11.4855V17.652C15.2473 16.5727 18 13.1098 18 9V9Z" fill="#0078FF"></path>
+                                    </svg>
+                                    Facebook
+                                  </a>
+                              
+                                  <a href="#" class="d-flex text-secondary align-items-center justify-content-center signup-with border google rounded-1">
+                                    <svg class="me-2" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <g clip-path="url(#clipOne)">
+                                        <path d="M3.98918 11.378L3.36263 13.717L1.07258 13.7654C0.388195 12.496 0 11.0437 0 9.50034C0 8.00793 0.362953 6.60055 1.00631 5.36133H1.0068L3.04559 5.73511L3.9387 7.76166C3.75177 8.30661 3.64989 8.89161 3.64989 9.50034C3.64996 10.161 3.76963 10.794 3.98918 11.378Z" fill="#FBBB00"></path>
+                                        <path d="M17.8426 7.81836C17.946 8.36279 17.9999 8.92504 17.9999 9.49967C17.9999 10.144 17.9321 10.7725 17.8031 11.3788C17.365 13.4419 16.2202 15.2434 14.6343 16.5182L14.6338 16.5177L12.0659 16.3867L11.7024 14.1179C12.7547 13.5007 13.5771 12.535 14.0103 11.3788H9.19775V7.81836H14.0805H17.8426Z" fill="#518EF8"></path>
+                                        <path d="M14.6341 16.5183L14.6346 16.5188C13.0922 17.7585 11.133 18.5003 9.00017 18.5003C5.57275 18.5003 2.59288 16.5846 1.07275 13.7654L3.98935 11.3779C4.74939 13.4064 6.70616 14.8503 9.00017 14.8503C9.9862 14.8503 10.91 14.5838 11.7026 14.1185L14.6341 16.5183Z" fill="#28B446"></path>
+                                        <path d="M14.7447 2.57197L11.8291 4.95894C11.0087 4.44615 10.039 4.14992 9.00003 4.14992C6.65409 4.14992 4.66073 5.66013 3.93876 7.76131L1.00684 5.36098H1.00635C2.50421 2.47307 5.52167 0.5 9.00003 0.5C11.1838 0.5 13.186 1.27787 14.7447 2.57197Z" fill="#F14336"></path>
+                                      </g>
+                                      <defs>
+                                        <clipPath>
+                                          <rect width="18" height="18" fill="white" transform="translate(0 0.5)"></rect>
+                                        </clipPath>
+                                      </defs>
+                                    </svg>
+                                    Google
+                                  </a>
+                              
+                                  <a href="#" class="d-flex text-secondary align-items-center justify-content-center signup-with border twitter rounded-1">
+                                    <svg class="me-2" width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M22 2.63092C21.1819 2.99231 20.3101 3.23185 19.4012 3.34815C20.3363 2.786 21.0499 1.90262 21.3854 0.837846C20.5136 1.36123 19.563 1.73677 18.5742 1.95667C17.7689 1.08093 16.3637 0.673951 15.1651 1.3704C14.5143 2.02483 14.5643 3.19862 15.1121 3.68829C14.341 3.67061 13.5792 3.46095 12.9531 3.08492C12.4101 3.05259 11.8883 3.23709 11.5949 3.6227C11.0802 4.20544 11.0709 5.04112 11.4155 5.44302C10.6076 5.35226 9.88058 5.07399 9.26748 4.7303C9.2775 6.50564 10.4206 7.75856 11.7979 7.75856C12.6192 7.75856 13.4027 7.48177 13.9307 7.09909C13.9415 8.1406 14.9063 8.96973 16.0217 8.96973C17.2781 8.96973 18.3441 8.01772 18.1735 6.9646C18.9802 6.62669 19.5798 5.98329 19.7073 5.2669C18.8327 5.45659 18.0737 5.35942 17.4802 5.09748C17.517 4.81617 17.5877 4.55321 17.7048 4.32334C19.5798 3.35958 20.2069 1.49979 20.2069 0.269791C19.651 0.653212 19.0381 0.946993 18.3015 1.17958C19.0867 0.633516 20.1298 1.10719 20.938 2.63092Z" fill="#1DA1F2"></path>
+                                    </svg>
+                                    Twitter
+                                  </a>
+                                </div>
+                              </form>
+                              
+                        </div>
+                    </div>
+                    <!-- <div class="col-lg-7 order-1 order-lg-0">
+                        <div class="signup-area-image" style="margin-right: 300px;margin-bottom: 200px;">
+                            <img src="assets/images/signup/Illustration.png" alt="Illustration Image" class="img-fluid" />
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+        <!-- SignUp Area Ends Here -->
+
+        <!-- Dot Images Starts Here -->
+        <div class="dot-images">
+            <img src="assets/images/shape/dots/dots-img-05.png" alt="shape" class="img-fluid first-dotimage" />
+            <img src="assets/images/shape/dots/dots-img-07.png" alt="shape" class="img-fluid second-dotimage" />
+        </div>
+        <!-- Dot Images Ends Here -->
+        <script src="src/js/jquery.min.js"></script>
+        <script src="src/js/bootstrap.bundle.min.js"></script>
+        <script src="src/scss/vendors/plugin/js/isotope.pkgd.min.js"></script>
+        <script src="src/scss/vendors/plugin/js/jquery.magnific-popup.min.js"></script>
+        <script src="src/scss/vendors/plugin/js/slick.min.js"></script>
+        <script src="src/scss/vendors/plugin/js/jquery.nice-select.min.js"></script>
+        <script src="src/js/app.js"></script>
+        <script src="assets/main.js"></script>
+    </body>
+</html>

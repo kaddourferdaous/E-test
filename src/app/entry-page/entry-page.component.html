@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Modal</title>
+    <link rel="stylesheet" href="entry-page.component.css">
+</head>
+<body>
+
+    <!-- Modal -->
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <div class="options">
+                <div class="option">
+                    <a [routerLink]="'/login'">
+                        <img src="https://cdn-icons-png.freepik.com/512/6623/6623486.png" alt="Doctor">
+                        <p>CANDIDATE</p>
+                    </a>
+                    
+                </div>
+                <div class="option">
+                    <a [routerLink]="'/trainerLogin'">
+                   
+                    <img src="https://www.clipartmax.com/png/full/151-1511596_train-the-trainer-games-train-the-trainer-icon-png.png" alt="Patient">
+                    <p>TRAINER</p>
+                    </a>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+
+</body>
+</html>

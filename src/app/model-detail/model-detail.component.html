@@ -1,0 +1,121 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<div class="container" *ngIf="!questions || questions.length === 0">
+  <h2>{{ modelName }} Courses</h2>
+
+  <!-- Afficher la liste des supports si showContent est false -->
+  <div *ngIf="!showContent && supports.length > 0" >
+    <div class="card-container">
+      <div *ngFor="let support of supports; let i = index" 
+           class="card" 
+           [ngClass]="{'selected': selectedSupport === support, 
+                       'video': support.filename?.endsWith('.mp4') || support.filename?.endsWith('.mov'), 
+                       'pdf': support.filename?.endsWith('.pdf')}">
+        
+        <!-- Numérotation + Nom du fichier -->
+        <h3 [attr.data-index]="i + 1">{{ support.filename | removeExtension }}</h3>
+        
+        <p class="card-description">
+          <i class="fa fa-check-square"></i> {{ support.expectation }}
+        </p>
+
+        <!-- Boutons pour afficher le contenu -->
+        <div *ngIf="support.filename?.endsWith('.pdf')">
+          <button (click)="viewSupport(support)">
+            <i class="bi bi-file-earmark-pdf"></i> Voir le PDF
+          </button>
+        </div>
+        
+        <div *ngIf="support.filename?.endsWith('.jpg') || support.filename?.endsWith('.png')">
+          <img [src]="getImageUrl(support)" alt="{{ support.filename }}" width="100%" />
+          <button (click)="viewSupport(support)">
+            <i class="bi bi-image"></i> Voir l'image
+          </button>
+        </div>
+        
+        <div *ngIf="support.filename?.endsWith('.mp4') || support.filename?.endsWith('.mov')">
+          <button (click)="viewSupport(support)">
+            <i class="bi bi-play-circle"></i> Voir la vidéo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Affichage du support sélectionné -->
+  <div *ngIf="showContent" class="video-container">
+    <!-- Titre du fichier -->
+    <h3 class="video-title">{{ selectedSupport?.filename | removeExtension }}</h3>
+
+    <!-- Vidéo -->
+    <div *ngIf="selectedSupport && selectedSupport.filename.endsWith('.mp4')">
+      <video #videoPlayer controls width="100%" (ended)="onVideoEnded(selectedSupport)">
+        <source [src]="getVideoUrl(selectedSupport)" type="video/mp4">
+        Votre navigateur ne supporte pas la lecture de vidéos.
+      </video>
+    </div>
+
+    <!-- Image -->
+    <div *ngIf="selectedSupport && (selectedSupport.filename.endsWith('.jpg') || selectedSupport.filename.endsWith('.png'))">
+      <img [src]="getImageUrl(selectedSupport)" alt="Image support" width="100%">
+    </div>
+
+    <!-- PDF dans une modal -->
+    <div *ngIf="selectedSupport && selectedSupport.filename.endsWith('.pdf')" class="custom-modal">
+      <div class="custom-modal-content">
+        
+        <iframe [src]="getPdfUrl(selectedSupport)" width="100%" height="600px"></iframe>
+      </div>
+    </div>
+
+    <!-- Bouton retour -->
+    <button class="back-button" (click)="backToList()">
+      <i class="bi bi-arrow-left"></i> Retour à la liste
+    </button>
+  </div>
+</div>
+<div *ngIf="questions && questions.length > 0" class="questions-container">
+  <form (ngSubmit)="submitAnswers()">
+    <div class="question-item p-4 border rounded shadow-sm">
+      <!-- Affichage de la question -->
+      <label class="fw-bold">{{ questions[currentQuestionIndex].text }}</label>
+
+      <!-- Boucle sur les options de réponse -->
+      <div *ngFor="let option of questions[currentQuestionIndex].options" class="form-check">
+        <!-- Input Radio -->
+        <input type="radio" name="question_{{ questions[currentQuestionIndex].id }}" [value]="option" class="form-check-input" id="option_{{ questions[currentQuestionIndex].id }}_{{ option }}" [(ngModel)]="questions[currentQuestionIndex].selectedOption" (change)="onOptionSelected(questions[currentQuestionIndex], option)" [disabled]="isRadioDisabled">
+
+
+        <!-- Label de l'option -->
+        <label
+          class="form-check-label"
+          for="option_{{ questions[currentQuestionIndex].id }}_{{ option }}"
+          [ngClass]="{
+            'correct-answer': isAnswerCorrect(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered,
+            'incorrect-answer': !isAnswerCorrect(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered && option === questions[currentQuestionIndex].selectedOption
+          }"
+        >
+          {{ option }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Navigation des questions -->
+    <div class="d-flex justify-content-between mt-3">
+      <button type="button" class="btn btn-secondary" (click)="prevQuestion()" [disabled]="currentQuestionIndex === 0">
+        <i class="bi bi-arrow-left"></i> Précédent
+      </button>
+
+      <button type="button" class="btn btn-primary" (click)="nextQuestion()" *ngIf="currentQuestionIndex < questions.length - 1" style="margin-right: 80px;">
+        Suivant <i class="bi bi-arrow-right"></i>
+      </button>
+
+      <button type="submit" class="btn btn-success" *ngIf="currentQuestionIndex === questions.length - 1">
+        <i class="bi bi-check-circle "></i> Soumettre les réponses
+      </button>
+    </div>
+  </form>
+</div>
+
+
+
+

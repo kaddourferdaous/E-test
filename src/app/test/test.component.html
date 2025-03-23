@@ -1,0 +1,85 @@
+<div class="quiz-container" *ngIf="!showResult">
+  <!-- Sélecteur de langue -->
+  <!-- <div class="language-selector">
+    <button (click)="changeLanguage('fr')">Français</button>
+    <button (click)="changeLanguage('ar')">Arabe</button>
+  </div> -->
+
+  <!-- Barre de progression -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" [style.width]="progressWidth"></div>
+  </div>
+
+  <!-- Affichage du numéro de la question -->
+  <div class="question-number">
+    Question {{ currentQuestion }} / {{ totalQuestions }}
+  </div>
+
+  <!-- Affichage pour QCM -->
+  <div *ngIf="questions[currentQuestion - 1].type === 'qcm'" style="height: 300px;">
+    <div class="question">{{ questions[currentQuestion - 1].text }}</div>
+    <ul class="options">
+      <li *ngFor="let option of questions[currentQuestion - 1].options; let j = index"
+          (click)="selectAnswer(j)"
+          [ngClass]="{'selected': isSelected(currentQuestion - 1, j)}">
+        {{ option }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Affichage pour Question Libre -->
+  <div *ngIf="questions[currentQuestion - 1].type === 'libre'" style="height: 300px;padding-top: 40px;margin-top: 40px;">
+    <div class="question">{{ questions[currentQuestion - 1].text }}</div>
+    <input
+      type="text"
+      placeholder="Écrivez votre réponse ici"
+      [value]="selectedAnswers[currentQuestion - 1]?.[0] || ''"
+      (input)="saveFreeResponse($event)"
+    />
+  </div>
+
+  <!-- Boutons de navigation -->
+  <div class="buttons">
+    <div class="navigation-buttons">
+      <button class="last-question" (click)="previousQuestion()" [disabled]="currentQuestion === 1">
+        <i class="fas fa-arrow-left"></i> Previous
+      </button>
+      
+      <button class="next-question" (click)="nextQuestion()" [disabled]="currentQuestion === totalQuestions">
+        Next <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+    
+  </div>
+
+  <!-- Bouton "Finish Test" uniquement pour la dernière question -->
+  <div *ngIf="currentQuestion === totalQuestions">
+    <button class="save-button" (click)="prepareAndSaveResponses()">Finish Test</button>
+
+  </div>
+
+  <!-- Affichage du score -->
+  <div *ngIf="testFinished" class="score">
+    Score : {{ score }} / {{ totalQuestions }}
+  </div>
+</div>
+<div class="modal-overlay" *ngIf="showResult">
+  <div class="modal-content">
+    <h2>Examination Overview</h2>
+    <div class="congrats">
+      <span>Congratulations,</span>
+      <i class="graduation-icon">🎓</i>
+    </div>
+  
+    <div class="user-info">
+      <img src="assets/user-placeholder.png" alt="User Avatar" class="avatar">
+      <p><strong>Mr. Guest</strong></p>
+      <p>Your Result/Mark is: <span class="score">{{ score }} </span> out of {{ totalQuestions }}</p>
+    </div>
+    <div class="buttons">
+      <button class="accept-btn" >I accept</button>
+      <button class="decline-btn" >Decline</button>
+    </div>
+  </div>
+</div>
+
