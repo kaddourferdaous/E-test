@@ -1,3 +1,4 @@
+<html>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 <div class="container" *ngIf="!questions || questions.length === 0">
   <h2>{{ modelName }} Courses</h2>
@@ -21,8 +22,10 @@
         <!-- Boutons pour afficher le contenu -->
         <div *ngIf="support.filename?.endsWith('.pdf')">
           <button (click)="viewSupport(support)">
-            <i class="bi bi-file-earmark-pdf"></i> Voir le PDF
+            <i class="bi bi-file-earmark-pdf"></i> View PDF
           </button>
+          <button (click)="displayQuestions(support)" style="margin-left: 20px;">
+            <i class="bi bi-question-circle"></i> Respond Questions</button> 
         </div>
         
         <div *ngIf="support.filename?.endsWith('.jpg') || support.filename?.endsWith('.png')">
@@ -34,8 +37,10 @@
         
         <div *ngIf="support.filename?.endsWith('.mp4') || support.filename?.endsWith('.mov')">
           <button (click)="viewSupport(support)">
-            <i class="bi bi-play-circle"></i> Voir la vidéo
+            <i class="bi bi-play-circle"></i> See video
           </button>
+          <button (click)="displayQuestions(support)" style="margin-left: 20px;">
+            <i class="bi bi-question-circle"></i> Respond Questions</button>
         </div>
       </div>
     </div>
@@ -62,7 +67,6 @@
     <!-- PDF dans une modal -->
     <div *ngIf="selectedSupport && selectedSupport.filename.endsWith('.pdf')" class="custom-modal">
       <div class="custom-modal-content">
-        
         <iframe [src]="getPdfUrl(selectedSupport)" width="100%" height="600px"></iframe>
       </div>
     </div>
@@ -73,49 +77,127 @@
     </button>
   </div>
 </div>
-<div *ngIf="questions && questions.length > 0" class="questions-container">
-  <form (ngSubmit)="submitAnswers()">
-    <div class="question-item p-4 border rounded shadow-sm">
-      <!-- Affichage de la question -->
-      <label class="fw-bold">{{ questions[currentQuestionIndex].text }}</label>
-
-      <!-- Boucle sur les options de réponse -->
-      <div *ngFor="let option of questions[currentQuestionIndex].options" class="form-check">
-        <!-- Input Radio -->
-        <input type="radio" name="question_{{ questions[currentQuestionIndex].id }}" [value]="option" class="form-check-input" id="option_{{ questions[currentQuestionIndex].id }}_{{ option }}" [(ngModel)]="questions[currentQuestionIndex].selectedOption" (change)="onOptionSelected(questions[currentQuestionIndex], option)" [disabled]="isRadioDisabled">
-
-
-        <!-- Label de l'option -->
-        <label
-          class="form-check-label"
-          for="option_{{ questions[currentQuestionIndex].id }}_{{ option }}"
-          [ngClass]="{
-            'correct-answer': isAnswerCorrect(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered,
-            'incorrect-answer': !isAnswerCorrect(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered && option === questions[currentQuestionIndex].selectedOption
-          }"
-        >
-          {{ option }}
-        </label>
+<div *ngIf="questions && questions.length > 0" class="questions-container" dir="rtl">
+  <!-- Correction: using selectedSupport instead of supports -->
+  <form (ngSubmit)="submitAnswers(selectedSupport)">
+    <!-- Indicateur de progression -->
+    <div class="progress mb-4">
+      <div class="progress-bar" role="progressbar" 
+           [style.width]="((currentQuestionIndex + 1) / questions.length * 100) + '%'"
+           [attr.aria-valuenow]="currentQuestionIndex + 1"
+           aria-valuemin="0" [attr.aria-valuemax]="questions.length">
+        السؤال {{currentQuestionIndex + 1}} من {{questions.length}}
       </div>
     </div>
 
+    <div class="question-item p-4 border rounded shadow-sm mb-4">
+      <!-- Affichage de la question -->
+      <h5 class="question-text mb-3">{{ questions[currentQuestionIndex].text }}</h5>
+      
+      <!-- Indication pour les questions multiples -->
+      <div *ngIf="questions[currentQuestionIndex].isMultipleChoice" class="alert alert-info mb-3">
+        <i class="bi bi-info-circle"></i> يمكن اختيار أكثر من إجابة صحيحة
+      </div>
+
+      <!-- Boucle sur les options de réponse -->
+      <div class="options-list">
+        <div *ngFor="let option of questions[currentQuestionIndex].options; let i = index" 
+             class="option-item form-check p-2 mb-2 rounded"
+             [ngClass]="{
+               'correct-option': isAnswerCorrect(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered,
+               'incorrect-option': !isAnswerCorrect(questions[currentQuestionIndex], option) && isOptionSelected(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered,
+               'selected-option': isOptionSelected(questions[currentQuestionIndex], option) && !questions[currentQuestionIndex].isAnswered
+             }">
+          
+          <!-- Input Checkbox ou Radio selon le type de question -->
+          <input 
+            [type]="questions[currentQuestionIndex].isMultipleChoice ? 'checkbox' : 'radio'"
+            [name]="'question_' + questions[currentQuestionIndex].id"
+            [value]="option"
+            class="form-check-input"
+            [id]="'option_' + questions[currentQuestionIndex].id + '_' + i"
+            [checked]="isOptionSelected(questions[currentQuestionIndex], option)"
+            (change)="onOptionSelected(questions[currentQuestionIndex], option)"
+            [disabled]="questions[currentQuestionIndex].isAnswered">
+          
+          <!-- Label de l'option -->
+          <label class="form-check-label w-100" 
+                 [for]="'option_' + questions[currentQuestionIndex].id + '_' + i">
+            <div class="d-flex justify-content-between align-items-center">
+              <span>{{ option }}</span>
+              <span *ngIf="questions[currentQuestionIndex].isAnswered">
+                <i *ngIf="isAnswerCorrect(questions[currentQuestionIndex], option)" 
+                   class="bi bi-check-circle-fill text-success"></i>
+                <i *ngIf="!isAnswerCorrect(questions[currentQuestionIndex], option) && isOptionSelected(questions[currentQuestionIndex], option)" 
+                   class="bi bi-x-circle-fill text-danger"></i>
+              </span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bouton Valider pour les questions à choix multiple -->
+   <!-- For multiple choice questions, use specific handling -->
+<div *ngIf="questions[currentQuestionIndex].isMultipleChoice">
+  <div *ngFor="let option of questions[currentQuestionIndex].options; let i = index" 
+       class="option-item form-check p-2 mb-2 rounded"
+       [ngClass]="{
+         'correct-option': isAnswerCorrect(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered,
+         'incorrect-option': !isAnswerCorrect(questions[currentQuestionIndex], option) && isOptionSelected(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered,
+         'selected-option': isOptionSelected(questions[currentQuestionIndex], option) && !questions[currentQuestionIndex].isAnswered
+       }">
+    
+    <!-- Checkboxes for multiple choice -->
+    <input 
+      type="checkbox"
+      [name]="'question_' + questions[currentQuestionIndex].id + '_' + i" 
+      [value]="option"
+      class="form-check-input"
+      [id]="'option_' + questions[currentQuestionIndex].id + '_' + i"
+      [checked]="isOptionSelected(questions[currentQuestionIndex], option)"
+      (click)="$event.stopPropagation(); onOptionSelected(questions[currentQuestionIndex], option)"
+      [disabled]="questions[currentQuestionIndex].isAnswered">
+    
+    <!-- Label -->
+    <label class="form-check-label w-100" 
+           [for]="'option_' + questions[currentQuestionIndex].id + '_' + i">
+      <div class="d-flex justify-content-between align-items-center">
+        <span>{{ option }}</span>
+        <span *ngIf="questions[currentQuestionIndex].isAnswered">
+          <i *ngIf="isAnswerCorrect(questions[currentQuestionIndex], option)" 
+             class="bi bi-check-circle-fill text-success"></i>
+          <i *ngIf="!isAnswerCorrect(questions[currentQuestionIndex], option) && isOptionSelected(questions[currentQuestionIndex], option)" 
+             class="bi bi-x-circle-fill text-danger"></i>
+        </span>
+      </div>
+    </label>
+  </div>
+</div>
+
     <!-- Navigation des questions -->
     <div class="d-flex justify-content-between mt-3">
-      <button type="button" class="btn btn-secondary" (click)="prevQuestion()" [disabled]="currentQuestionIndex === 0">
-        <i class="bi bi-arrow-left"></i> Précédent
+      <!-- Bouton Précédent -->
+      <button type="button" class="btn btn-outline-secondary" 
+              (click)="prevQuestion()" 
+              [disabled]="currentQuestionIndex === 0">
+        <i class="bi bi-chevron-right"></i> السابق
       </button>
 
-      <button type="button" class="btn btn-primary" (click)="nextQuestion()" *ngIf="currentQuestionIndex < questions.length - 1" style="margin-right: 80px;">
-        Suivant <i class="bi bi-arrow-right"></i>
-      </button>
+      <!-- Bouton Suivant ou Soumettre -->
+      <ng-container *ngIf="currentQuestionIndex < questions.length - 1; else submitButton">
+        <button type="button" class="btn btn-primary" 
+                (click)="nextQuestion()">
+          التالي <i class="bi bi-chevron-left"></i>
+        </button>
+      </ng-container>
 
-      <button type="submit" class="btn btn-success" *ngIf="currentQuestionIndex === questions.length - 1">
-        <i class="bi bi-check-circle "></i> Soumettre les réponses
-      </button>
+      <ng-template #submitButton>
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-send-check"></i> تسجيل الإجابات
+        </button>
+      </ng-template>
     </div>
   </form>
 </div>
-
-
-
-
+</html>

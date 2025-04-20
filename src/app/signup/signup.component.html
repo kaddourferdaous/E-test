@@ -43,31 +43,44 @@
                                   </div>
                                 </div>
                               
-                                <div class="form-element">
-                                  <label for="password" class="w-100" style="text-align: left;">Password</label>
-                                  <div class="form-alert-input">
-                                    <input type="password" id="password" formControlName="password" />
-                                    <div class="form-alert-icon" (click)="showPassword('password', $event)">
-                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                      </svg>
-                                    </div>
-                                  </div>
-                                </div>
-                              
-                                <div class="form-element">
-                                  <label for="confirm-password" class="w-100" style="text-align: left;">Confirm Password</label>
-                                  <div class="form-alert-input">
-                                    <input type="password" id="confirm-password" formControlName="confirmPassword" />
-                                    <div class="form-alert-icon" (click)="showPassword('confirm-password', $event)">
-                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                      </svg>
-                                    </div>
-                                  </div>
-                                </div>
+                                <!-- Champ du mot de passe -->
+<div class="form-element">
+  <div class="d-flex justify-content-between">
+    <label for="password">Password</label>
+    <a class="text-primary fs-6" (click)="togglePasswordVisibility()">
+      <i class="fa" [class.fa-eye]="!passwordVisible" [class.fa-eye-slash]="passwordVisible"></i>
+      {{ passwordVisible ? 'Hide' : 'Show' }} Password
+    </a>
+  </div>
+  <input 
+    [type]="passwordVisible ? 'text' : 'password'" 
+    id="password" 
+    placeholder="Type here..." 
+    formControlName="password" 
+    class="form-control"
+  />
+</div>
+
+<!-- Champ du mot de passe de confirmation -->
+<div class="form-element">
+  <label for="confirm-password" class="w-100" style="text-align: left;">Confirm Password</label>
+  <a class="text-primary fs-6" (click)="toggleConfirmPasswordVisibility()" style="margin-left: 340px;">
+    <i class="fa" [class.fa-eye]="!passwordVisible" [class.fa-eye-slash]="passwordVisible"></i>
+    {{ passwordVisible ? 'Hide' : 'Show' }} Password
+  </a>
+  <div class="form-alert-input d-flex">
+    <input 
+      [type]="confirmPasswordVisible ? 'text' : 'password'" 
+      id="confirm-password" 
+      formControlName="confirmPassword"
+      class="form-control"
+    />
+ 
+  </div>
+  
+</div>
+
+
                               
                                 <div class="form-element d-flex align-items-center terms">
                                   <label for="agree" class="text-secondary mb-0" style="font: sans-serif;">Accept the <a href="#" style="text-decoration: underline;">Terms</a> and <a href="#" style="text-decoration: underline;">Privacy Policy</a></label>

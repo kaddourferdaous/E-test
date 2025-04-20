@@ -1,0 +1,294 @@
+<div class="form-container">
+  <h2>Practical Survey Form</h2>
+
+  <!-- Formulaire avec Angular Reactive Forms -->
+  <form [formGroup]="pratiqueForm" (ngSubmit)="onSubmit()">
+    <!-- Champ caché pour l'ID du formateur -->
+    <input type="hidden" formControlName="id_trainer">
+    <input type="hidden" formControlName="id_candidate">
+
+    <!-- Speed -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Speed</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="speed_score" required>
+            <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">
+              {{ i }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              pratiqueForm.get('speed_score')?.invalid &&
+              pratiqueForm.get('speed_score')?.touched
+            "
+            class="error"
+          >
+            Speed score is required.
+          </div>
+        </div>
+      </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="speed_remark"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quality -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Quality</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="quality_score" required>
+            <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">
+              {{ i }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              pratiqueForm.get('quality_score')?.invalid &&
+              pratiqueForm.get('quality_score')?.touched
+            "
+            class="error"
+          >
+            Quality score is required.
+          </div>
+        </div>
+      </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="quality_remark"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- EHS Rules Respect -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">EHS Rules Respect</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="ehs_rules_respect_score" required>
+            <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">
+              {{ i }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              pratiqueForm.get('ehs_rules_respect_score')?.invalid &&
+              pratiqueForm.get('ehs_rules_respect_score')?.touched
+            "
+            class="error"
+          >
+            EHS rules respect score is required.
+          </div>
+        </div>
+      </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="ehs_rules_respect_remark"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Presence Respect -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Presence Respect</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="presence_respect_score" required>
+            <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">
+              {{ i }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              pratiqueForm.get('presence_respect_score')?.invalid &&
+              pratiqueForm.get('presence_respect_score')?.touched
+            "
+            class="error"
+          >
+            Presence respect score is required.
+          </div>
+        </div>
+      </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="presence_respect_remark"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- LL Instruction Respect -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">LL Instruction Respect</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="ll_instruction_respect_score" required>
+            <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">
+              {{ i }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              pratiqueForm.get('ll_instruction_respect_score')?.invalid &&
+              pratiqueForm.get('ll_instruction_respect_score')?.touched
+            "
+            class="error"
+          >
+            LL instruction respect score is required.
+          </div>
+        </div>
+      </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="ll_instruction_respect_remark"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time Management Respect -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Time Management Respect</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="time_management_respect_score" required>
+            <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">
+              {{ i }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              pratiqueForm.get('time_management_respect_score')?.invalid &&
+              pratiqueForm.get('time_management_respect_score')?.touched
+            "
+            class="error"
+          >
+            Time management respect score is required.
+          </div>
+        </div>
+      </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="time_management_respect_remark"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Memory -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Memory</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="memory_score" required>
+            <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">
+              {{ i }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              pratiqueForm.get('memory_score')?.invalid &&
+              pratiqueForm.get('memory_score')?.touched
+            "
+            class="error"
+          >
+            Memory score is required.
+          </div>
+        </div>
+      </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="memory_remark"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logic -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Logic</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="logic_score" required>
+            <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">
+              {{ i }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              pratiqueForm.get('logic_score')?.invalid &&
+              pratiqueForm.get('logic_score')?.touched
+            "
+            class="error"
+          >
+            Logic score is required.
+          </div>
+        </div>
+      </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="logic_remark"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Motivation -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Motivation</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="motivation_score" required>
+            <option *ngFor="let i of [1, 2, 3, 4, 5]" [value]="i">
+              {{ i }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              pratiqueForm.get('motivation_score')?.invalid &&
+              pratiqueForm.get('motivation_score')?.touched
+            "
+            class="error"
+          >
+            Motivation score is required.
+          </div>
+        </div>
+      </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="motivation_remark"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- General Score -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">General Score</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <div class="calculated-score">{{ pratiqueForm.get('score')?.value || 0 }}/50</div>
+          <input type="hidden" formControlName="score">
+        </div>
+      </div>
+    </div>
+    <!-- Bouton de soumission -->
+    <button type="submit" class="submit-button">Submit Evaluation</button>
+  </form>
+</div>

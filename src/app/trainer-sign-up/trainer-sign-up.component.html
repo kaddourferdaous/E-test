@@ -37,13 +37,7 @@
                                 </div>
                               
                                 <!-- Mot de passe -->
-                                <div class="form-element">
-                                  <label for="password">Password</label>
-                                  <input type="password" id="password" placeholder="Type here..." formControlName="password" />
-                                  <div *ngIf="trainerSignUpForm.controls['password'].invalid && trainerSignUpForm.controls['password'].touched" class="alert alert-danger">
-                                    Le mot de passe doit contenir au moins 6 caractères.
-                                  </div>
-                                </div>
+                              
                               
                                 <!-- Nom complet -->
                                 <div class="form-element">
@@ -62,6 +56,26 @@
                                     Un email valide est requis.
                                   </div>
                                 </div>
+                                <div class="form-element">
+                                  <label for="password">Password</label>
+                                  <button type="button" class="password-icon btn btn-link" (click)="togglePasswordVisibility()">
+                                    <i class="fa" [class.fa-eye]="!passwordVisible" [class.fa-eye-slash]="passwordVisible"></i>
+                                  </button>
+                                  <div class="password-wrapper">
+                                    <input 
+                                      [type]="passwordVisible ? 'text' : 'password'" 
+                                      id="password" 
+                                      placeholder="Type here..." 
+                                      formControlName="password" />
+                                
+                                    <!-- Bouton pour afficher/masquer le mot de passe -->
+                                 
+                                  </div>
+                                  <div *ngIf="trainerSignUpForm.controls['password'].invalid && trainerSignUpForm.controls['password'].touched" class="alert alert-danger">
+                                  
+                                  </div>
+                                </div>
+                                
                               
                                 <!-- Message d'erreur global -->
                                 <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>

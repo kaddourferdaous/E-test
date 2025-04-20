@@ -1,0 +1,208 @@
+<div class="container">
+    <h1 class="text-center mb-4">Rapports d'Évaluation des Candidats</h1>
+    
+    <!-- Barre de recherche -->
+    <div class="search-container mb-4">
+      <input 
+        type="text" 
+        class="form-control" 
+        placeholder="Rechercher un candidat..."
+        [(ngModel)]="searchText"
+        (input)="filterCandidats()">
+    </div>
+  
+    <!-- Filtres et contrôles -->
+    <div class="controls-container mb-4">
+      <div class="row">
+        <div class="col-md-4">
+          <select class="form-select" [(ngModel)]="selectedFilter" (change)="filterCandidats()">
+            <option value="all">Tous les candidats</option>
+            <option value="passed">Candidats admis</option>
+            <option value="highscore">Score élevé (>80)</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <select class="form-select" [(ngModel)]="sortOption" (change)="sortCandidats()">
+            <option value="name">Trier par nom</option>
+            <option value="score">Trier par score total</option>
+            <option value="city">Trier par ville</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-primary w-100" (click)="toggleComparison()">
+            {{ showComparison ? 'Masquer la comparaison' : 'Comparer les candidats' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Section de comparaison -->
+    <div class="comparison-container mb-4" *ngIf="showComparison">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">Comparaison des Candidats</h3>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="comparisonChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Message si aucun résultat -->
+    <div class="alert alert-info" *ngIf="filteredCandidats.length === 0">
+      Aucun candidat ne correspond à votre recherche.
+    </div>
+  
+    <!-- Liste des candidats -->
+    <div class="row">
+      <div class="col-md-6 mb-4" *ngFor="let candidat of filteredCandidats">
+        <div class="card candidate-card">
+          <div class="card-header">
+            <h2 class="mb-0">{{ candidat.personalInfo.fullName }}</h2>
+          </div>
+          <div class="card-body">
+            <!-- Informations personnelles -->
+            <div class="section mb-4">
+              <h3 class="section-title">Informations Personnelles</h3>
+              <div class="info-grid">
+                <div class="info-item" *ngFor="let item of getPersonalInfoEntries(candidat)">
+                  <span class="label">{{ item.key }}:</span> {{ item.value }}
+                </div>
+              </div>
+            </div>
+  
+            <!-- Onglets pour les différents tests -->
+            <ul class="nav nav-tabs" id="candidatTabs-{{candidat.id}}" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" 
+                          [id]="'dexterity-tab-' + candidat.id" 
+                          attr.data-bs-toggle="tab" 
+                          [attr.data-bs-target]="'#dexterity-' + candidat.id" 
+                          type="button" role="tab" 
+                          aria-selected="true">
+                    Dextérité
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" 
+                          [id]="'logic-tab-' + candidat.id" 
+                          attr.data-bs-toggle="tab" 
+                          [attr.data-bs-target]="'#logic-' + candidat.id" 
+                          type="button" role="tab" 
+                          aria-selected="false">
+                    Logique
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" 
+                          [id]="'memory-tab-' + candidat.id" 
+                          attr.data-bs-toggle="tab" 
+                          [attr.data-bs-target]="'#memory-' + candidat.id" 
+                          type="button" role="tab" 
+                          aria-selected="false">
+                    Mémoire
+                  </button>
+                </li>
+              </ul>
+  
+            <!-- Contenu des onglets -->
+            <div class="tab-content mt-3" [id]="'candidatTabContent-' + candidat.id">
+              <!-- Test de dextérité -->
+              <div class="tab-pane fade show active" [id]="'dexterity-' + candidat.id" role="tabpanel" [attr.aria-labelledby]="'dexterity-tab-' + candidat.id">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Métrique</th>
+                      <th>Score</th>
+                      <th>Maximum</th>
+                      <th>Performance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let metric of candidat.dexterityTest.metrics">
+                      <td>{{ metric.name }}</td>
+                      <td>{{ metric.score }}</td>
+                      <td>{{ metric.maxScore }}</td>
+                      <td class="stars">{{ metric.performance }}</td>
+                    </tr>
+                    <tr class="total-row">
+                      <td>Score Total</td>
+                      <td>{{ candidat.dexterityTest.totalScore }}</td>
+                      <td>{{ candidat.dexterityTest.maxTotalScore }}</td>
+                      <td class="stars">{{ candidat.dexterityTest.totalPerformance }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="status-badge" [ngClass]="{'status-passed': candidat.dexterityTest.finalStatus === 'Passed'}">
+                  Statut: {{ candidat.dexterityTest.finalStatus }}
+                </div>
+              </div>
+  
+              <!-- Test de logique -->
+              <div class="tab-pane fade" [id]="'logic-' + candidat.id" role="tabpanel" [attr.aria-labelledby]="'logic-tab-' + candidat.id">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Catégorie</th>
+                      <th>Score</th>
+                      <th>Maximum</th>
+                      <th>Performance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let category of candidat.logicTest.categories">
+                      <td>{{ category.name }}</td>
+                      <td>{{ category.score }}</td>
+                      <td>{{ category.maxScore }}</td>
+                      <td class="stars">{{ category.performance }}</td>
+                    </tr>
+                    <tr class="total-row">
+                      <td>Score Total</td>
+                      <td>{{ candidat.logicTest.totalScore }}</td>
+                      <td>{{ candidat.logicTest.maxTotalScore }}</td>
+                      <td class="stars">{{ candidat.logicTest.totalPerformance }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+              <!-- Test de mémoire -->
+              <div class="tab-pane fade" [id]="'memory-' + candidat.id" role="tabpanel" [attr.aria-labelledby]="'memory-tab-' + candidat.id">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Catégorie</th>
+                      <th>Score</th>
+                      <th>Maximum</th>
+                      <th>Performance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let category of candidat.memoryTest.categories">
+                      <td>{{ category.name }}</td>
+                      <td>{{ category.score }}</td>
+                      <td>{{ category.maxScore }}</td>
+                      <td class="stars">{{ category.performance }}</td>
+                    </tr>
+                    <tr class="total-row">
+                      <td>Score Total</td>
+                      <td>{{ candidat.memoryTest.totalScore }}</td>
+                      <td>{{ candidat.memoryTest.maxTotalScore }}</td>
+                      <td class="stars">{{ candidat.memoryTest.totalPerformance }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="overall-score">
+              Score global: {{ calculateOverallScore(candidat) }}/270
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

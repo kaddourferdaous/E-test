@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';  
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { SignupComponent } from './signup/signup.component';
 import { EntryPageComponent } from './entry-page/entry-page.component';
@@ -24,6 +24,21 @@ import { VideoDetailComponent } from './video-detail/video-detail.component';
 import { SupportListComponent } from './support-list/support-list.component';
 import { ModelDetailComponent } from './model-detail/model-detail.component';
 import { RemoveExtensionPipe } from './remove-extension.pipe';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ContactComponent } from './contact/contact.component';
+import { CandidatesComponent } from './candidates/candidates.component';
+import { FeedbacksComponent } from './feedbacks/feedbacks.component';
+import { SurveysComponent } from './surveys/surveys.component';
+import { TheoriqueFormComponent } from './theorique-form/theorique-form.component';
+import { PratiqueFormComponent } from './pratique-form/pratique-form.component';
+import { CandidatsComponent } from './candidats/candidats.component';
+import { OjtFormComponent } from './ojt-form/ojt-form.component';
+import { FollowUpComponent } from './follow-up/follow-up.component';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http,'https://cors-anywhere.herokuapp.com/https://libretranslate.com/translate', '');
+}
 
 
 const appRoutes: Routes = [
@@ -44,33 +59,57 @@ const appRoutes: Routes = [
     LoginComponent,
     SignupComponent,
     EntryPageComponent,
-    TrainerSignUpComponent,  
+    TrainerSignUpComponent,
     TrainerLoginComponent,
     DashboardComponent,
     CategoryComponent,
     HomeComponent,
-
     TestComponent,
-     SupportsComponent,
-     VideoListComponent,
-     VideoDetailComponent,
-     SupportListComponent,
-     ModelDetailComponent,
-     RemoveExtensionPipe,
+    SupportsComponent,
+    VideoListComponent,
+    VideoDetailComponent,
+    SupportListComponent,
+    ModelDetailComponent,
+    RemoveExtensionPipe,
+    ContactComponent,
+    CandidatesComponent,
+    FeedbacksComponent,
+    SurveysComponent,
+    TheoriqueFormComponent,
+    PratiqueFormComponent,
+    CandidatsComponent,
+    OjtFormComponent,
+    FollowUpComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule, 
-    HttpClientModule,
-
-  // Bibliothèque de visionnage PDF
-
-    FormsModule, 
-    RouterModule.forRoot(appRoutes),  // Utilisation de routes définies dans appRoutes
+    ReactiveFormsModule,
+    FormsModule,
+   HttpClientModule,
+   TranslateModule.forRoot({
+    loader:{
+      provide:TranslateLoader,
+      useFactory:HttpLoaderFactory,
+      deps:[HttpClient]
+    }
+   })
   ],
-  providers: [],
+  providers: [
+   
+  ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // Si vous utilisez des Web Components ou des composants non Angular
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule {
+
+  // constructor(translate: TranslateService) {
+  //   const defaultLang = 'ar'; // Arabe par défaut
+  //   translate.addLangs(['ar', 'en']); // Langues disponibles
+  //   translate.setDefaultLang(defaultLang);
+  //   translate.use(defaultLang);
+  //   document.documentElement.lang = defaultLang;
+  //   document.documentElement.dir = defaultLang === 'ar' ? 'rtl' : 'ltr';
+  // }
+  
+ }

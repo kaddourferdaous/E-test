@@ -1,129 +1,143 @@
-
 @import "~@fortawesome/fontawesome-free/css/all.min.css";
 
-
-
 body, html {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #6ac1e8, #0093E9);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
 }
+
 
 .quiz-container {
     background: white;
-    width: 40%;
-    height:70%;
-    margin: auto;
+    width: 45%;
+    max-width: 600px;
     padding: 30px;
+    margin-top: 60px;
+    margin-left: 380px;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     text-align: center;
+    animation: fadeIn 0.6s ease-in-out;
+    justify-content: center;
+    align-items: center;
 }
 
 h1 {
     color: #0093E9;
-    font-size: 2.5em;
+    font-size: 2.2em;
+    font-weight: 700;
 }
 
 .progress-bar-container {
     background: #e0e0e0;
-    height: 6px;
+    height: 8px;
     border-radius: 10px;
     margin: 20px 0;
+    overflow: hidden;
 }
 
 .progress-bar {
     background: linear-gradient(90deg, #32e3f2, #4874e0);
-    height: 6px;
-    border-radius: 10px;
+    height: 100%;
+    width: 25%; /* Mise à jour dynamique via JS */
+    transition: width 0.4s ease-in-out;
 }
 
 .question-number {
     text-align: right;
     font-weight: bold;
     margin-bottom: 10px;
+    color: #333;
 }
 
 .question {
-    font-size: 1.5em;
+    font-size: 1.2em;
     margin-bottom: 20px;
     font-weight: bold;
+    color: #222;
 }
 
 .options {
     list-style: none;
-    font-size: 1.6rem;
+    font-size: 1rem;
     padding: 0;
-    text-align: left; /* Aligner les options à gauche */
 }
 
 .options li {
-    margin: 10px 0;
-    padding: 10px 15px;
-    background: #f8f8f8;
-    border-radius: 25px;
+    margin: 12px 0;
+    padding: 12px 18px;
+    background: #f9f9f9;
+    border-radius: 10px;
     cursor: pointer;
-     font-size: 1.6rem;
-    transition: background 0.3s;
-    width: fit-content; /* Ajuste la largeur en fonction du contenu */
+    font-size: 1.3rem;
+    transition: all 0.3s ease-in-out;
+    width:550px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 
 .options li:hover {
     background: #d0e4f7;
+    transform: scale(1.05);
     width: 100%;
 }
 
 .options li.selected {
-    background: #32e3f2;
+    background:#64B7BF;
     color: white;
     width: 100%;
-
+    font-weight: bold;
 }
 
-.buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.last-question, .next-question {
-    background: linear-gradient(135deg, #0093E9, #32e3f2);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-size: 1.2em;
+.buttons-container {
   
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
+/* Ajoute un espace invisible de 300px entre les boutons */
 
+
+/* Style des boutons */
+.next-question, .last-question {
+  background: linear-gradient(135deg, #0093E9, #32e3f2);
+  color: white;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 .last-question:disabled, .next-question:disabled {
     background: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 .last-question:hover:not(:disabled), .next-question:hover:not(:disabled) {
     background: linear-gradient(135deg, #32e3f2, #0093E9);
+    transform: translateY(-2px);
 }
+
 input[type="text"] {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     font-size: 1.2em;
     border: 2px solid #0093E9;
-    border-radius: 25px;
+    border-radius: 30px;
     outline: none;
     transition: all 0.3s ease-in-out;
     text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 input[type="text"]:focus {
@@ -131,34 +145,25 @@ input[type="text"]:focus {
     box-shadow: 0 0 10px rgba(50, 227, 242, 0.5);
     background: #f8f8f8;
 }
-textarea {
-    display: block;
-    border: 1px solid red;
-}
+
 .save-button {
     background: linear-gradient(135deg, #4CAF50, #45A049);
     color: white;
     font-size: 16px;
     font-weight: bold;
-    padding: 12px 24px;
+    padding: 14px 26px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    
-    &:hover {
-      background: linear-gradient(135deg, #45A049, #3e8e41);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-    }
-  
-    &:active {
-      transform: translateY(1px);
-      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-    }
-  }
-  /* Modal Overlay */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.save-button:hover {
+    background: linear-gradient(135deg, #45A049, #3e8e41);
+    transform: translateY(-3px);
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -169,106 +174,101 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  /* Modal Content */
-  .modal-content {
-    background: white;
-    width: 400px;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.3s ease-in-out;
-  }
-  
-  /* Title */
-  h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  /* Congratulations Section */
-  .congrats {
+}
+
+.modal-content {
+    background: white;
+    width: 420px;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+h2 {
     font-size: 20px;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.congrats {
+    font-size: 22px;
     font-weight: bold;
     color: #1787E0;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5px;
-  }
-  
-  /* Stars */
-  .stars {
-    font-size: 24px;
+    gap: 6px;
+}
+
+.stars {
+    font-size: 26px;
     color: #FFD700;
-    margin: 10px 0;
-  }
-  
-  /* User Info */
-  .user-info {
-    margin-top: 10px;
-  }
-  
-  .avatar {
-    width: 50px;
-    height: 50px;
+    margin: 12px 0;
+}
+
+.user-info {
+    margin-top: 12px;
+}
+
+.avatar {
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
-    margin-bottom: 5px;
-  }
-  
-  /* Score */
-  .score {
+    margin-bottom: 6px;
+}
+
+.score {
     color: red;
     font-weight: bold;
-  }
-  
-  /* Buttons */
-  .buttons {
+}
+
+.buttons {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     margin-top: 15px;
-  }
-  
-  .accept-btn {
+}
+
+.accept-btn, .decline-btn {
+    padding: 12px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s ease-in-out;
+}
+
+.accept-btn {
     background: #0d6efd;
     color: white;
     border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .decline-btn {
+}
+
+.decline-btn {
     background: #e0e0e0;
     color: #333;
     border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .accept-btn:hover {
+}
+
+.accept-btn:hover {
     background: #084298;
-  }
-  
-  .decline-btn:hover {
+    transform: scale(1.05);
+}
+
+.decline-btn:hover {
     background: #cfcfcf;
-  }
-  
-  /* Animation */
-  @keyframes fadeIn {
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
     from {
-      opacity: 0;
-      transform: translateY(-10px);
+        opacity: 0;
+        transform: translateY(-10px);
     }
     to {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-  }
-  
-  
+}

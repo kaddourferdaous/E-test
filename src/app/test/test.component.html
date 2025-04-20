@@ -41,11 +41,11 @@
   <!-- Boutons de navigation -->
   <div class="buttons">
     <div class="navigation-buttons">
-      <button class="last-question" (click)="previousQuestion()" [disabled]="currentQuestion === 1">
+      <button class="last-question" (click)="previousQuestion()" [disabled]="currentQuestion === 1" style="margin-left: -14px;">
         <i class="fas fa-arrow-left"></i> Previous
       </button>
       
-      <button class="next-question" (click)="nextQuestion()" [disabled]="currentQuestion === totalQuestions">
+      <button class="next-question" (click)="nextQuestion()" [disabled]="currentQuestion === totalQuestions" style="margin-left: 310px;" >
         Next <i class="fas fa-arrow-right"></i>
       </button>
     </div>

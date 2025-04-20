@@ -15,7 +15,13 @@ export class TrainerSignUpComponent implements OnInit {
   // Messages d'erreur et de succès
   errorMessage: string = '';
   successMessage: string = '';
+  passwordVisible = false;
 
+  /** Méthode pour afficher/masquer le mot de passe */
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+  }
+  
   constructor(
     private fb: FormBuilder, // FormBuilder pour créer le formulaire réactif
     private authService: AuthService, // Service pour l'authentification
@@ -58,7 +64,7 @@ export class TrainerSignUpComponent implements OnInit {
     this.authService.createTrainer(trainerData).subscribe(
       (response) => {
         console.log('Response from server:', response); // Log pour débogage
-        this.successMessage = 'Compte formateur créé avec succès !';
+        this.successMessage = 'Trainer account successfully created !';
         this.errorMessage = '';
 
         // Redirection après 2 secondes

@@ -1,0 +1,93 @@
+{
+    "GLOBAL": {
+      "DIRECTION": "rtl",
+      "LANGUAGE": "العربية"
+    },
+    "AUTH": {
+      "LOGIN": {
+        "TITLE": "تسجيل الدخول",
+        "USERNAME": "اسم المستخدم",
+        "PASSWORD": "كلمة المرور",
+        "SUBMIT": "إرسال",
+        "REMEMBER_ME": "تذكرني"
+      },
+      "LOGOUT": "تسجيل الخروج"
+    },
+    "LAYOUT": {
+      "HEADER": {
+        "WELCOME": "مرحباً {{username}}",
+        "NAV": {
+          "HOME": "الرئيسية",
+          "ABOUT": "معلومات عنا",
+          "CONTACT": "اتصل بنا",
+          "PROFILE": "الملف الشخصي"
+        }
+      },
+      "FOOTER": {
+        "COPYRIGHT": "© 2024 جميع الحقوق محفوظة",
+        "LINKS": {
+          "TERMS": "الشروط والأحكام",
+          "PRIVACY": "سياسة الخصوصية"
+        }
+      }
+    },
+    "PAGES": {
+      "HOME": {
+        "TITLE": "الصفحة الرئيسية",
+        "HERO": {
+          "TITLE": "مرحباً بكم في تطبيقنا",
+          "SUBTITLE": "الحلول الرقمية المبتكرة"
+        },
+        "SECTIONS": {
+          "FEATURES": "ميزاتنا",
+          "TESTIMONIALS": "آراء العملاء"
+        }
+      },
+      "ABOUT": {
+        "TITLE": "من نحن",
+        "COMPANY": {
+          "MISSION": "مهمتنا",
+          "VISION": "رؤيتنا",
+          "TEAM": "فريقنا"
+        }
+      },
+      "CONTACT": {
+        "TITLE": "اتصل بنا",
+        "INFO": {
+          "ADDRESS": "العنوان",
+          "PHONE": "الهاتف",
+          "EMAIL": "البريد الإلكتروني"
+        },
+        "FORM": {
+          "TITLE": "أرسل رسالة",
+          "FIELDS": {
+            "NAME": "الاسم الكامل",
+            "MESSAGE": "رسالتك"
+          },
+          "SUBMIT": "إرسال الرسالة",
+          "SUCCESS": "تم إرسال رسالتك بنجاح"
+        }
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "منتجاتنا",
+      "FILTERS": {
+        "SEARCH": "بحث",
+        "CATEGORIES": "الفئات"
+      }
+    },
+    "VALIDATION": {
+      "REQUIRED": "هذا الحقل مطلوب",
+      "INVALID_EMAIL": "بريد إلكتروني غير صالح",
+      "MIN_LENGTH": "يجب أن يكون طول النص على الأقل {{length}} أحرف",
+      "PASSWORD_STRENGTH": "يجب أن تحتوي كلمة المرور على أحرف كبيرة وأرقام"
+    },
+    "ACTIONS": {
+      "SAVE": "حفظ",
+      "CANCEL": "إلغاء",
+      "EDIT": "تعديل",
+      "DELETE": "حذف",
+      "CONFIRM": "تأكيد",
+      "BACK": "رجوع"
+    }
+  }

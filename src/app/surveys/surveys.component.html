@@ -1,0 +1,50 @@
+<!-- Back button with icon and ripple effect -->
+<div class="back-button-container" *ngIf="selectedForm">
+  <div class="back-icon-button" (click)="resetSelectedForm($event)">
+    <i class="fas fa-arrow-left back-icon"></i>
+  </div>
+</div>
+
+<!-- Card container for selecting form types -->
+<div class="card-container" *ngIf="!selectedForm">
+  <div class="card" (click)="selectForm('theorique')">
+    <i class="fas fa-book-open icon"></i>
+    <h3>Theoretical Survey</h3>
+    <p>Explore theoretical knowledge and concepts.</p>
+  </div>
+
+  <div class="card" (click)="selectForm('pratique')">
+    <i class="fas fa-screwdriver-wrench icon"></i>
+    <h3>Practical Survey</h3>
+    <p>Hands-on experiments and real-world practice.</p>
+  </div>
+
+  <div class="card" (click)="selectForm('ojt')">
+    <i class="fas fa-briefcase icon"></i>
+    <h3>OJT Survey</h3>
+    <p>On-the-job training and field assessments.</p>
+  </div>
+
+  <div class="card" (click)="selectForm('followUp')">
+    <i class="fas fa-retweet icon"></i>
+    <h3>Follow Up Survey</h3>
+    <p>Continued evaluation after initial training.</p>
+  </div>
+</div>
+
+<!-- Display the selected form component -->
+<div class="form-container" *ngIf="selectedForm === 'followUp'">
+  <app-follow-up [candidateId]="candidateId"></app-follow-up>
+</div>
+
+<div class="form-container" *ngIf="selectedForm === 'theorique'">
+  <app-theorique-form [candidateId]="candidateId"></app-theorique-form>
+</div>
+
+<div class="form-container" *ngIf="selectedForm === 'pratique'">
+  <app-pratique-form [candidateId]="candidateId"></app-pratique-form>
+</div>
+
+<div class="form-container" *ngIf="selectedForm === 'ojt'">
+  <app-ojt-form [candidateId]="candidateId"></app-ojt-form>
+</div>

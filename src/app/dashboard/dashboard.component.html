@@ -1,1 +1,195 @@
-<p>dashboard works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<!-- Material Icons Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="dashboard.component.css">
+  </head>
+  <body>
+    <div class="grid-container">
+
+      <!-- Header -->
+      <header class="header">
+        <div class="menu-icon" onclick="openSidebar()">
+          <span class="material-icons-outlined">menu</span>
+        </div>
+        <div class="header-left">
+          <span class="material-icons-outlined" >search</span>
+        </div>
+        <div class="header-right">
+          <span class="material-icons-outlined">notifications</span>
+          <span class="material-icons-outlined">email</span>
+          <span class="material-icons-outlined">account_circle</span>
+        </div>
+      </header>
+      <!-- End Header -->
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="sidebar-title">
+          <div class="sidebar-brand">
+            <span class="material-icons-outlined">inventory</span>Theoritical Test
+          </div>
+          <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+        </div>
+
+        <ul class="sidebar-list">
+          <li class="sidebar-list-item">
+            <a href="#" target="_blank">
+              <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="fileList" class="manage-files">
+              <i class="fa fa-folder"></i>
+              <span>Manage Accounts</span>
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item">
+            <a [routerLink]="['/candidates']">
+              <i class="fa fa-users"></i>
+              <span>Candidates</span>
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item">
+            <a  [routerLink]="['/feedbacks']">
+              <i class="fa fa-comment-dots"></i>
+              <span>Feedbacks</span>
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item">
+            <a href="report">
+              <i class="material-icons-outlined">poll</i> Reports
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="#" target="_blank">
+              <span class="material-icons-outlined">settings</span> Settings
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a [routerLink]="['/surveys']"target="_blank">
+              <span class="material-icons-outlined">assignment</span>Surveys</a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="login" target="_blank">
+              <span class="material-icons-outlined" (click)="logout()">logout</span>Sign Out
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End Sidebar -->
+
+      <!-- Main -->
+      <main class="main-container">
+        <div class="main-title">
+          <p class="font-weight-bold">DASHBOARD</p>
+        </div>
+
+        <div class="main-cards">
+
+          <div class="card">
+              <div class="card-inner">
+                  <p class="text-primary" style="font-size: 26px;">Closed Exams</p>
+                  <span class="material-icons-outlined text-blue" style="font-size: 40px;">task</span>
+              </div>
+              <span class="text-primary font-weight-bold" style="font-size: 30px;"></span>
+          </div>
+      
+          <div class="card">
+              <div class="card-inner">
+                  <p class="text-primary" style="font-size: 26px;">In Progress Exams</p>
+                  <div class="icon-group">
+                      <span class="material-icons-outlined text-blue" style="font-size: 40px;">folder</span>
+                      <span class="material-icons-outlined text-blue" style="font-size: 40px;">hourglass_top</span>
+                  </div>
+              </div>
+              <span class="text-primary font-weight-bold" style="font-size: 30px;"></span>
+          </div>
+      
+          <div class="card p-3">
+              <div class="card-inner d-flex align-items-center mb-2">
+                  <p class="text-primary mb-0 me-2" style="font-size: 26px;">Highest Score</p>
+                  <span class="material-icons-outlined text-blue" style="font-size: 38px;">emoji_events</span>
+              </div>
+          </div>
+      
+          <div class="card">
+              <div class="card-inner">
+                  <p class="text-primary" style="font-size: 26px;">Total Candidates</p>
+                  <span class="material-icons-outlined text-blue" style="font-size: 56px;">badge</span>
+              </div>
+              <span class="text-primary font-weight-bold" style="font-size: 30px;">{{ totalCandidates }}</span>
+          </div>
+      
+      </div>
+      
+      
+      
+
+        
+          <div class="charts">
+            <div class="charts-card">
+              <p class="chart-title">Top 5 Exams</p>
+              <div id="bar-chart">
+                <table>
+                  <tr>
+                    <th>date</th>
+                    <th>Candidate Name</th>
+                    <th>Score</th>
+                    <th>Departement</th>
+                  </tr>
+                 
+                </table>
+              </div>
+            </div>
+          
+          
+         
+          
+
+          <div class="charts-card">
+            <p class="chart-title">Progress Status by Year</p>
+            <div id="bar-chart">
+              <table>
+                <tr>
+                  <th>date </th>
+                  <th>Candidate Name</th>
+                  <th>Score</th>
+      
+                </tr>
+           
+              </table>
+
+        </div>
+          </div>
+          </div>
+          
+      </main>
+      <!-- End Main -->
+
+    </div>
+
+    <!-- Scripts -->
+    <!-- ApexCharts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/scripts.js"></script>
+  </body>
+</html>

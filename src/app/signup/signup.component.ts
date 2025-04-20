@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,9 +15,10 @@ throw new Error('Method not implemented.');
 }
   signupForm: FormGroup;
   loading: boolean = false;
-  errorMessage: string = '';
+  errorMessage: string = '';  passwordVisible: boolean = false;  // Par défaut, le mot de passe est caché
+  confirmPasswordVisible:boolean=false;
 
-  constructor(private fb: FormBuilder, private authService :AuthService) {
+  constructor(private fb: FormBuilder, private authService :AuthService,private router:Router) {
     this.signupForm = this.fb.group({
       nom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -44,6 +46,9 @@ throw new Error('Method not implemented.');
         // Si l'inscription réussit
         console.log(response);
         alert('Inscription réussie!');
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
       },
       error: (err) => {
         this.loading = false;
@@ -51,4 +56,13 @@ throw new Error('Method not implemented.');
       }
     });
   }
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+  }
+  
+  /** Méthode pour afficher/masquer le mot de passe de confirmation */
+  toggleConfirmPasswordVisibility() {
+    this.confirmPasswordVisible = !this.confirmPasswordVisible;
+  }
+  
 }

@@ -1,0 +1,150 @@
+<div class="candidates-container">
+  <div class="header">
+    <h2>Candidates List</h2>
+    
+    <!-- Search and Filters Section -->
+    <div class="search-filters">
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <i class="fa fa-search search-icon"></i>
+        <input 
+          type="text" 
+          placeholder="Search candidates..." 
+          [(ngModel)]="searchTerm" 
+          (input)="applyFilters()"
+        >
+      </div>
+      
+      <!-- Date Filters -->
+      <div class="date-filters">
+        <div class="filter-buttons">
+          <button 
+            [class.active]="selectedDateFilter === 'today'"
+            (click)="setDateFilter('today')"
+          >Today</button>
+          <button 
+            [class.active]="selectedDateFilter === 'week'"
+            (click)="setDateFilter('week')"
+          >This Week</button>
+          <button 
+            [class.active]="selectedDateFilter === 'month'"
+            (click)="setDateFilter('month')"
+          >This Month</button>
+          <button 
+            [class.active]="selectedDateFilter === 'custom'"
+            (click)="setDateFilter('custom')"
+          >Custom</button>
+          <!-- View All Button -->
+          <!-- <button 
+            class="btn-view-all"
+            (click)="viewAllCandidates()"
+          >View All Candidates</button>
+        </div> -->
+        
+        <!-- Custom Date Picker - Shows only when custom is selected -->
+        <div *ngIf="selectedDateFilter === 'custom'" class="custom-date-picker">
+          <div class="date-range">
+            <div class="date-input">
+              <label for="startDate">From:</label>
+              <input 
+                type="date" 
+                id="startDate" 
+                [(ngModel)]="customDateRange.start" 
+                (change)="applyFilters()"
+              >
+            </div>
+            <div class="date-input">
+              <label for="endDate">To:</label>
+              <input 
+                type="date" 
+                id="endDate" 
+                [(ngModel)]="customDateRange.end" 
+                (change)="applyFilters()"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Reset Filters Button -->
+      <button class="reset-filters" (click)="resetFilters()">
+        <i class="fa fa-refresh"></i> Reset Filters
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading candidates...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <i class="fa fa-exclamation-circle"></i>
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !error && filteredCandidates.length === 0" class="empty-state">
+    <i class="fa fa-users"></i>
+    <p>No candidates found</p>
+  </div>
+
+  <!-- Edit Form -->
+  <div *ngIf="editingCandidate" class="edit-form">
+    <h3>Modify Candidate</h3>
+    <form (submit)="updateCandidate()">
+      <div class="form-group">
+        <label for="nom">Name</label>
+        <input type="text" id="nom" name="nom" [(ngModel)]="editForm.nom" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="editForm.email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">New Password (optional)</label>
+        <input type="password" id="password" name="password" [(ngModel)]="editForm.password">
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-save">Save</button>
+        <button type="button" class="btn-cancel" (click)="cancelEditing()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Candidates Table -->
+  <table *ngIf="filteredCandidates.length > 0" class="candidates-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Group Date</th>
+        <th>Training Start Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let candidate of filteredCandidates">
+        <td>{{ candidate.nom }}</td>
+        <td>{{ candidate.prenom }}</td>
+        <td>{{ candidate.email }}</td>
+        <td>{{ formatDate(candidate.groupe_date) }}</td>
+        <td>{{ formatDate(candidate.starting_trainee_date) }}</td>
+        <td class="actions">
+          <button class="btn-edit" title="Edit" (click)="startEditing(candidate)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button 
+            class="btn-add-survey" 
+            (click)="openAddSurveyModal(candidate.id)" 
+            style="margin-left: 30px; width: 150px;">
+            <i class="fa fa-plus"></i> Add Survey
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

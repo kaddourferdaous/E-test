@@ -25,6 +25,7 @@ export interface Candidate {
 export class AuthService {
   private apiUrl = 'http://localhost:5000'; // URL de l'API backend
   isAuthenticated: boolean = false; // État d'authentification
+  translate: any;
 
   constructor(private http: HttpClient) {}
 
@@ -57,6 +58,18 @@ export class AuthService {
         })
       );
   }
+  changeLanguage(language: string) {
+    this.translate.use(language); // Change la langue avec ngx-translate
+    this.updateDirection(language); // Appelle la méthode qui met à jour la direction RTL/LTR
+  }
+  
+  private updateDirection(language: string) {
+    // Si la langue est arabe, applique le RTL, sinon LTR
+    if (language === 'ar') {
+      document.body.setAttribute('dir', 'rtl');
+    } else {
+      document.body.setAttribute('dir', 'ltr');
+    }}
 
   /**
    * Inscription d'un candidat
@@ -120,14 +133,77 @@ export class AuthService {
    * @returns Un Observable avec la réponse du serveur
    */
   loginTrainer(credentials: any): Observable<any> {
-    return this.http
-      .post<any>(`${this.apiUrl}/auth/trainer/login`, credentials)
-      .pipe(
-        catchError((error) => {
-          console.error('Erreur lors de la connexion du formateur:', error);
-          throw error; // Rethrow the error
-        })
-      );
+    console.log('Tentative de connexion formateur avec:', credentials.matricule);
+    return this.http.post<any>(`${this.apiUrl}/auth/trainer/login`, credentials).pipe(
+      tap((response) => {
+        console.log('Réponse connexion formateur:', response);
+        
+        // Solution temporaire: générer un token simulé si absent
+        const token = response.token || this.generateTempToken(response.id);
+        
+        localStorage.setItem('trainerToken', token);
+        localStorage.setItem('trainerId', response.id);
+        
+        // Stocker les infos minimales du formateur
+        const trainerInfo = {
+          matricule: credentials.matricule,
+          id: response.id
+        };
+        localStorage.setItem('trainerInfo', JSON.stringify(trainerInfo));
+        
+        this.isAuthenticated = true;
+        console.log('Formateur authentifié avec token temporaire');
+        this.printTrainerSessionInfo();
+
+      }),
+      catchError((error) => {
+        console.error('Erreur de connexion:', error);
+        throw error;
+      })
+    );
+  }
+  getTrainerId(): string | null {
+    return localStorage.getItem('trainerId'); // Ou sessionStorage selon votre implémentation
+  }
+  getCandidatsByTrainerId(): Observable<any> {
+    const trainerId = this.getTrainerId(); // méthode déjà existante
+    return this.http.get<any>(`http://localhost:5000/candidat/get_candidats_by_trainer/${trainerId}`);
+  }
+  
+  // Méthode pour générer un token temporaire (à supprimer en production)
+  private generateTempToken(id: string): string {
+    return `temp-token-${id}-${Date.now()}`;
+  }
+  
+  // Méthode de vérification améliorée
+  checkTrainerAuthentication(): boolean {
+    const token = localStorage.getItem('trainerToken');
+    const trainerId = localStorage.getItem('trainerId');
+    
+    console.log('Vérification auth - Token:', token);
+    console.log('Vérification auth - TrainerID:', trainerId);
+    
+    return !!token && !!trainerId;
+  }
+  printTrainerSessionInfo(): void {
+    console.group('[AuthService] Informations du formateur connecté');
+    console.log('Token:', localStorage.getItem('trainerToken'));
+    console.log('ID:', localStorage.getItem('trainerId'));
+    
+    const trainerInfo = localStorage.getItem('trainerInfo');
+    if (trainerInfo) {
+      console.log('Détails du formateur:', JSON.parse(trainerInfo));
+    } else {
+      console.warn('Aucune information de formateur trouvée');
+    }
+    
+    console.groupEnd();
+  }
+  
+  logoutTrainer(): void {
+    localStorage.removeItem('trainerToken');
+    localStorage.removeItem('trainerId');
+    localStorage.removeItem('trainerInfo');
   }
 
   // --- Méthodes d'authentification générale ---
@@ -135,9 +211,7 @@ export class AuthService {
    * Vérifier si l'utilisateur est authentifié
    * @returns true si un token est présent, sinon false
    */
-  checkAuthentication(): boolean {
-    return !!this.getAuthToken();
-  }
+
 
   /**
    * Déconnexion de l'utilisateur
@@ -157,7 +231,31 @@ export class AuthService {
    * @returns Le token ou null
    */
   getAuthToken(): string | null {
-    return localStorage.getItem('authToken');
+    // Check localStorage first, then sessionStorage if needed
+    const localToken = localStorage.getItem('authToken');
+    if (localToken) {
+      return localToken;
+    }
+    
+    // If not found in localStorage, check sessionStorage
+    return sessionStorage.getItem('authToken');
+  }
+  
+  /**
+   * Vérifier si l'utilisateur est authentifié
+   * @returns true si un token est présent et valide, sinon false
+   */
+  checkAuthentication(): boolean {
+    const token = this.getAuthToken();
+    
+    // Additional validation can be added here, like checking token expiry
+    // if (token && this.isTokenExpired(token)) {
+    //   this.logout(); // Logout if token is expired
+    //   return false;
+    // }
+    
+    this.isAuthenticated = !!token; // Keep the isAuthenticated property in sync
+    return this.isAuthenticated;
   }
 
   // --- Méthodes pour les supports et questions ---

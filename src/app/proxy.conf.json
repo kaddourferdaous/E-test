@@ -1,0 +1,8 @@
+{
+    "/translate": {
+      "target": "https://libretranslate.com",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }
+  

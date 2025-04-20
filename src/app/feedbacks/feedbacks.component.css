@@ -1,0 +1,158 @@
+/* Conteneur principal */
+.container {
+    width: 80%;
+    margin-top:8p0px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre principal */
+h2, h3 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+/* Titre secondaire avec effet de sous-ligne */
+h3 {
+    font-size: 26px;
+    color: #007bff; /* Bleu vif */
+    position: relative;
+
+}
+
+h3::before, h3::after {
+    content: none;
+   
+
+}
+
+h3::before {
+    left: -60px;
+}
+
+h3::after {
+    right: -60px;
+}
+
+/* Style pour les champs de formulaire */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Boutons */
+.btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.contact-list {
+    margin-top: 40px;
+}
+
+/* Carte de chaque contact (message) */
+.contact-item {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.contact-item p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.contact-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* Boutons d'action (Répondre, Supprimer) */
+.contact-actions button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contact-actions button:hover {
+    transform: scale(1.05);
+}
+
+.contact-actions button.delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.contact-actions button.delete:hover {
+    background-color: #c82333;
+}
+
+.contact-actions button.reply {
+    background-color: #28a745;
+    color: white;
+}
+
+.contact-actions button.reply:hover {
+    background-color: #218838;
+}
+
+/* Pour un design agréable et bien espacé */
+.contact-actions button,
+.form-control,
+.btn {
+    box-sizing: border-box;
+}
+
+/* Effet sur les éléments au survol */
+.contact-item p:hover {
+    color: #007bff;
+    cursor: pointer;
+}

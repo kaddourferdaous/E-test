@@ -17,7 +17,14 @@ import { VideoListComponent } from './video-list/video-list.component';
 import { VideoDetailComponent } from './video-detail/video-detail.component';
 import { SupportListComponent } from './support-list/support-list.component';
 import { ModelDetailComponent } from './model-detail/model-detail.component';
-
+import { ContactComponent } from './contact/contact.component';
+import { CandidatesComponent } from './candidates/candidates.component';
+import { FeedbacksComponent } from './feedbacks/feedbacks.component';
+import { SurveysComponent } from './surveys/surveys.component';
+import { PratiqueFormComponent } from './pratique-form/pratique-form.component';
+import { TheoriqueFormComponent } from './theorique-form/theorique-form.component';
+import { CandidatsComponent } from './candidats/candidats.component';
+import { TrainerGuard } from './trainer.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/entryPage', pathMatch: 'full' },
@@ -26,15 +33,23 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   {path:'trainerSignUp',component :TrainerSignUpComponent},
   {path:'trainerLogin',component:TrainerLoginComponent},
-  {path:'dashboard',component:DashboardComponent},
+  { path: 'dashboard', component: DashboardComponent, canActivate: [TrainerGuard] },
   {path:'category',component:CategoryComponent},
   { path: 'videoList', component: VideoListComponent },
   { path: 'video/:filename', component: VideoDetailComponent },
   {path:'supp',component:SupportListComponent},
   {path:'test',component:TestComponent},
   {path:'supports',component:SupportsComponent},
+  {path:'contact',component:ContactComponent},
   { path: 'supports/view', component: SupportListComponent },
   { path: 'model-detail/:modelName', component: ModelDetailComponent },
+  {path:'candidates',component:CandidatesComponent},
+  {path:'feedbacks',component:FeedbacksComponent},
+  {path:'surveys',component:SurveysComponent},
+  {path:'pratiqueForm',component:PratiqueFormComponent},
+  {path:'theoicForm',component:TheoriqueFormComponent},
+  {path:'candidats',component:CandidatsComponent},
+  
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },  // Protection de la route
 ];
 

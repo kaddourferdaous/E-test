@@ -1,0 +1,28 @@
+<div class="container">
+
+    
+  
+    <hr>
+  
+    <h3>Feedbacks</h3>
+    <div class="contact-list">
+      <div *ngFor="let contact of contacts; let i = index" class="contact-item">
+        <p><strong>Name:</strong> {{ contact.name }}</p>
+        <p><strong>Email:</strong> {{ contact.email }}</p>
+        <p><strong>Subject:</strong> {{ contact.subject }}</p>
+        <p><strong>Message:</strong> {{ contact.message }}</p>
+        
+        <div class="contact-actions">
+          <button class="reply" (click)="toggleReplyInput(i)">Reply</button>
+          <button class="delete" (click)="deleteMessage(i)">Delete</button>
+        </div>
+  
+        <!-- Afficher le champ de saisie de réponse -->
+        <div *ngIf="contact.isReplying">
+          <textarea [(ngModel)]="contact.reply" class="form-control" placeholder="Type your reply here..." rows="4"></textarea>
+          <button class="btn btn-success" (click)="sendReply(i)">Send Reply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

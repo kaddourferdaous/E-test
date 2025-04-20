@@ -4,7 +4,10 @@
   padding: 20px;
   width: 100%;
 }
-
+.btn i {
+  margin-right: 8px; /* Ajoute un espacement entre l'icône et le texte */
+  font-size: 1.2rem; /* Augmente la taille de l'icône */
+}
 h2 {
   font-size: 22px; /* Adjust the font size */
   font-weight: bold; /* Make the font bold */
@@ -292,33 +295,9 @@ button:hover {
 .close:hover {
   color: #000;
 }
-/* Conteneur principal */
-.questions-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #FEEEB1, #F3E4C6);
-  padding: 40px;
-  border-radius: 20px;
-  margin: 0;
-  width: 100%;
-  height: 100vh; /* S'assure que la hauteur occupe toute la page */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Ombre douce */
-  gap: 20px; /* Espacement entre les questions */
-}
 
 /* Élément de question */
-.question-item {
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-  margin: 20px 0; /* Espacement entre chaque question */
-  width: 90%;
-  border-left: 5px solid #82c1d8; /* Bordure colorée à gauche */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+
 
 /* Effet de survol pour chaque question */
 .question-item:hover {
@@ -330,7 +309,7 @@ button:hover {
 /* Texte de question */
 .question-item label {
   display: block;
-  font-size: 1.4em;
+  font-size: 1em;
   font-weight: bold;
   margin-bottom: 15px;
   color: #333;
@@ -424,16 +403,7 @@ button:hover {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  .question-item {
-    width: 95%;
-    margin-bottom: 15px;
-  }
 
-  .questions-container {
-    padding: 20px;
-  }
-}
 /* From Uiverse.io by xopc333 */ 
 .button {
   display: block;
@@ -509,4 +479,202 @@ button:hover {
 }
 input[type="radio"] {
   display: none;  /* Masque complètement le cercle du radio */
+}
+body[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+/* Assurez-vous que les inputs radio sont cliquables */
+.form-check-input {
+  cursor: pointer;
+  opacity: 1 !important;
+  position: static !important;
+  margin-right: 5px;
+}
+
+/* Style pour les labels */
+.form-check-label {
+  cursor: pointer;
+  user-select: none;
+}
+.selected-option {
+  background-color: #4CAF50;  /* Exemple de fond vert pour les options sélectionnées */
+  color: white;
+}
+.correct-answer {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.incorrect-answer {
+  color: #dc3545;
+  text-decoration: line-through;
+}
+
+.selected-answer {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.correct-icon {
+  color: #28a745;
+  margin-right: 5px;
+}
+
+.incorrect-icon {
+  color: #dc3545;
+  margin-right: 5px;
+}
+
+.form-check-label {
+  padding-left: 5px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+
+
+
+
+.form-check-input {
+  cursor: pointer;
+}
+
+.form-check-label {
+  cursor: pointer;
+}
+
+.progress {
+  height: 25px;
+  border-radius: 12px;
+}
+
+.progress-bar {
+  background-color: #4e73df;
+  font-weight: 500;
+}
+
+.btn {
+  min-width: 120px;
+}
+
+.bi {
+  font-size: 1.1rem;
+}
+.selected-option.incorrect {
+  background-color: #f44336;  /* Exemple de fond rouge pour les mauvaises réponses */
+}
+/* Conteneur principal des questions avec largeur fixe étendue */
+/* Conteneur principal des questions */
+.questions-container {
+  width: 900px;
+  margin: 40px auto;
+  padding: 40px;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  min-height: 650px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Élément de question */
+.question-item {
+  background: #ffffff;
+  border: none;
+  padding: 25px;
+  margin-bottom: 25px;
+  height: 420px;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.question-item:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Texte de la question */
+.question-text {
+  color: #2d3436;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  word-break: break-word;
+}
+
+/* Liste des options */
+.options-list {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* Élément d'option stylé */
+.option-item {
+  cursor: pointer;
+  border: 2px solid #e0e0e0;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: #fdfdfd;
+  font-size: 1rem;
+  color: #333;
+  transition: all 0.25s ease-in-out;
+  position: relative;
+}
+
+.option-item:hover {
+  background-color: #f1faff;
+  border-color: #86b7fe;
+  transform: translateY(-2px);
+}
+
+.selected-option {
+  background-color: #d6eaff;
+  border-color: #3399ff;
+}
+
+.correct-option {
+  background-color: #d4edda !important;
+  border-color: #28a745 !important;
+  color: #155724;
+  font-weight: bold;
+}
+
+.incorrect-option {
+  background-color: #f8d7da !important;
+  border-color: #dc3545 !important;
+  color: #721c24;
+  font-weight: bold;
+}
+
+/* Scrollbar stylée */
+.options-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.options-list::-webkit-scrollbar-track {
+  background: #ececec;
+  border-radius: 6px;
+}
+
+.options-list::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 6px;
+}
+
+.options-list::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }

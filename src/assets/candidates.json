@@ -1,0 +1,114 @@
+[
+    {
+      "id": 1,
+      "personalInfo": {
+        "fullName": "Chraibi Mehdi",
+        "cin": "UV890123",
+        "gender": "Male",
+        "dateOfBirth": "17/05/1991",
+        "phone": "+212-6-12345678",
+        "email": "mehdi.ch@example.com",
+        "educationLevel": "Bac+4",
+        "cityOfOrigin": "El Jadida"
+      },
+      "dexterityTest": {
+        "metrics": [
+          { "name": "Speed", "score": 9, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Accuracy", "score": 9, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Concentration", "score": 9, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Organization", "score": 10, "maxScore": 10, "performance": "★★★★★" }
+        ],
+        "totalScore": 72,
+        "maxTotalScore": 90,
+        "totalPerformance": "★★★★★",
+        "finalStatus": "Passed"
+      },
+      "logicTest": {
+        "categories": [
+          { "name": "Letters/Words/Numbers 1", "score": 5, "maxScore": 10, "performance": "★★★☆☆" },
+          { "name": "Letters/Words/Numbers 2", "score": 5, "maxScore": 10, "performance": "★★★☆☆" },
+          { "name": "Dominos/Cards", "score": 15, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Mathematics", "score": 1, "maxScore": 10, "performance": "★☆☆☆☆" },
+          { "name": "Observation", "score": 5, "maxScore": 10, "performance": "★★★☆☆" },
+          { "name": "Logic Score", "score": 9, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Effort Score", "score": 8, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Memory Score", "score": 8, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Concentration Score", "score": 8, "maxScore": 10, "performance": "★★★★★" }
+        ],
+        "totalScore": 55,
+        "maxTotalScore": 90,
+        "totalPerformance": "★★★★☆"
+      },
+      "memoryTest": {
+        "categories": [
+          { "name": "Piano Level 1", "score": 500, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Piano Level 2", "score": 200, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Piano Level 3", "score": 1, "maxScore": 10, "performance": "★☆☆☆☆" },
+          { "name": "Memory Game", "score": 17, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Speed Score", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Memory Score", "score": 8, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Concentration", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Coordination", "score": 7, "maxScore": 10, "performance": "★★★★☆" }
+        ],
+        "totalScore": 89,
+        "maxTotalScore": 90,
+        "totalPerformance": "★★★★★"
+      }
+    },
+    {
+      "id": 2,
+      "personalInfo": {
+        "fullName": "El Amrani Youssef",
+        "cin": "CN123456",
+        "gender": "Male",
+        "dateOfBirth": "10/02/2004",
+        "phone": "0623568189",
+        "email": "youssef.elamrani@example.com",
+        "educationLevel": "Bac",
+        "cityOfOrigin": "Tanger"
+      },
+      "dexterityTest": {
+        "metrics": [
+          { "name": "Speed", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Accuracy", "score": 8, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Concentration", "score": 7, "maxScore": 10, "performance": "★★★★☆" },
+          { "name": "Organization", "score": 7, "maxScore": 10, "performance": "★★★★☆" }
+        ],
+        "totalScore": 72,
+        "maxTotalScore": 90,
+        "totalPerformance": "★★★★★",
+        "finalStatus": "Passed"
+      },
+      "logicTest": {
+        "categories": [
+          { "name": "Letters/Words/Numbers 1", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Letters/Words/Numbers 2", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Dominos/Cards", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Mathematics", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Observation", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Logic Score", "score": 8, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Effort Score", "score": 6, "maxScore": 10, "performance": "★★★★☆" },
+          { "name": "Memory Score", "score": 8, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Concentration Score", "score": 5, "maxScore": 10, "performance": "★★★☆☆" }
+        ],
+        "totalScore": 77,
+        "maxTotalScore": 90,
+        "totalPerformance": "★★★★★"
+      },
+      "memoryTest": {
+        "categories": [
+          { "name": "Piano Level 1", "score": 600, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Piano Level 2", "score": 400, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Piano Level 3", "score": 200, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Memory Game", "score": 20, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Speed Score", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Memory Score", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Concentration", "score": 10, "maxScore": 10, "performance": "★★★★★" },
+          { "name": "Coordination", "score": 8, "maxScore": 10, "performance": "★★★★★" }
+        ],
+        "totalScore": 99,
+        "maxTotalScore": 90,
+        "totalPerformance": "★★★★★"
+      }
+    }
+  ]

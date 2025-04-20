@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslationService } from '../translation.service';
 
 @Component({
   selector: 'app-entry-page',
@@ -6,12 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./entry-page.component.css']
 })
 export class EntryPageComponent {
-showModal: any;
-closeModal() {
-throw new Error('Method not implemented.');
-}
-loginAs(arg0: string) {
-throw new Error('Method not implemented.');
-}
+  selectedLang = 'ar';
+  translatedText = '';
 
+  constructor(private translationService: TranslationService) {}
+
+  translate() {
+    this.translationService
+      .translateText('Login', this.selectedLang)
+      .subscribe(res => {
+        this.translatedText = res.translations.translation;
+      });
+  }
 }

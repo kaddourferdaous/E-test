@@ -37,21 +37,35 @@
                           <label>Matricule</label>
                           <input type="text" id="matricule" placeholder="Enter your Matricule" formControlName="matricule" />
                           <div *ngIf="loginForm.controls['matricule'].invalid && loginForm.controls['matricule'].touched" class="alert alert-danger">
-                            Un matricule valide est requis
+                           A valid Matricule is Required
                           </div>
                         </div>
                       
                         <!-- Mot de passe -->
                         <div class="form-element">
                           <div class="d-flex justify-content-between">
+                           
                             <label for="password">Password</label>
-                            <a class="text-primary fs-6">Forget Password</a>
+                            <button type="button" class="password-icon btn btn-link" (click)="togglePasswordVisibility()">
+                              <i class="fa" [class.fa-eye]="!passwordVisible" [class.fa-eye-slash]="passwordVisible"></i>
+                            </button>
+                        
                           </div>
-                          <input type="password" id="password" placeholder="Type here..." formControlName="password" />
+                          <div class="password-wrapper">
+                            <input 
+                              [type]="passwordVisible ? 'text' : 'password'" 
+                              id="password" 
+                              placeholder="Type here..." 
+                              formControlName="password"  />
+                          
+                            <!-- Icône pour afficher/masquer le mot de passe -->
+                         
+                          </div>
                           <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="alert alert-danger">
                             Le mot de passe doit contenir au moins 6 caractères.
                           </div>
                         </div>
+                        
                       
                         <!-- Message d'erreur global -->
                         <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>

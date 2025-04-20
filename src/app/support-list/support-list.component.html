@@ -1,40 +1,192 @@
-<div class="container">
-    <div *ngFor="let day of objectKeys(groupedMetadata)">
-      <h3>Jour {{ day }}</h3>
-  
-      <!-- Vérifie si des supports existent pour ce jour -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modules avec Espacement</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Styles personnalisés -->
+  <style>
+    /* Styles généraux */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      margin: 20px; /* Espace autour du conteneur principal */
+    }
+
+    .day-container {
+      margin-bottom: 40px; /* Espace entre les jours */
+    }
+
+    .day-header {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .module-container {
+      display: flex;
+      gap: 20px; /* Espace horizontal entre l'image et le contenu */
+      margin-bottom: 30px; /* Espace vertical entre les modules */
+      padding: 15px; /* Optionnel : Ajoute un peu de remplissage autour du module */
+      background-color: #f9f9f9; /* Fond clair pour chaque module */
+      border-radius: 8px; /* Coins arrondis pour chaque module */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère pour améliorer la lisibilité */
+      cursor: pointer; /* Indique que le module est cliquable */
+    }
+
+    .module-image {
+      flex: 1; /* Prend autant d'espace que possible */
+    }
+
+    .support-image-large {
+      width: 100%;
+      max-height: 200px; /* Hauteur maximale pour toutes les images */
+      object-fit: cover; /* Assure que l'image s'adapte sans déformation */
+      border-radius: 8px;
+    }
+
+    .module-content {
+      flex: 2; /* Prend deux fois plus d'espace que l'image */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .module-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .module-time {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #6c757d; /* Couleur secondaire */
+    }
+
+    .time-icon {
+      font-size: 1.2rem;
+    }
+
+    .module-expectations {
+      margin-top: 10px;
+    }
+
+    .module-expectations ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .module-expectations li {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 5px;
+    }
+
+    .bi-check-circle {
+      color: #28a745; /* Couleur verte pour les icônes de validation */
+    }
+
+    /* Style pour les boutons */
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Style pour les supports (images, PDF, etc.) */
+    .support-item {
+      margin-bottom: 10px;
+    }
+
+    .support-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* Effet de survol pour indiquer que le module est cliquable */
+    .module-container:hover {
+      background-color: #f2f2f2; /* Changement de couleur au survol */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div *ngFor="let day of objectKeys(groupedMetadata)" class="day-container">
+      <h2 class="day-header">Day {{ day }}</h2>
+
+      <div class="day-expectations">
+        <h4>Expectations:</h4>
+        <ul>
+          <li *ngFor="let expectation of getDayExpectations(day)">
+            <i class="bi bi-check-circle"></i> {{ expectation }}
+          </li>
+        </ul>
+      </div>
+
       <div *ngIf="groupedMetadata[day] && objectKeys(groupedMetadata[day]).length > 0">
-        <div class="card-container">
-          <!-- Parcours des modèles pour chaque jour -->
-          <div *ngFor="let modelName of objectKeys(groupedMetadata[day])" 
-               class="card" 
-               [class.expanded]="expandedModel === modelName">
-            
-               <h2 (click)="toggleModel(modelName)" class="card-title">
-                {{ modelName }}
-              </h2>
-  
-            <!-- Contenu du modèle (affiché uniquement si le modèle est agrandi) -->
-            <div *ngIf="expandedModel === modelName">
-              <!-- Parcours des supports pour ce modèle -->
-              <div *ngFor="let support of groupedMetadata[day][modelName]">
-                <div>
-                  <h5>{{ support.filename }}</h5>
-                  <p class="card-description">{{ support.expectation }}</p>
-  
-                  <!-- Affichage conditionnel en fonction du type de fichier -->
-                  <div *ngIf="support.filename?.endsWith('.pdf')">
-                    <button (click)="viewSupport(support)">Voir le PDF</button>
-                  </div>
-  
-                  <div *ngIf="support.filename?.endsWith('.jpg') || support.filename?.endsWith('.png')">
-                    <img [src]="support.url" alt="{{ support.filename }}" width="100%" />
-                    <button (click)="viewSupport(support)">Voir l'image</button>
-                  </div>
-  
-                  <div *ngIf="support.filename?.endsWith('.mp4') || support.filename?.endsWith('.mov')">
-                    <button (click)="viewSupport(support)">Voir la vidéo</button>
-                  </div>
+        <div *ngFor="let modelName of objectKeys(groupedMetadata[day])" class="module-container" (click)="toggleModel(modelName)">
+          <div class="module-image">
+            <img [src]="modelImages[modelName]" alt="{{ modelName }} image" class="support-image-large" />
+          </div>
+
+          <div class="module-content">
+            <div>
+              <h3 class="module-title">{{ modelName }}</h3>
+              <div class="module-time">
+                <i class="bi bi-clock time-icon"></i>
+                {{ modelInfos[modelName]?.time }}
+              </div>
+            </div>
+
+            <div *ngIf="modelInfos[modelName]" class="module-info">
+              <div class="module-expectations">
+                <p><strong>Expectations:</strong></p>
+                <ul>
+                  <li *ngFor="let expectation of modelInfos[modelName].expectations">
+                    <i class="bi bi-check-circle"></i> {{ expectation }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div *ngIf="expandedModel === modelName" class="card-content">
+              <div *ngFor="let support of groupedMetadata[day][modelName]" class="support-item">
+                <h5>{{ support.filename }}</h5>
+                <p class="card-description">{{ support.expectation }}</p>
+
+                <div *ngIf="support.filename?.endsWith('.pdf')">
+                  <button (click)="viewSupport(support)">Voir le PDF</button>
+                </div>
+
+                <div *ngIf="support.filename?.endsWith('.jpg') || support.filename?.endsWith('.png')">
+                  <img [src]="support.url" alt="{{ support.filename }}" class="support-image" />
+                  <button (click)="viewSupport(support)">Voir l'image</button>
+                </div>
+
+                <div *ngIf="support.filename?.endsWith('.mp4') || support.filename?.endsWith('.mov')">
+                  <button (click)="viewSupport(support)">Voir la vidéo</button>
                 </div>
               </div>
             </div>
@@ -42,9 +194,6 @@
         </div>
       </div>
     </div>
-    </div>
-  
-  
-
-
-  
+  </div>
+</body>
+</html>

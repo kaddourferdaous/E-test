@@ -1,0 +1,152 @@
+/* Styles généraux */
+.container {
+    padding: 20px 0;
+  }
+  
+  h1 {
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  /* Style des cartes */
+  .candidate-card {
+    transition: transform 0.2s ease;
+    height: 100%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .candidate-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  }
+  
+  .card-header {
+    background-color: #4299e1;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .card-footer {
+    background-color: #f8f9fa;
+    font-weight: bold;
+  }
+  
+  /* Sections */
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 1.2rem;
+    color: #2c5282;
+    border-bottom: 2px solid #4299e1;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+  }
+  
+  /* Grille d'informations personnelles */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+  
+  .info-item {
+    margin-bottom: 5px;
+  }
+  
+  .label {
+    font-weight: bold;
+    color: #4a5568;
+  }
+  
+  /* Tableaux */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th {
+    background-color: #edf2f7;
+    font-weight: bold;
+  }
+  
+  .total-row {
+    font-weight: bold;
+    background-color: #e6f0ff !important;
+  }
+  
+  .stars {
+    color: #f6ad55;
+  }
+  
+  /* Badge de statut */
+  .status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: white;
+    background-color: #e53e3e;
+  }
+  
+  .status-passed {
+    background-color: #48bb78;
+  }
+  
+  /* Contrôles */
+  .controls-container {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .search-container {
+    max-width: 500px;
+    margin: 0 auto 20px;
+  }
+  
+  /* Graphique de comparaison */
+  .comparison-container {
+    margin-bottom: 30px;
+  }
+  
+  .chart-container {
+    height: 400px;
+    position: relative;
+  }
+  
+  /* Animation de transition pour les onglets */
+  .tab-pane {
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Styles pour les écrans mobiles */
+  @media (max-width: 768px) {
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .chart-container {
+      height: 300px;
+    }
+    
+    .controls-container .row > div {
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* Score global */
+  .overall-score {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c5282;
+  }

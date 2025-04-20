@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth.service';  // Assurez-vous que le chemin est correct
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs';
-import { Route, Router } from '@angular/router';
-
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -13,21 +13,55 @@ export class HomeComponent implements OnInit {
   candidateName: string = '';
   candidateEmail: string = '';
   isAuthenticated: boolean = false;
+  searchQuery: string = '';
+  isDark = false;
 
-  constructor(private authService: AuthService,private router:Router) {}
+  toggleTheme() {
+    this.isDark = !this.isDark;
+    const body = document.body;
+
+    if (this.isDark) {
+      body.classList.add('dark');
+    } else {
+      body.classList.remove('dark');
+    }
+  }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private translate: TranslateService,
+    private render: Renderer2
+  ) {}
 
   ngOnInit(): void {
-    this.checkAuthentication();
+    // Check authentication first and redirect if not authenticated
+    if (!this.authService.checkAuthentication()) {
+      console.log('L\'utilisateur n\'est pas authentifié - redirection vers login');
+      this.router.navigate(['/login']);
+      return; // Stop execution if not authenticated
+    }
+    
+    // Only proceed if authenticated
+    this.isAuthenticated = true;
+    console.log('L\'utilisateur est authentifié');
     this.loadCandidateInfo();
   }
+  
+  // Rest of your component code...
+  rechercher() {
+    if (!this.searchQuery) return;
+    // Rest of the method...
+  }
 
-  /**
-   * Vérifie si l'utilisateur est authentifié
-   */
+  resetSearch() {
+    // Rest of the method...
+  }
+
   checkAuthentication(): void {
     this.isAuthenticated = this.authService.checkAuthentication();
     if (!this.isAuthenticated) {
       console.log('L\'utilisateur n\'est pas authentifié');
+      this.router.navigate(['/login']); // Add redirect here
     } else {
       console.log('L\'utilisateur est authentifié');
     }

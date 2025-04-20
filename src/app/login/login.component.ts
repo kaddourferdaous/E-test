@@ -11,6 +11,7 @@ import { AuthService } from '../auth.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
+  passwordVisible: boolean =false;
 
   constructor(
     private fb: FormBuilder,
@@ -60,5 +61,7 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-  
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;  // Bascule entre visibilité et invisibilité
+  }
 }
