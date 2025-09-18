@@ -1,195 +1,743 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Admin Dashboard</title>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <!-- Fonts et icônes -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  
+  <style>
+    /* Styles pour l'organisation des graphiques 2 par 2 */
+    .charts-container {
+      margin-top: 20px;
+    }
+    
+    .charts-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+      color: #333;
+    }
+    
+   .charts-row {
+  display: flex;              /* flexbox au lieu de grid */
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
 
-    <!-- Montserrat Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-<!-- Material Icons Outlined -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+.charts-row .chart-card {
+  flex: 1;                    /* prend toute la largeur dispo */
+  margin: 0;                  /* enlève les marges */
+  border-radius: 12px;
+}
 
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+.charts-row .chart-card + .chart-card {
+  margin-left: 20px;          /* petit espace entre 2 cartes (tu peux mettre 0 si tu veux collé à 100%) */
+}
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="dashboard.component.css">
-  </head>
-  <body>
-    <div class="grid-container">
+/* pour les graphiques supplémentaires */
+.additional-charts-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
 
-      <!-- Header -->
-      <header class="header">
-        <div class="menu-icon" onclick="openSidebar()">
-          <span class="material-icons-outlined">menu</span>
-        </div>
-        <div class="header-left">
-          <span class="material-icons-outlined" >search</span>
-        </div>
-        <div class="header-right">
-          <span class="material-icons-outlined">notifications</span>
-          <span class="material-icons-outlined">email</span>
-          <span class="material-icons-outlined">account_circle</span>
-        </div>
-      </header>
-      <!-- End Header -->
+.additional-charts-grid .chart-container {
+  flex: 1;
+  margin: 0;
+}
 
-      <!-- Sidebar -->
-      <aside id="sidebar">
-        <div class="sidebar-title">
-          <div class="sidebar-brand">
-            <span class="material-icons-outlined">inventory</span>Theoritical Test
-          </div>
-          <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
-        </div>
+.additional-charts-grid .chart-container + .chart-container {
+  margin-left: 20px;
+}
+    
+    .chart-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .chart-header {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .chart-header h3 {
+      margin: 0 0 5px 0;
+      color: #333;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .chart-content {
+      position: relative;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .chart-content canvas {
+      max-width: 100%;
+      max-height: 100%;
+    }
 
-        <ul class="sidebar-list">
-          <li class="sidebar-list-item">
-            <a href="#" target="_blank">
-              <span class="material-icons-outlined">dashboard</span> Dashboard
-            </a>
-          </li>
-          <li class="sidebar-list-item">
-            <a href="fileList" class="manage-files">
-              <i class="fa fa-folder"></i>
-              <span>Manage Accounts</span>
-            </a>
-          </li>
-          
-          <li class="sidebar-list-item">
-            <a [routerLink]="['/candidates']">
-              <i class="fa fa-users"></i>
-              <span>Candidates</span>
-            </a>
-          </li>
-          
-          <li class="sidebar-list-item">
-            <a  [routerLink]="['/feedbacks']">
-              <i class="fa fa-comment-dots"></i>
-              <span>Feedbacks</span>
-            </a>
-          </li>
-          
-          <li class="sidebar-list-item">
-            <a href="report">
-              <i class="material-icons-outlined">poll</i> Reports
-            </a>
-          </li>
-          <li class="sidebar-list-item">
-            <a href="#" target="_blank">
-              <span class="material-icons-outlined">settings</span> Settings
-            </a>
-          </li>
-          <li class="sidebar-list-item">
-            <a [routerLink]="['/surveys']"target="_blank">
-              <span class="material-icons-outlined">assignment</span>Surveys</a>
-          </li>
-          <li class="sidebar-list-item">
-            <a href="login" target="_blank">
-              <span class="material-icons-outlined" (click)="logout()">logout</span>Sign Out
-            </a>
-          </li>
-        </ul>
-      </aside>
-      <!-- End Sidebar -->
+    /* Organisation des graphiques supplémentaires */
+    .additional-charts {
+      margin-top: 40px;
+    }
+    
+    .additional-charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      margin-bottom: 25px;
+    }
+    
+    .chart-container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e0e0e0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .chart-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
 
-      <!-- Main -->
-      <main class="main-container">
-        <div class="main-title">
-          <p class="font-weight-bold">DASHBOARD</p>
-        </div>
+    .chart-container .chart-header {
+      margin-bottom: 15px;
+      text-align: center;
+    }
 
-        <div class="main-cards">
+    .chart-container .chart-header h3 {
+      margin: 0 0 5px 0;
+      color: #333;
+      font-size: 18px;
+      font-weight: 600;
+    }
 
-          <div class="card">
-              <div class="card-inner">
-                  <p class="text-primary" style="font-size: 26px;">Closed Exams</p>
-                  <span class="material-icons-outlined text-blue" style="font-size: 40px;">task</span>
-              </div>
-              <span class="text-primary font-weight-bold" style="font-size: 30px;"></span>
-          </div>
+    .chart-container .chart-header p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .chart-container .chart-content {
+      position: relative;
+      height: 300px;
+    }
+
+    .chart-container .chart-content canvas {
+      max-width: 100%;
+      height: 100% !important;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .charts-row,
+      .additional-charts-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
       
-          <div class="card">
-              <div class="card-inner">
-                  <p class="text-primary" style="font-size: 26px;">In Progress Exams</p>
-                  <div class="icon-group">
-                      <span class="material-icons-outlined text-blue" style="font-size: 40px;">folder</span>
-                      <span class="material-icons-outlined text-blue" style="font-size: 40px;">hourglass_top</span>
-                  </div>
-              </div>
-              <span class="text-primary font-weight-bold" style="font-size: 30px;"></span>
-          </div>
+      .chart-card,
+      .chart-container {
+        padding: 15px;
+      }
       
-          <div class="card p-3">
-              <div class="card-inner d-flex align-items-center mb-2">
-                  <p class="text-primary mb-0 me-2" style="font-size: 26px;">Highest Score</p>
-                  <span class="material-icons-outlined text-blue" style="font-size: 38px;">emoji_events</span>
-              </div>
-          </div>
+      .chart-content {
+        height: 250px;
+      }
       
-          <div class="card">
-              <div class="card-inner">
-                  <p class="text-primary" style="font-size: 26px;">Total Candidates</p>
-                  <span class="material-icons-outlined text-blue" style="font-size: 56px;">badge</span>
-              </div>
-              <span class="text-primary font-weight-bold" style="font-size: 30px;">{{ totalCandidates }}</span>
-          </div>
+      .chart-header h3 {
+        font-size: 16px;
+      }
       
+      .chart-header p {
+        font-size: 12px;
+      }
+    }
+
+    /* Styles pour les tableaux et autres éléments existants */
+    .charts-card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 25px 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e0e0e0;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .chart-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+
+    .candidate-count {
+      font-size: 14px;
+      color: #666;
+      background: #f8f9fa;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .candidates-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .candidates-table th,
+    .candidates-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .candidates-table th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .no-data-row td {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      padding: 30px;
+    }
+
+    .candidate-row:hover {
+      background-color: #f8f9fa;
+    }
+
+    .score-cell {
+      text-align: center;
+    }
+
+    .score-value {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-badge.accepted {
+      background-color: rgba(46, 204, 113, 0.2);
+      color: #27ae60;
+    }
+
+    .status-badge.success {
+      background-color: rgba(46, 204, 113, 0.2);
+      color: #27ae60;
+    }
+
+    .status-badge.failed {
+      background-color: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+    }
+
+    .summary-stats {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    /* Styles pour les graphiques spécifiques aux candidats */
+    .candidate-specific-charts {
+      margin-top: 30px;
+      padding: 25px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border: 2px dashed #dee2e6;
+    }
+
+    .charts-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .charts-header h3 {
+      color: #333;
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .close-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: #c82333;
+    }
+
+    .chart-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .chart-btn:hover {
+      background: #0056b3;
+    }
+
+    .chart-btn i {
+      font-size: 12px;
+    }
+
+    /* Styles généraux pour maintenir la cohérence */
+    .loading, .error {
+      text-align: center;
+      padding: 40px;
+      font-size: 16px;
+    }
+
+    .error {
+      color: #dc3545;
+      background: rgba(220, 53, 69, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(220, 53, 69, 0.3);
+    }
+
+    .failed-candidate {
+      background-color: rgba(220, 53, 69, 0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th,
+    table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    table th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="menu-icon" (click)="toggleSidebar()">
+        <span class="material-icons-outlined">menu</span>
       </div>
-      
-      
-      
+      <div class="header-left">
+        <span class="material-icons-outlined">search</span>
+      </div>
+      <div class="header-right">
+        <span class="material-icons-outlined">notifications</span>
+        <span class="material-icons-outlined">email</span>
+        <span class="material-icons-outlined">account_circle</span>
+      </div>
+    </header>
+    <!-- End Header -->
 
-        
-          <div class="charts">
-            <div class="charts-card">
-              <p class="chart-title">Top 5 Exams</p>
-              <div id="bar-chart">
-                <table>
-                  <tr>
-                    <th>date</th>
-                    <th>Candidate Name</th>
-                    <th>Score</th>
-                    <th>Departement</th>
-                  </tr>
-                 
-                </table>
-              </div>
-            </div>
-          
-          
-         
-          
-
-          <div class="charts-card">
-            <p class="chart-title">Progress Status by Year</p>
-            <div id="bar-chart">
-              <table>
-                <tr>
-                  <th>date </th>
-                  <th>Candidate Name</th>
-                  <th>Score</th>
-      
-                </tr>
-           
-              </table>
-
+    <!-- Sidebar -->
+    <aside id="sidebar" [ngClass]="{'sidebar-open': isSidebarOpen}">
+      <div class="sidebar-title">
+        <div class="sidebar-brand">
+          <span class="material-icons-outlined">inventory</span> Theoritical Test
         </div>
+        <span class="material-icons-outlined" (click)="toggleSidebar()">close</span>
+      </div>
+      <ul class="sidebar-list">
+        <li class="sidebar-list-item">
+          <a routerLink="/dashboard">
+            <span class="material-icons-outlined">dashboard</span> Dashboard
+          </a>
+        </li>
+        <li class="sidebar-list-item">
+          <a routerLink="/fileList">
+            <i class="fas fa-folder"></i> Manage Accounts
+          </a>
+        </li>
+        <li class="sidebar-list-item">
+          <a routerLink="/candidates">
+            <i class="fas fa-users"></i> Candidates
+          </a>
+        </li>
+        <li class="sidebar-list-item">
+          <a routerLink="/feedbacks">
+            <i class="fas fa-comment-dots"></i> Feedbacks
+          </a>
+        </li>
+        <li class="sidebar-list-item">
+          <a routerLink="/report">
+            <i class="material-icons-outlined">poll</i> Reports
+          </a>
+        </li>
+        <li class="sidebar-list-item">
+          <a routerLink="/settings">
+            <span class="material-icons-outlined">settings</span> Settings
+          </a>
+        </li>
+        <li class="sidebar-list-item">
+          <a routerLink="/surveyResponse">
+            <span class="material-icons-outlined">assignment</span> Surveys
+          </a>
+        </li>
+        <li class="sidebar-list-item">
+          <a (click)="logout()" style="cursor: pointer;">
+            <span class="material-icons-outlined">logout</span> Sign Out
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <!-- End Sidebar -->
+
+    <!-- Main -->
+    <main class="main-container">
+      <div class="main-title">
+        <h1 class="font-weight-bold">DASHBOARD</h1>
+      </div>
+
+      <!-- État de chargement ou erreur -->
+      <div *ngIf="isLoading" class="loading">Chargement des données...</div>
+      <div *ngIf="error" class="error">{{ error }}</div>
+
+      <!-- Cartes de statistiques -->
+      <div class="main-cards" *ngIf="!isLoading && !error">
+        <div class="card">
+          <div class="card-inner">
+            <p class="text-primary">Examens terminés</p>
+            <span class="material-icons-outlined text-blue">task</span>
           </div>
+          <span class="text-primary font-weight-bold">{{ stats.closed_exams }}</span>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <p class="text-primary">Examens en cours</p>
+            <div class="icon-group">
+              <span class="material-icons-outlined text-blue">folder</span>
+              <span class="material-icons-outlined text-blue">hourglass_top</span>
+            </div>
+          </div>
+          <span class="text-primary font-weight-bold">{{ stats.in_progress_exams }}</span>
+        </div>
+        <div class="card">
+          <div class="card-inner d-flex align-items-center mb-2">
+            <div class="d-flex align-items-center">
+              <p class="text-primary me-2">Meilleur score</p>
+              <span class="material-icons-outlined text-blue">emoji_events</span>
+            </div>
+            <p class="stat-value ms-2">{{ formatPercentage(stats.highest_score.percentage) }}</p>
+          </div>
+          <div class="score-details mt-1">
+            <p class="candidate-name">{{ stats.highest_score.candidateName || 'N/A' }}</p>
+            <p class="score-fraction">{{ stats.highest_score.score }} / {{ stats.highest_score.totalPossible }}</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <p class="text-primary">Total des candidats</p>
+            <span class="material-icons-outlined text-blue">badge</span>
+          </div>
+          <span class="text-primary font-weight-bold">{{ totalCandidates }}</span>
+        </div>
+      </div>
+
+      <!-- Section des graphiques principaux -->
+      <div class="charts-container" *ngIf="!isLoading && !error">
+        <h2>Analyse graphique des performances</h2>
+        
+        <!-- Première rangée de graphiques -->
+        <div class="charts-row">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Scores moyens par test</h3>
+            </div>
+            <div class="chart-content">
+              <canvas #testScoresChart></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Statut des candidats</h3>
+            </div>
+            <div class="chart-content">
+              <canvas #candidatesStatusChart></canvas>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Deuxième rangée de graphiques -->
+        <div class="charts-row">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Progression des candidats</h3>
+            </div>
+            <div class="chart-content">
+              <canvas #testProgressionChart></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Taux de réussite par test</h3>
+            </div>
+            <div class="chart-content">
+              <canvas #departmentDistributionChart></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section des graphiques supplémentaires -->
+      <div class="additional-charts" *ngIf="!isLoading && !error">
+        <!-- Première rangée des graphiques supplémentaires -->
+        <div class="additional-charts-grid">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Score Distribution</h3>
+              <p>Distribution of trainee scores across different ranges</p>
+            </div>
+            <div class="chart-content">
+              <canvas #scoreDistributionChart></canvas>
+            </div>
           </div>
           
-      </main>
-      <!-- End Main -->
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Performance Trend</h3>
+              <p>Success rate evolution over time</p>
+            </div>
+            <div class="chart-content">
+              <canvas #performanceTrendChart></canvas>
+            </div>
+          </div>
+        </div>
 
-    </div>
+        <!-- Deuxième rangée des graphiques supplémentaires -->
+        <div class="additional-charts-grid">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Test Completion Rates</h3>
+              <p>Completion percentage for each test</p>
+            </div>
+            <div class="chart-content">
+              <canvas #completionRateChart></canvas>
+            </div>
+          </div>
+          
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Test Performance Comparison</h3>
+              <p>Average performance across all tests</p>
+            </div>
+            <div class="chart-content">
+              <canvas #testComparisonChart></canvas>
+            </div>
+          </div>
+        </div>
 
-    <!-- Scripts -->
-    <!-- ApexCharts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
-    <!-- Custom JS -->
-    <script src="js/scripts.js"></script>
-  </body>
+        <!-- Troisième rangée des graphiques supplémentaires -->
+        <div class="additional-charts-grid">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Monthly Progress Overview</h3>
+              <p>Monthly statistics of registered, passed, and failed trainees</p>
+            </div>
+            <div class="chart-content">
+              <canvas #monthlyProgressChart></canvas>
+            </div>
+          </div>
+          
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Top 10 Trainees Ranking</h3>
+              <p>Best performing trainees based on final test scores</p>
+            </div>
+            <div class="chart-content">
+              <canvas #candidateRankingChart></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quatrième rangée - graphique unique centré -->
+        <!-- <div class="additional-charts-grid">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Weekly Pass/Fail Trend</h3>
+              <p>Weekly comparison of passed vs failed trainees</p>
+            </div>
+            <div class="chart-content">
+              <canvas #passFailTrendChart></canvas>
+            </div>
+          </div>
+          <div class="chart-container" style="opacity: 0; pointer-events: none;">
+          </div>
+        </div> -->
+      </div>
+
+      <!-- Candidats acceptés -->
+      <div class="charts-card" *ngIf="!isLoading && !error">
+        <div class="card-header">
+          <h3 class="chart-title">Candidats acceptés (Seuil: {{ acceptanceThreshold }}%)</h3>
+          <span class="candidate-count">{{ acceptedCandidatesCount }} / {{ candidatesWithFinalTestCount }}</span>
+        </div>
+        
+        <div class="table-container">
+          <table class="candidates-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Nom du candidat</th>
+                <th>Score Final</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="acceptedCandidates.length === 0" class="no-data-row">
+                <td colspan="4" class="no-data">Aucun candidat accepté avec le seuil actuel</td>
+              </tr>
+              <tr *ngFor="let candidate of acceptedCandidates" class="candidate-row">
+                <td>{{ formatFinalTestDate(candidate) }}</td>
+                <td>{{ candidate.nom }}</td>
+                <td class="score-cell">
+                  <span class="score-value">
+                    {{ candidate.final_test_percentage !== undefined ? 
+                        (candidate.final_test_percentage | number:'1.1-1') + '%' :
+                        (candidate.final_test?.percentage !== undefined ? 
+                          (candidate.final_test_percentage | number:'1.1-1') + '%' : 
+                          (candidate.percentage !== undefined ? 
+                            (candidate.percentage | number:'1.1-1') + '%' : '----')
+                        )
+                    }}
+                  </span>
+                </td>
+                <td>
+                  <span class="status-badge accepted">✓ Accepté</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="summary-stats">
+          <div class="stat-item">
+            <span class="stat-label">Taux de réussite:</span>
+            <p><strong>Taux de réussite: {{ successRate }}%</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tableau des scores des tests -->
+      <div class="charts-card" *ngIf="!isLoading && !error">
+        <p class="chart-title">Scores des tests</p>
+        <div class="table-container">
+          <table>
+            <tr>
+              <th>Nom du candidat</th>
+              <th>Test 1 (%)</th>
+              <th>Test 2 (%)</th>
+              <th>Test final (%)</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+            <tr *ngIf="!candidates || candidates.length === 0">
+              <td colspan="6">Aucun candidat trouvé</td>
+            </tr>
+            <tr *ngFor="let candidate of candidates"
+                [ngClass]="{'failed-candidate': (candidate?.final_test?.percentage ?? candidate?.final_test_percentage ?? 0) < acceptanceThreshold}">
+              <td>{{ candidate.nom }}</td>
+              <td>{{ (candidate.test1_percentage !== undefined ? (candidate.test1_percentage | number:'1.1-1') + '%' :
+                     (candidate.test1?.percentage !== undefined ? (candidate.test1_percentage | number:'1.1-1') + '%' : '----')) }}</td>
+              <td>{{ (candidate.test2_percentage !== undefined ? (candidate.test2_percentage | number:'1.1-1') + '%' :
+                     (candidate.test2?.percentage !== undefined ? (candidate.test2_percentage | number:'1.1-1') + '%' : '----')) }}</td>
+              <td>{{ (candidate.final_test_percentage !== undefined ? (candidate.final_test_percentage | number:'1.1-1') + '%' :
+                     (candidate.final_test?.percentage !== undefined ? (candidate.final_test_percentage | number:'1.1-1') + '%' : '----')) }}</td>
+              <td>
+                <span *ngIf="(candidate?.final_test?.percentage ?? candidate?.final_test_percentage ?? 0) >= acceptanceThreshold"
+                      class="status-badge success">Accepté</span>
+                <span *ngIf="(candidate?.final_test?.percentage ?? candidate?.final_test_percentage ?? 0) < acceptanceThreshold"
+                      class="status-badge failed">Non accepté</span>
+              </td>
+              <td>
+                <button class="chart-btn" (click)="showCandidateCharts(candidate)">
+                  <i class="fas fa-chart-line"></i> Voir graphiques
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Graphiques spécifiques au candidat -->
+        <div *ngIf="selectedCandidate" class="candidate-specific-charts">
+          <div class="charts-header">
+            <h3>Graphiques pour {{ selectedCandidate.nom }}</h3>
+            <button class="close-btn" (click)="closeSpecificCharts()">Fermer</button>
+          </div>
+          <div class="charts-row">
+            <div class="chart-card">
+              <canvas #candidateTestScoresChart></canvas>
+            </div>
+            <div class="chart-card">
+              <canvas #candidateProgressChart></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- End Main -->
+  </div>
+</body>
 </html>

@@ -1,0 +1,120 @@
+<div class="candidate-response-container">
+    <!-- En-tête avec informations du candidat -->
+    <div class="response-header" *ngIf="candidateInfo">
+      <h2>Réponses de {{ candidateInfo.name }}</h2>
+      <p class="candidate-email">{{ candidateInfo.email }}</p>
+      <div class="test-type-badge" [ngClass]="testType">
+        {{ testType === 'jour1' ? 'Test Jour 1' : testType === 'jour2' ? 'Test Jour 2' : 'Test Final' }}
+      </div>
+    </div>
+  
+    <!-- Options de filtrage par type de test -->
+    <div class="test-type-filter">
+      <button [class.active]="testType === 'jour1'" (click)="changeTestType('jour1')">Jour 1</button>
+      <button [class.active]="testType === 'jour2'" (click)="changeTestType('jour2')">Jour 2</button>
+      <button [class.active]="testType === 'final'" (click)="changeTestType('final')">Test Final</button>
+      <button class="refresh-btn" (click)="refreshData()">
+        <i class="fas fa-sync-alt"></i> Rafraîchir
+      </button>
+    </div>
+  
+    <!-- Indicateur de chargement -->
+    <div class="loading-spinner" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Chargement des réponses...</p>
+    </div>
+  
+    <!-- Message d'erreur -->
+    <div class="error-message" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-triangle"></i>
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Synthèse pour les tests finaux -->
+    <div class="final-test-summary" *ngIf="testType === 'final' && candidateResponses.length > 0 && getAverageScore() !== null">
+      <h3>Synthèse du test final</h3>
+      <div class="score-card">
+     
+        <div class="score-details">
+          <p>Score moyen: <strong>{{ getAverageScore() | number:'1.0-0' }}%</strong></p>
+          <p>Tests complétés: {{ candidateResponses.length }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Liste des réponses -->
+    <div class="responses-list" *ngIf="candidateResponses.length > 0">
+      <div class="response-card" *ngFor="let response of candidateResponses; let i = index">
+        <!-- En-tête de la réponse -->
+        <div class="response-card-header">
+          <h3>{{ isFinalTest(response) ? 'Test Final' : response.test_type === 'jour1' ? 'Test Jour 1' : 'Test Jour 2' }}</h3>
+          <span class="response-date">{{ formatDate(response.timestamp || response.created_at || response.date) }}</span>
+        </div>
+  
+        <!-- Informations de score pour les tests finaux -->
+        <div class="score-info" *ngIf="isFinalTest(response)">
+          <div class="score-badge" [ngClass]="(response.percentage >= 70) ? 'good' : (response.percentage >= 50) ? 'average' : 'poor'">
+            {{ response.score || 0 }}/{{ response.total || 0 }} ({{ response.percentage || 0 }}%)
+          </div>
+        </div>
+  
+        <!-- Détails des questions/réponses -->
+        <div class="questions-container">
+          <h4>Détails des réponses</h4>
+          
+          <!-- Pour les tests jour1 et jour2 -->
+          <div class="question-item" *ngFor="let question of response.questions_details; let qi = index" 
+               [ngClass]="{'test-day': !isFinalTest(response)}">
+            
+            <div class="question-header">
+              <span class="question-number">Q{{ qi + 1 }}</span>
+              <span class="question-type">{{ question.question_type || 'Non spécifié' }}</span>
+            </div>
+  
+            <!-- Contenu spécifique aux tests jour1 et jour2 -->
+            <div class="question-content" *ngIf="!isFinalTest(response)">
+              <p class="question-id"><strong>ID:</strong> {{ question.question_id }}</p>
+              
+              <!-- Afficher les réponses -->
+              <div class="answers-container" *ngIf="question.answers">
+                <p><strong>Réponses:</strong></p>
+                <pre class="answers-code">{{ question.answers | json }}</pre>
+              </div>
+            </div>
+  
+            <!-- Contenu spécifique aux tests finaux -->
+            <div class="question-content" *ngIf="isFinalTest(response)">
+              <p class="question-text">{{ question.question_text || 'Question ' + question.question_id }}</p>
+              
+              <div class="question-score">
+                <span class="score-label">Score: </span>
+                <span class="score-value" 
+                      [ngClass]="(question.score/question.max_score) >= 0.7 ? 'good' : (question.score/question.max_score) >= 0.5 ? 'average' : 'poor'">
+                  {{ question.score || 0 }}/{{ question.max_score || 0 }}
+                </span>
+              </div>
+              
+              <!-- Feedbacks -->
+              <div class="feedback-list" *ngIf="question.feedback && question.feedback.length > 0">
+                <p><strong>Feedback:</strong></p>
+                <ul>
+                  <li *ngFor="let fb of question.feedback">{{ fb }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Message si aucune question détaillée n'est disponible -->
+          <div class="no-questions" *ngIf="!response.questions_details || response.questions_details.length === 0">
+            <p>Aucun détail de question disponible pour ce test.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Message si aucune réponse n'est trouvée -->
+    <div class="no-responses" *ngIf="candidateResponses.length === 0 && !loading && !errorMessage">
+      <i class="fas fa-search"></i>
+      <p>Aucune réponse trouvée pour ce candidat et ce type de test.</p>
+    </div>
+  </div>

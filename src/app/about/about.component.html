@@ -1,0 +1,115 @@
+  <header class="custom-header" id="header">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4 py-2">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://vectorseek.com/wp-content/uploads/2023/08/Yazaki-Logo-Vector.svg-.png" alt="Yazaki Logo" class="logo-img">
+            </a>
+
+        
+
+            <!-- Navigation -->
+            <nav class="nav justify-content-center flex-grow-1" aria-label="Main navigation">
+                <a class="nav-link " href="/home">Home</a>
+                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="/supp">Courses</a>
+                <a class="nav-link" href="/quiz">Test</a>
+                <div class="nav-dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">Add Survey</a>
+                    <div class="dropdown-content">
+                        <a href="/traineeTheoriqueForm">Theoretical</a>
+                        <a href="/traineePratiqueForm">Practical</a>
+                        <a href="/traineeOjtForm">OJT</a>
+                    </div>
+                </div>
+                <a class="nav-link" href="/contact">Contact</a>
+            </nav>
+
+            <!-- Logout Button -->
+            <a class="btn-logout" href="#" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-1"></i> Log Out
+            </a>
+        </div>
+    </header>
+    <div class="floating-particles" id="particles"></div>
+
+<div class="loading-indicator" id="loadingIndicator">
+  <div class="spinner"></div>
+  <p>Chargement des données...</p>
+</div>
+
+<div class="container">
+  <div class="header">
+    <h1>Formation Théorique</h1>
+    <p>Vue d'ensemble complète de votre parcours d'apprentissage</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-number" id="totalDays">-</div>
+      <div class="stat-label">Jours de Formation</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-number" id="totalModels">-</div>
+      <div class="stat-label">Modèles Totaux</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">🎥</div>
+      <div class="stat-number" id="totalVideos">-</div>
+      <div class="stat-label">Vidéos Disponibles</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-number" id="totalTime">-</div>
+      <div class="stat-label">Durée Totale</div>
+    </div>
+  </div>
+
+  <div class="days-section">
+    <h2 class="section-title">Progression par Jour</h2>
+    <div class="days-container" id="daysContainer">
+      <!-- Les cartes de jour seront générées dynamiquement -->
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2 class="section-title">Système d'Évaluation</h2>
+    <p style="text-align: center; margin-bottom: 1.5rem; opacity: 0.9;">
+      Testez vos connaissances avec notre système d'évaluation multi-format
+    </p>
+    
+    <div class="test-types">
+      <div class="test-type">
+        <span class="test-icon">📝</span>
+        <h3>Tests Quotidiens</h3>
+        <p>Évaluations après chaque jour de formation</p>
+      </div>
+      
+      <div class="test-type">
+        <span class="test-icon">🏆</span>
+        <h3>Test Final</h3>
+        <p>Évaluation complète de tous les modules</p>
+      </div>
+      
+      <div class="test-type">
+        <span class="test-icon">🔄</span>
+        <h3>Questions Adaptatives</h3>
+        <p>Choix unique et multiple selon le contexte</p>
+      </div>
+      
+      <div class="test-type">
+        <span class="test-icon">📊</span>
+        <h3>Suivi des Performances</h3>
+        <p>Statistiques détaillées de vos résultats</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="refresh-btn" (click)="loadFormationData()">
+    🔄 Actualiser les Données
+  </button>
+</div>

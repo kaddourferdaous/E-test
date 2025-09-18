@@ -156,3 +156,61 @@ h3::after {
     color: #007bff;
     cursor: pointer;
 }
+/* CSS for the Feedback component with charts */
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.charts-container {
+  margin-bottom: 40px;
+}
+
+.chart-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 20px;
+  height: 300px;
+  position: relative;
+}
+
+.feedback-list {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.message-cell {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reply-form {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+  .chart-card {
+    height: 250px;
+  }
+  
+  .message-cell {
+    max-width: 150px;
+  }
+}  

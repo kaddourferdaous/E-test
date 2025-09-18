@@ -12,11 +12,11 @@ export class EntryPageComponent {
 
   constructor(private translationService: TranslationService) {}
 
-  translate() {
-    this.translationService
-      .translateText('Login', this.selectedLang)
-      .subscribe(res => {
-        this.translatedText = res.translations.translation;
-      });
-  }
+  // translate() {
+  //   this.translationService
+  //     .translateText('Login', this.selectedLang)
+  //     .subscribe(res => {
+  //       this.translatedText = res.translations.translation;
+  //     });
+  // }
 }

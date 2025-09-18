@@ -1,0 +1,49 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TranslationService {
+  // Dictionnaire de traduction français -> arabe
+  private translations: { [key: string]: string } = {
+    // Mots de base
+    'what': 'ما',
+    'who': 'من',
+    'when': 'متى',
+    'where': 'أين',
+    'why': 'لماذا',
+    'how': 'كيف',
+    'which': 'أي',
+    'is': 'هو',
+    'are': 'هم',
+    'should': 'يجب',
+    'can': 'يمكن',
+    'will': 'سوف',
+    'do': 'فعل',
+    'does': 'يفعل',
+    'did': 'فعل',
+    'you': 'أنت',
+    'your': 'الخاص بك',
+    'if': 'إذا',
+    'in': 'في',
+    'on': 'على',
+    'at': 'في',
+    'to': 'إلى',
+    'for': 'لـ',
+    'with': 'مع',
+    'and': 'و',
+    'or': 'أو',
+    'not': 'ليس',
+    'the': 'الـ',
+    'a': 'واحد',
+    'an': 'واحد',
+    'be': 'يكون',
+    'have': 'يملك',
+    'has': 'يملك',
+    'had': 'كان يملك',
+    'of': 'من',
+    'by': 'بواسطة',
+    'from': 'من',
+    'before': 'قبل',
+    'after': 'بعد',
+    'during

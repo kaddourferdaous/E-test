@@ -1,3 +1,53 @@
+<aside id="sidebar" [ngClass]="{'sidebar-open': isSidebarOpen, 'sidebar-closed': !isSidebarOpen}">
+  <div class="sidebar-title">
+    <div class="sidebar-brand">
+      <span class="material-icons-outlined"></span> Theoritical Test
+    </div>
+    <span class="fa fa-close" (click)="toggleSidebar()"></span>
+  </div>
+  <ul class="sidebar-list">
+    <li class="sidebar-list-item">
+      <a routerLink="/dashboard">
+        <span class="fa fa-dashboard"></span> Dashboard
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a routerLink="/fileList">
+        <i class="fas fa-folder"></i> Manage Accounts
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a routerLink="/candidates">
+        <i class="fas fa-users"></i> Candidates
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a routerLink="/feedbacks">
+        <i class="fas fa-comment-dots"></i> Feedbacks
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a routerLink="/report">
+        <i class="fa fa-chart-bar"></i> Reports
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a routerLink="/settings">
+        <span class="fa fa-cog"></span> Settings
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a routerLink="/surveyResponse">
+        <span class="fa fa-list-alt"></span> Surveys
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a (click)="logout()" style="cursor: pointer;">
+        <span class="fa fa-sign-out"></span> Sign Out
+      </a>
+    </li>
+  </ul>
+</aside>
 <div class="candidates-container">
   <div class="header">
     <h2>Candidates List</h2>
@@ -34,12 +84,7 @@
             [class.active]="selectedDateFilter === 'custom'"
             (click)="setDateFilter('custom')"
           >Custom</button>
-          <!-- View All Button -->
-          <!-- <button 
-            class="btn-view-all"
-            (click)="viewAllCandidates()"
-          >View All Candidates</button>
-        </div> -->
+        </div>
         
         <!-- Custom Date Picker - Shows only when custom is selected -->
         <div *ngIf="selectedDateFilter === 'custom'" class="custom-date-picker">
@@ -118,29 +163,31 @@
   <table *ngIf="filteredCandidates.length > 0" class="candidates-table">
     <thead>
       <tr>
+        <th>Matricule</th>
+        <th>Contract Signature Date</th>
         <th>Name</th>
         <th>Last Name</th>
         <th>Email</th>
-        <th>Group Date</th>
-        <th>Training Start Date</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let candidate of filteredCandidates">
+        <td>{{ candidate.id || 'N/A' }}</td>
+        <td>{{ formatDate(candidate.contract_signed_date) }}</td>
         <td>{{ candidate.nom }}</td>
         <td>{{ candidate.prenom }}</td>
         <td>{{ candidate.email }}</td>
-        <td>{{ formatDate(candidate.groupe_date) }}</td>
-        <td>{{ formatDate(candidate.starting_trainee_date) }}</td>
         <td class="actions">
           <button class="btn-edit" title="Edit" (click)="startEditing(candidate)">
             <i class="fa fa-edit"></i>
           </button>
-          <button 
-            class="btn-add-survey" 
-            (click)="openAddSurveyModal(candidate.id)" 
-            style="margin-left: 30px; width: 150px;">
+ <button class="btn btn-info btn-sm me-2" 
+        (click)="viewCandidateDetails(candidate)"
+        title="Voir le profil complet">
+  <i class="fas fa-eye"></i> Voir détails
+</button>
+          <button class="btn-add-survey" (click)="openAddSurveyModal(candidate.id.toString())">
             <i class="fa fa-plus"></i> Add Survey
           </button>
         </td>
