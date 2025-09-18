@@ -1,0 +1,133 @@
+/* Conteneur général */
+.container {
+  padding: 40px;
+  background-color: #f9fafa;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Titre principal */
+h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+/* Barre de recherche et filtres */
+input[type="text"], .filter-btn {
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.filter-btn {
+  background-color: #f1f1f1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.filter-btn:hover {
+  background-color: #d8eaff;
+  border-color: #0d6efd;
+}
+
+/* Tableau */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+thead {
+  background-color: #f0f4f8;
+}
+
+thead th {
+  text-align: left;
+  padding: 14px;
+  font-size: 15px;
+  color: #555;
+  border-bottom: 2px solid #dee2e6;
+}
+
+tbody td {
+  padding: 14px;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+tbody tr:hover {
+  background-color: #f9f9f9;
+  transition: background 0.2s ease;
+}
+
+/* Bouton "Voir les réponses" */
+.view-btn {
+  background-color: #007bff; /* Couleur bleu modifiée */
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background-color 0.3s;
+  display: inline-block;
+}
+
+.view-btn:hover {
+  background-color: #0056b3; /* Couleur bleu plus foncée */
+}
+
+/* Badges de statut */
+.badge {
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 13px;
+  color: white;
+  font-weight: 500;
+  display: inline-block;
+  text-align: center;
+  min-width: 90px;
+}
+
+.badge-success {
+  background-color: #28a745; /* Vert plus doux */
+}
+
+.badge-warning {
+  background-color: #ffc107; /* Jaune légèrement plus doux */
+}
+
+.badge-danger {
+  background-color: #dc3545; /* Rouge similaire mais plus doux */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  td {
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td::before {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+}

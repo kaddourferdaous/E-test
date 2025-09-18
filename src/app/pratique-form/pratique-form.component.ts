@@ -160,7 +160,7 @@ export class PratiqueFormComponent implements OnInit {
       const formData = this.pratiqueForm.value;
       console.log('Données du formulaire préparées pour envoi:', formData);
   
-      this.http.post('http://localhost:5000/eval/trainer/pratique/evaluations', formData).subscribe({
+      this.http.post('https://training-backend-1pda.onrender.com/eval/trainer/pratique/evaluations', formData).subscribe({
         next: (response) => {
           console.log('Réponse du serveur:', response);
           alert('Évaluation enregistrée avec succès!');

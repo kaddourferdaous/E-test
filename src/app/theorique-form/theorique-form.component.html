@@ -3,7 +3,7 @@
 
   <!-- Formulaire avec Angular Reactive Forms -->
   <form [formGroup]="theorieForm" (ngSubmit)="onSubmit()">
-    <!-- Champ caché pour l'ID du formateur -->
+    <!-- Champs cachés pour les IDs - CORRIGÉ : utilisation de id_trainer et id_candidate -->
     <input type="hidden" formControlName="id_trainer">
     <input type="hidden" formControlName="id_candidate">
     

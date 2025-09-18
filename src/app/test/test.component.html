@@ -1,85 +1,160 @@
-<div class="quiz-container" *ngIf="!showResult">
-  <!-- Sélecteur de langue -->
-  <!-- <div class="language-selector">
-    <button (click)="changeLanguage('fr')">Français</button>
-    <button (click)="changeLanguage('ar')">Arabe</button>
-  </div> -->
 
-  <!-- Barre de progression -->
-  <div class="progress-bar-container">
+ <header class="custom-header" id="header">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4 py-2">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://vectorseek.com/wp-content/uploads/2023/08/Yazaki-Logo-Vector.svg-.png" alt="Yazaki Logo" class="logo-img">
+            </a>
+
+            <!-- Search Bar -->
+            <div class="search-container mx-3">
+                <input type="search" class="search-input" placeholder="Search Courses" aria-label="Search courses">
+                <button class="search-btn" type="button" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="nav justify-content-center flex-grow-1" aria-label="Main navigation">
+                <a class="nav-link " href="/" aria-current="page">Home</a>
+                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="/supp">Courses</a>
+                <a class="nav-link" href="/quiz">Test</a>
+                <div class="nav-dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">Add Survey</a>
+                    <div class="dropdown-content">
+                        <a href="/traineeTheoriqueForm">Theoretical</a>
+                        <a href="/traineePratiqueForm">Practical</a>
+                        <a href="/traineeOjtForm">OJT</a>
+                    </div>
+                </div>
+                <a class="nav-link" href="/contact">Contact</a>
+            </nav>
+
+            <!-- Logout Button -->
+            <a class="btn-logout" href="#" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-1"></i> Log Out
+            </a>
+        </div>
+    </header>
+<div class="quiz-container" *ngIf="!showResult">
+  <!-- DEBUG SECTION - À SUPPRIMER EN PRODUCTION -->
+ 
+
+  <!-- Alerte de tentative de fraude -->
+  <div class="fraud-alert" *ngIf="fraudAttemptDetected" style="color: red; font-weight: bold; text-align: center; margin-bottom: 20px;">
+    <p>⚠️ Cette action est considérée comme une tentative de fraude. Elle a été enregistrée.</p>
+  </div>
+
+  <!-- Displayed Day Information -->
+  <div class="day-info" *ngIf="selectedDay">
+    <h3>Test For Day{{ selectedDay }}</h3>
+  </div>
+  
+  <!-- Progress Bar -->
+  <div class="progress-bar-container" *ngIf="questions.length > 0">
     <div class="progress-bar" [style.width]="progressWidth"></div>
   </div>
-
-  <!-- Affichage du numéro de la question -->
-  <div class="question-number">
+  
+  <!-- Question Number Display -->
+  <div class="question-number" *ngIf="questions.length > 0">
     Question {{ currentQuestion }} / {{ totalQuestions }}
   </div>
-
-  <!-- Affichage pour QCM -->
-  <div *ngIf="questions[currentQuestion - 1].type === 'qcm'" style="height: 300px;">
-    <div class="question">{{ questions[currentQuestion - 1].text }}</div>
-    <ul class="options">
-      <li *ngFor="let option of questions[currentQuestion - 1].options; let j = index"
-          (click)="selectAnswer(j)"
-          [ngClass]="{'selected': isSelected(currentQuestion - 1, j)}">
-        {{ option }}
-      </li>
-    </ul>
+  
+  <!-- No Questions Message -->
+  <div *ngIf="questions.length === 0" class="no-questions">
+    <p>Aucune question disponible pour le Jour {{ selectedDay || 'Non défini' }}.</p>
+    <p>Utilisez les boutons de debug ci-dessus pour charger un jour spécifique.</p>
   </div>
-
-  <!-- Affichage pour Question Libre -->
-  <div *ngIf="questions[currentQuestion - 1].type === 'libre'" style="height: 300px;padding-top: 40px;margin-top: 40px;">
-    <div class="question">{{ questions[currentQuestion - 1].text }}</div>
-    <input
-      type="text"
-      placeholder="Écrivez votre réponse ici"
-      [value]="selectedAnswers[currentQuestion - 1]?.[0] || ''"
-      (input)="saveFreeResponse($event)"
-    />
-  </div>
-
-  <!-- Boutons de navigation -->
-  <div class="buttons">
-    <div class="navigation-buttons">
-      <button class="last-question" (click)="previousQuestion()" [disabled]="currentQuestion === 1" style="margin-left: -14px;">
-        <i class="fas fa-arrow-left"></i> Previous
-      </button>
-      
-      <button class="next-question" (click)="nextQuestion()" [disabled]="currentQuestion === totalQuestions" style="margin-left: 310px;" >
-        Next <i class="fas fa-arrow-right"></i>
-      </button>
+  
+  <!-- Questions Display - Only if questions exist -->
+  <div *ngIf="questions.length > 0">
+    
+    <!-- MCQ Display -->
+    <div *ngIf="questions[currentQuestion - 1]?.type === 'qcm'" class="question-container" style="min-height: 300px;">
+      <div class="question">{{ questions[currentQuestion - 1]?.text }}</div>
+      <ul class="options">
+        <li *ngFor="let option of questions[currentQuestion - 1]?.options; let j = index"
+            (click)="selectAnswer(j)"
+            [ngClass]="{'selected': isSelected(currentQuestion - 1, j)}">
+          {{ option }}
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Free Question Display -->
+    <div *ngIf="questions[currentQuestion - 1]?.type === 'libre'" class="question-container" style="min-height: 300px; padding-top: 40px; margin-top: 40px;">
+      <div class="question">{{ questions[currentQuestion - 1]?.text }}</div>
+      <input
+        type="text"
+        class="free-response-input"
+        placeholder="Écrivez votre réponse ici"
+        [value]="selectedAnswers[currentQuestion - 1]?.[0] || ''"
+        (input)="saveFreeResponse($event)"
+      />
+    </div>
+    
+    <!-- Navigation Buttons -->
+    <div class="buttons">
+      <div class="navigation-buttons">
+        <button class="last-question" 
+                (click)="previousQuestion()" 
+                [disabled]="currentQuestion === 1" 
+                style="margin-left: -14px;">
+          <i class="fas fa-arrow-left"></i> Previous
+        </button>
+       
+        <button class="next-question" 
+                (click)="nextQuestion()" 
+                [disabled]="currentQuestion === totalQuestions" 
+                style="margin-left: 310px;">
+          Next <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Finish Test Button (only for last question) -->
+    <div *ngIf="currentQuestion === totalQuestions" class="finish-test-section">
+      <button class="save-button" (click)="prepareAndSaveResponses()">Finish Test</button>
     </div>
     
   </div>
-
-  <!-- Bouton "Finish Test" uniquement pour la dernière question -->
-  <div *ngIf="currentQuestion === totalQuestions">
-    <button class="save-button" (click)="prepareAndSaveResponses()">Finish Test</button>
-
-  </div>
-
-  <!-- Affichage du score -->
-  <div *ngIf="testFinished" class="score">
+  
+  <!-- Score Display (only shown when test is finished but before results modal) -->
+  <div *ngIf="testFinished && !showResult" class="score">
     Score : {{ score }} / {{ totalQuestions }}
   </div>
 </div>
+
+<!-- Results Modal -->
 <div class="modal-overlay" *ngIf="showResult">
   <div class="modal-content">
-    <h2>Examination Overview</h2>
+    
     <div class="congrats">
-      <span>Congratulations,</span>
+      <span>Congrats</span>
       <i class="graduation-icon">🎓</i>
     </div>
-  
+ 
     <div class="user-info">
-      <img src="assets/user-placeholder.png" alt="User Avatar" class="avatar">
-      <p><strong>Mr. Guest</strong></p>
-      <p>Your Result/Mark is: <span class="score">{{ score }} </span> out of {{ totalQuestions }}</p>
+      <p>Your Score is: <span class="score">{{ score }} </span> sur {{ totalQuestions }}</p>
+      <p>Day: {{ selectedDay }}</p>
+      <p>Candidat: {{ candidateName }}</p>
+      
+      
+      <!-- Afficher une alerte de fraude dans les résultats si détectée -->
+      <div *ngIf="fraudAttemptDetected" class="fraud-warning" style="color: red; font-weight: bold; margin-top: 10px;">
+        ⚠️ Des tentatives de fraude ont été détectées et enregistrées durant ce test.
+      </div>
+      
+      <!-- Afficher le pourcentage -->
+      <div class="percentage-score">
+        <p>Pourcent: {{ ((score / totalQuestions) * 100).toFixed(1) }}%</p>
+      </div>
     </div>
+    
     <div class="buttons">
-      <button class="accept-btn" >I accept</button>
-      <button class="decline-btn" >Decline</button>
+      <button class="accept-btn" (click)="router.navigate(['/support-list'])">Back to COurses</button>
+      <button class="decline-btn" (click)="showResult = false">Close</button>
     </div>
   </div>
 </div>
-

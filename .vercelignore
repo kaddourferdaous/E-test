@@ -1,0 +1,52 @@
+# Dépendances
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build Angular (sera reconstruit par Vercel)
+dist/
+.angular/
+
+# Cache
+.npm
+.yarn
+.cache/
+
+# Fichiers de développement
+*.log
+*.tmp
+*.temp
+
+# Tests
+coverage/
+*.spec.ts
+e2e/
+
+# Documentation
+docs/
+*.md
+README.md
+
+# Fichiers volumineux (ajustez selon vos besoins)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.zip
+*.rar
+*.tar.gz
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore

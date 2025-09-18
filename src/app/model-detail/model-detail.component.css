@@ -1,29 +1,35 @@
+/* Conteneur principal */
 .container {
   font-family: Arial, sans-serif;
-  color: #333;
+  color: #2d3436; /* New: Dark slate gray for text */
   padding: 20px;
   width: 100%;
 }
+
+/* Bouton avec icône */
 .btn i {
-  margin-right: 8px; /* Ajoute un espacement entre l'icône et le texte */
-  font-size: 1.2rem; /* Augmente la taille de l'icône */
+  margin-right: 8px;
+  font-size: 1.2rem;
+  color: #ff4d6d; /* New: Bright pink for button icons */
 }
+
+/* En-tête h2 */
 h2 {
-  font-size: 22px; /* Adjust the font size */
-  font-weight: bold; /* Make the font bold */
-  margin-bottom: 70px; /* Space below the heading */
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 70px;
   margin-top: 70px;
-  text-align: left; /* Align the text to the left */
-  width: 100%; /* Ensure it takes up the full width */
-  color: #333; /* Set the text color */
-  font-family: 'Arial', sans-serif; /* Use a clean, sans-serif font */
-  border-bottom: 2px solid #007bff; /* Add a blue underline for emphasis */
-  padding-bottom: 5px; /* Add some space below the text */
-  letter-spacing: 1px; /* Add space between letters for a more polished look */
-  line-height: 1.5; /* Set line height for better readability */
+  text-align: left;
+  width: 100%;
+  color: #1e3a8a; /* New: Deep blue for heading */
+  font-family: 'Arial', sans-serif;
+  border-bottom: 2px solid #8b5cf6; /* New: Vibrant purple underline */
+  padding-bottom: 5px;
+  letter-spacing: 1px;
+  line-height: 1.5;
 }
 
-
+/* Conteneur des cartes */
 .card-container {
   display: flex;
   flex-direction: column;
@@ -32,25 +38,28 @@ h2 {
   gap: 10px;
 }
 
+/* Carte */
 .card {
   display: flex;
-  align-items: flex-start; /* Aligne l'icône, le titre et la description verticalement */
+  align-items: flex-start;
   padding: 15px;
   border-radius: 12px;
-  background: #f9f9f9;
+  background: #fef9e7; /* New: Light yellow background */
   margin-bottom: 8px;
   transition: background 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   position: relative;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
+  border: 1px solid #fed7aa; /* New: Orange border */
 }
 
 .card:hover {
-  background: #e6e6e6;
+  background: #e6fffa; /* New: Light mint for hover */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* Contenu de la carte */
 .card-content {
   display: flex;
   flex-direction: column;
@@ -58,12 +67,14 @@ h2 {
   margin-left: 10px;
 }
 
+/* Icône de la carte */
 .icon {
   font-size: 40px;
-  color: #377cc5;
+  color: #10b981; /* New: Emerald green for icons */
   margin-right: 10px;
 }
 
+/* Titre de la carte */
 .card-title {
   display: flex;
   align-items: center;
@@ -73,17 +84,27 @@ h2 {
 .card h5 {
   font-size: 18px;
   margin: 0;
-  color: deepskyblue;
+  color: #7c3aed; /* New: Vibrant purple for card titles */
   text-align: left;
 }
 
+/* Description de la carte */
 .card-description {
   font-size: 16px;
-  color: #080808;
+  color: #374151; /* New: Dark gray for description */
   margin-top: 5px;
   text-align: left;
 }
 
+.card-description i {
+  font-size: 20px;
+  color: #f59e0b; /* New: Amber for description icons */
+  margin-right: 20px;
+  margin-bottom: 20px;
+  margin-left: 5px;
+}
+
+/* Liste des tâches */
 .todo-list {
   display: flex;
   flex-direction: column;
@@ -98,79 +119,62 @@ h2 {
 
 .todo-item i {
   margin-right: 8px;
-  color: green;
+  color: #00cc88; /* New: Teal for todo icons */
 }
 
+/* Bouton générique */
 button {
   background: none;
   border: none;
-  color: #007bff;
+  color: #6366f1; /* New: Indigo for button text */
   font-size: 24px;
   cursor: pointer;
 }
 
 button:hover {
+  color: #f43f5e; /* New: Bright rose for hover */
   text-decoration: underline;
 }
 
+/* Lien de téléchargement */
 .download-link {
-  color: #007bff;
+  color: #8b5cf6; /* New: Vibrant purple for link */
   text-decoration: none;
   font-size: 15px;
 }
 
 .download-link:hover {
+  color: #d946ef; /* New: Magenta for link hover */
   text-decoration: underline;
 }
 
+/* Titre de section */
 .section-title {
   font-size: 22px;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 10px;
   text-align: left;
+  color: #1e40af; /* New: Deep blue for section title */
 }
-.card-description i {
-  font-size: 20px; /* Taille de l'icône */
-  color: #007bff; /* Couleur de l'icône */
-  margin-right: 20px;
-  margin-bottom: 20px;
-  margin-left: 5px;
-   /* Espace entre l'icône et le texte */
-}
+
+/* Wrapper pour alignement */
 .wrapper {
   display: flex;
-  align-items: center; /* Aligne les éléments verticalement */
-  gap: 10px; /* Espace entre les éléments */
+  align-items: center;
+  gap: 10px;
 }
 
+/* Conteneur d'icône */
 .icon-wrapper {
-  display: inline-block; /* Permet de garder l'icône en ligne avec les autres éléments */
+  display: inline-block;
 }
 
+/* Suppression des marges */
 .title, .exception, .btn {
-  margin: 0; /* Élimine les marges par défaut */
-}
-/* Style pour la modale */
-/* Style pour la modale */
-
-
-/* Bouton de fermeture */
-.close-btn {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 32px;
-  font-weight: bold;
-  color: #aaa;
-  cursor: pointer;
+  margin: 0;
 }
 
-.close-btn:hover {
-  color: #000;
-}
-/* Style pour la modale */
-/* Arrière-plan de la modale */
 /* Arrière-plan de la modale */
 .custom-modal {
   position: fixed;
@@ -178,7 +182,7 @@ button:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8); /* Opacité légèrement augmentée */
+  background: rgba(0, 0, 0, 0.85); /* New: Darker overlay with slight purple tint */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -189,11 +193,11 @@ button:hover {
 
 /* Contenu de la modale */
 .custom-modal-content {
-  background-color: #fff;
-  padding: 0; /* Suppression du padding par défaut */
+  background-color: #f3e8ff; /* New: Light purple background */
+  padding: 0;
   border: none;
-  width: 100%; /* S'étend sur toute la largeur disponible */
-  height: 100%; /* S'étend sur toute la hauteur disponible */
+  width: 100%;
+  height: 100%;
   max-width: none;
   max-height: none;
   position: relative;
@@ -202,7 +206,7 @@ button:hover {
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   margin: 0;
-  box-sizing: border-box; /* Assure que la taille inclut le padding et la bordure */
+  box-sizing: border-box;
 }
 
 /* Style pour l'iframe */
@@ -214,19 +218,21 @@ button:hover {
 }
 
 /* Bouton de fermeture */
-.close-btn {
+.close-btn, .close {
   position: absolute;
   top: 15px;
   right: 20px;
   font-size: 28px;
   font-weight: bold;
-  color: #888;
+  color: #a1a1aa; /* New: Light gray for close button */
   cursor: pointer;
   transition: color 0.2s;
 }
 
-.close-btn:hover {
-  color: #ff4444;
+.close-btn:hover, .close:hover {
+  color: #f43f5e; /*
+
+ New: Bright rose for hover */
 }
 
 /* Animation d'apparition avec léger zoom */
@@ -241,92 +247,103 @@ button:hover {
   }
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .custom-modal-content {
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-  }
-}
-
-/* Bouton pour fermer la modale */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover {
-  color: #000;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .custom-modal-content {
-    width: 95%;
-    height: 95%;
-  }
-}
-/* Bouton pour fermer la modale */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover {
-  color: #000;
-}
-
-/* Bouton pour fermer la modale */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover {
-  color: #000;
+/* Conteneur principal des questions */
+.questions-container {
+  width: 900px;
+  margin: 40px auto;
+  padding: 40px;
+  background: linear-gradient(145deg, #f0f4ff, #e6fffa); /* New: Gradient from lavender to mint */
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  min-height: 650px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 /* Élément de question */
-
-
-/* Effet de survol pour chaque question */
-.question-item:hover {
-  transform: translateY(-10px); /* Léger déplacement vers le haut */
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1); /* Ombre plus marquée */
-  border-left-color: #61c0bf; /* Change la couleur de la bordure au survol */
+.question-item {
+  background: #fff7ed; /* New: Light peach background */
+  border: none;
+  padding: 25px;
+  margin-bottom: 25px;
+  height: 420px;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
 }
 
-/* Texte de question */
-.question-item label {
-  display: block;
-  font-size: 1em;
+.question-item:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #f59e0b; /* New: Amber border on hover */
+}
+
+/* Texte de la question */
+.question-text {
+  color: #1e3a8a; /* New: Deep blue for question text */
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  word-break: break-word;
+}
+
+/* Liste des options */
+.options-list {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* Élément d'option stylé */
+.option-item {
+  cursor: pointer;
+  border: 2px solid #d1d5db; /* New: Light gray border */
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: #f9f9f9; /* New: Light gray background */
+  font-size: 1rem;
+  color: #374151; /* New: Dark gray for text */
+  transition: all 0.25s ease-in-out;
+  position: relative;
+}
+
+.option-item:hover {
+  background-color: #e6fffa; /* New: Light mint for hover */
+  border-color: #10b981; /* New: Emerald green for hover border */
+  transform: translateY(-2px);
+}
+
+/* Options sélectionnées, correctes et incorrectes */
+.selected-option {
+  background-color: #d6eaff; /* New: Light blue for selected */
+  border-color: #3b82f6; /* New: Blue border */
+}
+
+.correct-option {
+  background-color: #ccfbf1 !important; /* New: Teal for correct answers */
+  border-color: #14b8a6 !important; /* New: Teal border */
+  color: #0f766e; /* New: Dark teal for text */
   font-weight: bold;
-  margin-bottom: 15px;
-  color: #333;
-  text-transform: none; /* Supprime la transformation en majuscules */
-  letter-spacing: 0.5px;
-  line-height: 1.4; /* Espacement entre les lignes pour une meilleure lisibilité */
+}
+
+.incorrect-option {
+  background-color: #fee2e2 !important; /* New: Light red for incorrect */
+  border-color: #ef4444 !important; /* New: Red border */
+  color: #991b1b; /* New: Dark red for text */
+  font-weight: bold;
 }
 
 /* Style des réponses radio */
 .question-item input[type="radio"] {
   margin-right: 15px;
-  accent-color: #242323; /* Couleur du bouton radio */
-}
-
-/* Division dans chaque question */
-.question-item div {
-  margin-bottom: 15px;
+  accent-color: #8b5cf6; /* New: Vibrant purple for radio buttons */
 }
 
 /* Style des options de réponse */
@@ -336,22 +353,21 @@ button:hover {
   justify-content: flex-start;
   padding: 12px 20px;
   margin: 8px 0;
-  background-color: #f9f9f9;
-  border: 1px solid #e1e1e1;
+  background-color: #fef9e7; /* New: Light yellow background */
+  border: 1px solid #fed7aa; /* New: Orange border */
   border-radius: 8px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  text-transform: none; /* Pas de majuscules pour les options */
+  text-transform: none;
 }
 
-/* Effet de survol pour les options */
 .form-check-label:hover {
-  background-color: #e0f7fa;
+  background-color: #f3e8ff; /* New: Light purple for hover */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Boutons avec transitions */
 button {
-  background-color: #242323;
+  background-color: #6b7280; /* New: Gray for button background */
   color: white;
   padding: 12px 25px;
   border: none;
@@ -360,18 +376,17 @@ button {
   font-size: 1.1em;
   transition: background-color 0.3s ease, transform 0.3s ease;
   margin-top: 15px;
-  margin-bottom: 20px; /* Espace entre le bouton et les autres éléments */
+  margin-bottom: 20px;
 }
 
-/* Effet de survol sur les boutons */
 button:hover {
-  background-color: #82c1d8;
-  transform: scale(1.05); /* Augmenter légèrement la taille */
+  background-color: #f59e0b; /* New: Amber for button hover */
+  transform: scale(1.05);
 }
 
 /* Style pour les bonnes et mauvaises réponses */
 .correct-answer {
-  background-color: #28a745;
+  background-color: #14b8a6; /* New: Teal for correct answer */
   color: white;
   font-weight: bold;
   padding: 10px;
@@ -381,7 +396,7 @@ button:hover {
 }
 
 .incorrect-answer {
-  background-color: #dc3545;
+  background-color: #ef4444; /* New: Red for incorrect answer */
   color: white;
   font-weight: bold;
   padding: 10px;
@@ -402,9 +417,7 @@ button:hover {
   }
 }
 
-/* Responsive Design */
-
-/* From Uiverse.io by xopc333 */ 
+/* Bouton animé de Uiverse.io */
 .button {
   display: block;
   position: relative;
@@ -418,22 +431,14 @@ button:hover {
   border: 0;
 }
 
-.button:before,
-.button:after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  inset: 7px;
-}
-
 .button:before {
-  border: 4px solid #f0eeef;
+  border: 4px solid #d6eaff; /* New: Light blue for button border */
   transition: opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
     transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
 }
 
 .button:after {
-  border: 4px solid #96daf0;
+  border: 4px solid #f59e0b; /* New: Amber for button hover border */
   transform: scale(1.3);
   transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
     transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -469,7 +474,7 @@ button:hover {
   height: 20px;
   margin: 17px 18px 0 18px;
   transform: rotate(180deg);
-  fill: #f0eeef;
+  fill: #d6eaff; /* New: Light blue for button element */
 }
 
 .button:hover .button-box,
@@ -477,187 +482,78 @@ button:hover {
   transition: 0.4s;
   transform: translateX(-56px);
 }
+
+/* Radio inputs */
 input[type="radio"] {
-  display: none;  /* Masque complètement le cercle du radio */
+  display: none;
 }
-body[dir="rtl"] {
-  direction: rtl;
-  text-align: right;
-}
-/* Assurez-vous que les inputs radio sont cliquables */
+
 .form-check-input {
   cursor: pointer;
   opacity: 1 !important;
   position: static !important;
   margin-right: 5px;
+  accent-color: #d946ef; /* New: Magenta for radio inputs */
 }
 
-/* Style pour les labels */
+/* Labels */
 .form-check-label {
   cursor: pointer;
   user-select: none;
-}
-.selected-option {
-  background-color: #4CAF50;  /* Exemple de fond vert pour les options sélectionnées */
-  color: white;
-}
-.correct-answer {
-  color: #28a745;
-  font-weight: bold;
-}
-
-.incorrect-answer {
-  color: #dc3545;
-  text-decoration: line-through;
-}
-
-.selected-answer {
-  background-color: #f8f9fa;
-  font-weight: bold;
-}
-
-.correct-icon {
-  color: #28a745;
-  margin-right: 5px;
-}
-
-.incorrect-icon {
-  color: #dc3545;
-  margin-right: 5px;
-}
-
-.form-check-label {
   padding-left: 5px;
-  cursor: pointer;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-
-
-
-
-
-.form-check-input {
-  cursor: pointer;
+/* Styles pour réponses */
+.correct-answer {
+  color: #14b8a6; /* New: Teal for correct answer text */
+  font-weight: bold;
 }
 
-.form-check-label {
-  cursor: pointer;
+.incorrect-answer {
+  color: #ef4444; /* New: Red for incorrect answer text */
+  text-decoration: line-through;
 }
 
+.selected-answer {
+  background-color: #fef9e7; /* New: Light yellow for selected answer */
+  font-weight: bold;
+}
+
+.correct-icon {
+  color: #14b8a6; /* New: Teal for correct icon */
+  margin-right: 5px;
+}
+
+.incorrect-icon {
+  color: #ef4444; /* New: Red for incorrect icon */
+  margin-right: 5px;
+}
+
+/* Barre de progression */
 .progress {
   height: 25px;
   border-radius: 12px;
+  background-color: #e5e7eb; /* New: Light gray for progress background */
 }
 
 .progress-bar {
-  background-color: #4e73df;
+  background-color: #6366f1; /* New: Indigo for progress bar */
   font-weight: 500;
 }
 
-.btn {
-  min-width: 120px;
-}
-
+/* Icônes Bootstrap */
 .bi {
   font-size: 1.1rem;
+  color: #f59e0b; /* New: Amber for Bootstrap icons */
 }
+
+/* Options sélectionnées incorrectes */
 .selected-option.incorrect {
-  background-color: #f44336;  /* Exemple de fond rouge pour les mauvaises réponses */
-}
-/* Conteneur principal des questions avec largeur fixe étendue */
-/* Conteneur principal des questions */
-.questions-container {
-  width: 900px;
-  margin: 40px auto;
-  padding: 40px;
-  background: linear-gradient(145deg, #ffffff, #f0f0f0);
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  min-height: 650px;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-/* Élément de question */
-.question-item {
-  background: #ffffff;
-  border: none;
-  padding: 25px;
-  margin-bottom: 25px;
-  height: 420px;
-  width: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.3s ease;
-}
-
-.question-item:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-}
-
-/* Texte de la question */
-.question-text {
-  color: #2d3436;
-  font-weight: 600;
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  word-break: break-word;
-}
-
-/* Liste des options */
-.options-list {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  overflow-y: auto;
-  padding-right: 6px;
-}
-
-/* Élément d'option stylé */
-.option-item {
-  cursor: pointer;
-  border: 2px solid #e0e0e0;
-  padding: 14px 18px;
-  border-radius: 10px;
-  background: #fdfdfd;
-  font-size: 1rem;
-  color: #333;
-  transition: all 0.25s ease-in-out;
-  position: relative;
-}
-
-.option-item:hover {
-  background-color: #f1faff;
-  border-color: #86b7fe;
-  transform: translateY(-2px);
-}
-
-.selected-option {
-  background-color: #d6eaff;
-  border-color: #3399ff;
-}
-
-.correct-option {
-  background-color: #d4edda !important;
-  border-color: #28a745 !important;
-  color: #155724;
-  font-weight: bold;
-}
-
-.incorrect-option {
-  background-color: #f8d7da !important;
-  border-color: #dc3545 !important;
-  color: #721c24;
-  font-weight: bold;
+  background-color: #fee2e2; /* New: Light red for incorrect selected */
 }
 
 /* Scrollbar stylée */
@@ -666,15 +562,132 @@ body[dir="rtl"] {
 }
 
 .options-list::-webkit-scrollbar-track {
-  background: #ececec;
+  background: #e6fffa; /* New: Light mint for scrollbar track */
   border-radius: 6px;
 }
 
 .options-list::-webkit-scrollbar-thumb {
-  background: #bbb;
+  background: #10b981; /* New: Emerald green for scrollbar thumb */
   border-radius: 6px;
 }
 
 .options-list::-webkit-scrollbar-thumb:hover {
-  background: #999;
+  background: #059669; /* New: Darker green for scrollbar hover */
+}
+
+/* Support RTL */
+body[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .custom-modal-content {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+  .questions-container {
+    width: 95%;
+    padding: 20px;
+  }
+}
+/* Loader styles */
+.loader {
+  width: 80px;
+  aspect-ratio: 1;
+  display: grid;
+}
+
+.loader:before,
+.loader:after {
+  content: "";
+  grid-area: 1/1;
+  margin: 0 0 15px 15px;
+  --c: #0000 calc(100%/3), #046D8B 0 calc(200%/3), #0000 0;
+  --c1: linear-gradient(90deg, var(--c));
+  --c2: linear-gradient(0deg, var(--c));
+  background: var(--c1), var(--c2), var(--c1), var(--c2);
+  background-size: 300% 4px, 4px 300%;
+  background-repeat: no-repeat;
+  animation: l12 1s infinite linear;
+}
+
+.loader:after {
+  margin: 15px 15px 0 0;
+  transform: scale(-1, -1);
+}
+
+@keyframes l12 {
+  0% { background-position: 50% 0, 100% 100%, 0 100%, 0 0 }
+  25% { background-position: 0 0, 100% 50%, 0 100%, 0 0 }
+  50% { background-position: 0 0, 100% 0, 50% 100%, 0 0 }
+  75% { background-position: 0 0, 100% 0, 100% 100%, 0 50% }
+  75.01% { background-position: 100% 0, 100% 0, 100% 100%, 0 50% }
+  100% { background-position: 50% 0, 100% 0, 100% 100%, 0 100% }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+}
+
+.loading-content {
+  text-align: center;
+  color: #495057;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+/* Alternative sans overlay fixe si vous préférez */
+.loading-container-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 400px;
+}
+
+.loading-container-inline .loading-content {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.loading-title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+  color: #046D8B;
+}
+
+.loading-message {
+  font-size: 0.95rem;
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+.loading-dots::after {
+  content: '';
+  animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0%, 20% { content: ''; }
+  40% { content: '.'; }
+  60% { content: '..'; }
+  80%, 100% { content: '...'; }
 }

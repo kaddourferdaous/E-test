@@ -25,11 +25,21 @@ import { PratiqueFormComponent } from './pratique-form/pratique-form.component';
 import { TheoriqueFormComponent } from './theorique-form/theorique-form.component';
 import { CandidatsComponent } from './candidats/candidats.component';
 import { TrainerGuard } from './trainer.guard';
-
+import { QuizComponent } from './quiz/quiz.component';
+import { ResultComponent } from './result/result.component';
+import { CandidateResponsesComponent } from './candidate-responses/candidate-responses.component';
+import { TraineeTheoriqueSurveyComponent } from './trainee-theorique-survey/trainee-theorique-survey.component';
+import { TraineePratiqueSurveyComponent } from './trainee-pratique-survey/trainee-pratique-survey.component';
+import { TraineeOjtSurveyComponent } from './trainee-ojt-survey/trainee-ojt-survey.component';
+import { SurveyResponseComponent } from './suvey-response/survey-response.component';
+import { SettingsComponent } from './settings/settings.component';
+import { AboutComponent } from './about/about.component';
+import { ProfilComponent } from './profil/profil.component';
 const routes: Routes = [
   { path: '', redirectTo: '/entryPage', pathMatch: 'full' },
   { path: 'entryPage', component: EntryPageComponent }, // Page avant login
   { path: 'login', component: LoginComponent },
+  {path:'quiz',component:QuizComponent},
   { path: 'signup', component: SignupComponent },
   {path:'trainerSignUp',component :TrainerSignUpComponent},
   {path:'trainerLogin',component:TrainerLoginComponent},
@@ -49,8 +59,22 @@ const routes: Routes = [
   {path:'pratiqueForm',component:PratiqueFormComponent},
   {path:'theoicForm',component:TheoriqueFormComponent},
   {path:'candidats',component:CandidatsComponent},
-  
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },  // Protection de la route
+  {path:'result',component:ResultComponent},
+  {path:'about',component:AboutComponent},
+  // Pour l'approche 1
+{ path: 'candidate-responses/:id', component: CandidateResponsesComponent },
+{path:'candidate-responses',component:CandidateResponsesComponent},
+{path:'traineeTheoriqueForm',component:TraineeTheoriqueSurveyComponent},
+{path:'traineePratiqueForm',component:TraineePratiqueSurveyComponent},
+{path:'traineeOjtForm',component:TraineeOjtSurveyComponent},
+{path:'surveyResponse',component:SurveyResponseComponent},
+{path:'settings',component:SettingsComponent},
+// Ou pour l'approche 2
+{ path: 'candidate-responses/:id/:type', component: CandidateResponsesComponent },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }, 
+  {path:'profil',component:ProfilComponent},
+  {
+  path: 'candidate-profile/:id',component: ProfilComponent}
 ];
 
 @NgModule({

@@ -1,192 +1,390 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Modules avec Espacement</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <!-- Styles personnalisés -->
-  <style>
-    /* Styles généraux */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+  <header class="custom-header" id="header">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4 py-2">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://vectorseek.com/wp-content/uploads/2023/08/Yazaki-Logo-Vector.svg-.png" alt="Yazaki Logo" class="logo-img">
+            </a>
 
-    .container {
-      margin: 20px; /* Espace autour du conteneur principal */
-    }
+        
 
-    .day-container {
-      margin-bottom: 40px; /* Espace entre les jours */
-    }
+            <!-- Navigation -->
+            <nav class="nav justify-content-center flex-grow-1" aria-label="Main navigation">
+                <a class="nav-link " href="/home">Home</a>
+                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="/supp">Courses</a>
+                <a class="nav-link" href="/quiz">Test</a>
+                <div class="nav-dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">Add Survey</a>
+                    <div class="dropdown-content">
+                        <a href="/traineeTheoriqueForm">Theoretical</a>
+                        <a href="/traineePratiqueForm">Practical</a>
+                        <a href="/traineeOjtForm">OJT</a>
+                    </div>
+                </div>
+                <a class="nav-link" href="/contact">Contact</a>
+            </nav>
 
-    .day-header {
-      font-size: 1.8rem;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: #333;
-    }
+            <!-- Logout Button -->
+            <a class="btn-logout" href="#" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-1"></i> Log Out
+            </a>
+        </div>
+    </header>
+    <div class="container">
+  <!-- Barre de recherche -->
+  <div class="search-container mb-4">
+  <div class="search-box">
+    <div class="input-group">
+      <!-- Icône loupe -->
+      <span class="input-group-text search-icon">
+        <i class="fa fa-search"></i>
+      </span>
 
-    .module-container {
-      display: flex;
-      gap: 20px; /* Espace horizontal entre l'image et le contenu */
-      margin-bottom: 30px; /* Espace vertical entre les modules */
-      padding: 15px; /* Optionnel : Ajoute un peu de remplissage autour du module */
-      background-color: #f9f9f9; /* Fond clair pour chaque module */
-      border-radius: 8px; /* Coins arrondis pour chaque module */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère pour améliorer la lisibilité */
-      cursor: pointer; /* Indique que le module est cliquable */
-    }
+      <!-- Champ texte -->
+      <input 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        placeholder="Rechercher un module par nom du module..."
+        autocomplete="off">
 
-    .module-image {
-      flex: 1; /* Prend autant d'espace que possible */
-    }
+      <!-- Bouton effacer -->
+      <button 
+        *ngIf="searchTerm" 
+        class="btn clear-btn" 
+        type="button"
+        (click)="clearSearch()"
+        title="Effacer la recherche">
+        <i class="bi bi-x-circle"></i>
+      </button>
+    </div>
+  </div>
+</div>
 
-    .support-image-large {
-      width: 100%;
-      max-height: 200px; /* Hauteur maximale pour toutes les images */
-      object-fit: cover; /* Assure que l'image s'adapte sans déformation */
-      border-radius: 8px;
-    }
 
-    .module-content {
-      flex: 2; /* Prend deux fois plus d'espace que l'image */
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+  <!-- Résultats de recherche -->
+  <div *ngIf="isSearchActive" class="search-results-header mb-4">
+    <div class="search-info">
+      <h3>
+        <i class="bi bi-search"></i>
+        Résultats de recherche pour : "{{ searchTerm }}"
+      </h3>
+      <p *ngIf="hasSearchResults()" class="search-count">
+        {{ getSearchResultsCount() }} module(s) trouvé(s)
+      </p>
+      <p *ngIf="!hasSearchResults()" class="no-results">
+        <i class="bi bi-info-circle"></i>
+        Aucun module trouvé pour votre recherche
+      </p>
+    </div>
+  </div>
 
-    .module-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin: 0;
-    }
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    <i class="bi bi-exclamation-triangle"></i>
+    {{ errorMessage }}
+  </div>
 
-    .module-time {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      color: #6c757d; /* Couleur secondaire */
-    }
+  <!-- Boucle sur les jours -->
+  <div *ngFor="let day of getDisplayedDays()" class="day-container">
+    <!-- En-tête du jour -->
+    <div class="day-header-container">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="day-header">
+          <i class="bi bi-calendar-day"></i>
+          Day{{ day }}
+        </h2>
+        <div class="day-badge">
+          {{ objectKeys(getDisplayedMetadata()[day] || {}).length }} module(s)
+        </div>
+      </div>
 
-    .time-icon {
-      font-size: 1.2rem;
-    }
-
-    .module-expectations {
-      margin-top: 10px;
-    }
-
-    .module-expectations ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-
-    .module-expectations li {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-bottom: 5px;
-    }
-
-    .bi-check-circle {
-      color: #28a745; /* Couleur verte pour les icônes de validation */
-    }
-
-    /* Style pour les boutons */
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background-color: #007bff;
-      color: white;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    /* Style pour les supports (images, PDF, etc.) */
-    .support-item {
-      margin-bottom: 10px;
-    }
-
-    .support-image {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    /* Effet de survol pour indiquer que le module est cliquable */
-    .module-container:hover {
-      background-color: #f2f2f2; /* Changement de couleur au survol */
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div *ngFor="let day of objectKeys(groupedMetadata)" class="day-container">
-      <h2 class="day-header">Day {{ day }}</h2>
-
-      <div class="day-expectations">
-        <h4>Expectations:</h4>
-        <ul>
-          <li *ngFor="let expectation of getDayExpectations(day)">
-            <i class="bi bi-check-circle"></i> {{ expectation }}
+      <!-- Attentes du jour (masquées en mode recherche) -->
+      <div class="day-expectations" *ngIf="!isSearchActive">
+        <h4>
+          <i class="bi bi-bullseye"></i>
+          Expectations of The Day
+        </h4>
+        <ul class="list-unstyled expectations-list">
+          <li *ngFor="let expectation of getDayExpectations(day)" 
+              class="d-flex align-items-start gap-2 mb-2">
+            <i class="bi bi-check-circle text-success mt-1"></i>
+            <div class="bilingual-text">
+              <span class="text-en">{{ getEnglishText(expectation) }}</span>
+              <span class="text-ar" dir="rtl">{{ getArabicText(expectation) }}</span>
+            </div>
           </li>
         </ul>
       </div>
+    </div>
 
-      <div *ngIf="groupedMetadata[day] && objectKeys(groupedMetadata[day]).length > 0">
-        <div *ngFor="let modelName of objectKeys(groupedMetadata[day])" class="module-container" (click)="toggleModel(modelName)">
+    <!-- Modules du jour -->
+    <div *ngIf="getDisplayedMetadata()[day] && objectKeys(getDisplayedMetadata()[day]).length > 0" 
+         class="modules-container">
+      <div *ngFor="let modelName of objectKeys(getDisplayedMetadata()[day])" 
+           class="module-container">
+        <!-- En-tête du module (cliquable) -->
+        <div class="module-header" 
+             (click)="toggleModel(modelName)"
+             [class.expanded]="expandedModel === modelName"
+             [class.highlighted]="isModuleHighlighted(modelName)">
           <div class="module-image">
-            <img [src]="modelImages[modelName]" alt="{{ modelName }} image" class="support-image-large" />
+            <img [src]="modelImages[modelName] || 'assets/images/default-module-image.jpg'" 
+                 [alt]="modelName" 
+                 class="support-image-large"
+                 onerror="this.src='assets/images/default-module-image.jpg'" />
+          </div>
+          
+          <div class="module-content">
+            <h3 class="module-title" [innerHTML]="highlightSearchTerm(modelName)"></h3>
+            <div class="module-meta">
+              <div class="module-time">
+                <i class="bi bi-clock"></i>
+                <span>{{ modelInfos[modelName]?.time || 'N/A' }}</span>
+              </div>
+              <div class="module-video-count" *ngIf="hasVideos(day, modelName)">
+                <i class="bi bi-play-circle"></i>
+                <span>{{ getAllVideosForModel(day, modelName).length }} vidéo(s)</span>
+              </div>
+            </div>
+            <div class="module-summary" *ngIf="modelInfos[modelName]">
+              <p class="module-description bilingual-text">
+                <span class="text-en">{{ truncateExpectation(getEnglishText(modelInfos[modelName].expectations[0]), 150) }}</span>
+                <span class="text-ar" dir="rtl">{{ truncateExpectation(getArabicText(modelInfos[modelName].expectations[0]), 150) }}</span>
+              </p>
+            </div>
+          </div>
+          
+          <div class="expansion-indicator">
+            <i class="bi transition-icon" 
+               [class.bi-chevron-down]="expandedModel !== modelName" 
+               [class.bi-chevron-up]="expandedModel === modelName"></i>
+          </div>
+        </div>
+
+        <!-- Contenu du module (axes d'apprentissage) -->
+        <div *ngIf="expandedModel === modelName" class="expectations-container">
+          <!-- En-tête des axes -->
+          <div class="expectations-header">
+            <h4>
+              <i class="bi bi-list-check"></i>
+              Axes d'apprentissage
+            </h4>
+            <p class="expectations-subtitle">
+              Cliquez sur un axe pour voir les vidéos correspondantes
+            </p>
           </div>
 
-          <div class="module-content">
-            <div>
-              <h3 class="module-title">{{ modelName }}</h3>
-              <div class="module-time">
-                <i class="bi bi-clock time-icon"></i>
-                {{ modelInfos[modelName]?.time }}
+          <!-- Liste des axes -->
+          <div *ngIf="modelInfos[modelName]" class="expectations-list-container">
+            <div *ngFor="let expectation of modelInfos[modelName].expectations; let i = index" 
+                 class="expectation-item">
+              <!-- En-tête de l'axe (cliquable) -->
+              <div class="expectation-header" 
+                   (click)="toggleExpectation(expectation, $event)"
+                   [class.expanded]="expandedExpectation === expectation">
+                <div class="expectation-icon">
+                  <i class="bi bi-target"></i>
+                </div>
+                <div class="expectation-content">
+                  <div class="expectation-title">
+                    Axe {{ i + 1 }}
+                  </div>
+                  <div class="expectation-text bilingual-text">
+                    <span class="text-en">{{ truncateExpectation(getEnglishText(expectation), 120) }}</span>
+                    <span class="text-ar" dir="rtl">{{ truncateExpectation(getArabicText(expectation), 120) }}</span>
+                  </div>
+                  <div class="expectation-video-count">
+                    <i class="bi bi-play-btn"></i>
+                    {{ getVideoCountForExpectation(day, modelName, expectation) }} vidéo(s)
+                  </div>
+                </div>
+                <div class="expectation-expansion">
+                  <i class="bi transition-icon" 
+                     [class.bi-chevron-down]="expandedExpectation !== expectation" 
+                     [class.bi-chevron-up]="expandedExpectation === expectation"></i>
+                </div>
+              </div>
+
+              <!-- Vidéos pour cet axe -->
+              <div *ngIf="expandedExpectation === expectation" class="videos-container">
+                <div class="videos-header">
+                  <h5>
+                    <i class="bi bi-collection-play"></i>
+                    Vidéos pour cet axe
+                  </h5>
+                </div>
+                <div class="videos-grid">
+                  <div *ngFor="let support of getVideosForExpectation(day, modelName, expectation)" 
+                       class="support-item">
+                    <div class="support-header">
+                      <h6>
+                        <i class="bi bi-play-circle"></i>
+                        {{ support.filename }}
+                      </h6>
+                    </div>
+                    <div class="video-container">
+                      <video controls 
+                             width="100%" 
+                             height="auto"
+                             preload="metadata"
+                             (error)="onVideoError($event)"
+                             class="support-video">
+                        <source [src]="sanitizeUrl(support.url)" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de vidéos HTML5.
+                      </video>
+                    </div>
+                    <div class="support-details">
+                      <div class="detail-item" *ngIf="support.description">
+                        <strong>
+                          <i class="bi bi-info-circle"></i>
+                          Description:
+                        </strong>
+                        <span>{{ support.description }}</span>
+                      </div>
+                      <div class="detail-item" *ngIf="support.tags && support.tags.length > 0">
+                        <strong>
+                          <i class="bi bi-tags"></i>
+                          Mots-clés:
+                        </strong>
+                        <div class="tags-container">
+                          <span *ngFor="let tag of support.tags" class="tag">{{ tag }}</span>
+                        </div>
+                      </div>
+                      <div class="detail-item" *ngIf="support.expectation">
+                        <strong>
+                          <i class="bi bi-bullseye"></i>
+                          Attente:
+                        </strong>
+                        <div class="bilingual-text">
+                          <span class="text-en">{{ getEnglishText(support.expectation) }}</span>
+                          <span class="text-ar" dir="rtl">{{ getArabicText(support.expectation) }}</span>
+                        </div>
+                      </div>
+                      <div class="detail-item" *ngIf="support.upload_date">
+                        <strong>
+                          <i class="bi bi-calendar-upload"></i>
+                          Date de téléversement:
+                        </strong>
+                        <span>{{ support.upload_date | date:'short' }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="getVideosForExpectation(day, modelName, expectation).length === 0" 
+                       class="no-videos-message">
+                    <div class="no-videos-content">
+                      <i class="bi bi-info-circle"></i>
+                      <div class="no-videos-text">
+                        <h6>Aucune vidéo spécifique</h6>
+                        <p>Aucune vidéo n'a été trouvée pour cet axe d'apprentissage spécifique.</p>
+                        <p>Vous pouvez consulter toutes les vidéos du module ci-dessous.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div *ngIf="modelInfos[modelName]" class="module-info">
-              <div class="module-expectations">
-                <p><strong>Expectations:</strong></p>
-                <ul>
-                  <li *ngFor="let expectation of modelInfos[modelName].expectations">
-                    <i class="bi bi-check-circle"></i> {{ expectation }}
-                  </li>
-                </ul>
+            <!-- Section pour toutes les vidéos du module -->
+            <div class="expectation-item">
+              <div class="expectation-header special-section" 
+                   (click)="toggleExpectation('all-videos', $event)"
+                   [class.expanded]="expandedExpectation === 'all-videos'">
+                <div class="expectation-icon">
+                  <i class="bi bi-collection-play"></i>
+                </div>
+                <div class="expectation-content">
+                  <div class="expectation-title">
+                    Toutes les vidéos du module
+                  </div>
+                  <div class="expectation-text">
+                    Accédez à l'ensemble des vidéos disponibles pour ce module
+                  </div>
+                  <div class="expectation-video-count">
+                    <i class="bi bi-play-btn"></i>
+                    {{ getAllVideosForModel(day, modelName).length }} vidéo(s) au total
+                  </div>
+                </div>
+                <div class="expectation-expansion">
+                  <i class="bi transition-icon" 
+                     [class.bi-chevron-down]="expandedExpectation !== 'all-videos'" 
+                     [class.bi-chevron-up]="expandedExpectation === 'all-videos'"></i>
+                </div>
               </div>
-            </div>
-
-            <div *ngIf="expandedModel === modelName" class="card-content">
-              <div *ngFor="let support of groupedMetadata[day][modelName]" class="support-item">
-                <h5>{{ support.filename }}</h5>
-                <p class="card-description">{{ support.expectation }}</p>
-
-                <div *ngIf="support.filename?.endsWith('.pdf')">
-                  <button (click)="viewSupport(support)">Voir le PDF</button>
+              <div *ngIf="expandedExpectation === 'all-videos'" class="videos-container">
+                <div class="videos-header">
+                  <h5>
+                    <i class="bi bi-collection-play"></i>
+                    Toutes les vidéos du module
+                  </h5>
                 </div>
-
-                <div *ngIf="support.filename?.endsWith('.jpg') || support.filename?.endsWith('.png')">
-                  <img [src]="support.url" alt="{{ support.filename }}" class="support-image" />
-                  <button (click)="viewSupport(support)">Voir l'image</button>
-                </div>
-
-                <div *ngIf="support.filename?.endsWith('.mp4') || support.filename?.endsWith('.mov')">
-                  <button (click)="viewSupport(support)">Voir la vidéo</button>
+                <div class="videos-grid">
+                  <div *ngFor="let support of getAllVideosForModel(day, modelName)" 
+                       class="support-item">
+                    <div class="support-header">
+                      <h6>
+                        <i class="bi bi-play-circle"></i>
+                        {{ support.filename }}
+                      </h6>
+                    </div>
+                    <div class="video-container">
+                      <video controls 
+                             width="100%" 
+                             height="auto"
+                             preload="metadata"
+                             (error)="onVideoError($event)"
+                             class="support-video">
+                        <source [src]="sanitizeUrl(support.url)" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de vidéos HTML5.
+                      </video>
+                    </div>
+                    <div class="support-details">
+                      <div class="detail-item" *ngIf="support.description">
+                        <strong>
+                          <i class="bi bi-info-circle"></i>
+                          Description:
+                        </strong>
+                        <span>{{ support.description }}</span>
+                      </div>
+                      <div class="detail-item" *ngIf="support.tags && support.tags.length > 0">
+                        <strong>
+                          <i class="bi bi-tags"></i>
+                          Mots-clés:
+                        </strong>
+                        <div class="tags-container">
+                          <span *ngFor="let tag of support.tags" class="tag">{{ tag }}</span>
+                        </div>
+                      </div>
+                      <div class="detail-item" *ngIf="support.expectation">
+                        <strong>
+                          <i class="bi bi-bullseye"></i>
+                          Attente:
+                        </strong>
+                        <div class="bilingual-text">
+                          <span class="text-en">{{ getEnglishText(support.expectation) }}</span>
+                          <span class="text-ar" dir="rtl">{{ getArabicText(support.expectation) }}</span>
+                        </div>
+                      </div>
+                      <div class="detail-item" *ngIf="support.upload_date">
+                        <strong>
+                          <i class="bi bi-calendar-upload"></i>
+                          Date de téléversement:
+                        </strong>
+                        <span>{{ support.upload_date | date:'short' }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="getAllVideosForModel(day, modelName).length === 0" 
+                       class="no-videos-message">
+                    <div class="no-videos-content">
+                      <i class="bi bi-info-circle"></i>
+                      <div class="no-videos-text">
+                        <h6>Aucune vidéo disponible</h6>
+                        <p>Aucune vidéo n'a été trouvée pour ce module.</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -194,6 +392,86 @@
         </div>
       </div>
     </div>
+
+    <!-- Bouton pour lancer le test du jour (masqué en mode recherche) -->
+    <div class="test-button-container mt-4" *ngIf="!isSearchActive">
+      <a [routerLink]="['/test']" [queryParams]="{ day: day }" class="btn btn-primary">
+        <i class="bi bi-pencil-square"></i>
+        Pass Test Day{{ day }}
+      </a>
+    </div>
   </div>
-</body>
-</html>
+
+  <!-- Message si aucun résultat en mode recherche -->
+  <div *ngIf="isSearchActive && !hasSearchResults()" class="no-search-results">
+    <div class="no-results-content">
+      <i class="bi bi-search"></i>
+      <h4>Aucun module trouvé</h4>
+      <p>Essayez avec d'autres mots-clés ou <button class="btn btn-link p-0" (click)="clearSearch()">effacez votre recherche</button> pour voir tous les modules.</p>
+    </div>
+  </div>
+</div>
+<div class="loading-container" *ngIf="isLoading">
+  <!-- Barre de recherche skeleton -->
+  <div class="skeleton-search-container mb-4">
+    <div class="skeleton-search-box">
+      <div class="skeleton-input-group">
+        <span class="skeleton-search-icon skeleton-element"></span>
+        <div class="skeleton-input skeleton-element"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skeleton pour les jours/modules -->
+  <div *ngFor="let item of getSkeletonItems(3)" class="skeleton-day-container">
+    <!-- En-tête du jour -->
+    <div class="skeleton-day-header-container">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="skeleton-day-header skeleton-element"></div>
+        <div class="skeleton-day-badge skeleton-element"></div>
+      </div>
+
+      <!-- Attentes du jour -->
+      <div class="skeleton-day-expectations">
+        <div class="skeleton-expectations-title skeleton-element mb-3"></div>
+        <div *ngFor="let exp of getSkeletonItems(3)" class="skeleton-expectation-item">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <div class="skeleton-check-icon skeleton-element"></div>
+            <div class="skeleton-expectation-text skeleton-element"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modules skeleton -->
+    <div class="skeleton-modules-container">
+      <div *ngFor="let module of getSkeletonItems(2)" class="skeleton-module-container">
+        <!-- En-tête du module -->
+        <div class="skeleton-module-header">
+          <div class="skeleton-module-image skeleton-element"></div>
+          
+          <div class="skeleton-module-content">
+            <div class="skeleton-module-title skeleton-element mb-2"></div>
+            <div class="skeleton-module-meta mb-2">
+              <div class="skeleton-time-info skeleton-element"></div>
+              <div class="skeleton-video-count skeleton-element"></div>
+            </div>
+            <div class="skeleton-module-description">
+              <div class="skeleton-description-line skeleton-element mb-1"></div>
+              <div class="skeleton-description-line skeleton-element short"></div>
+            </div>
+          </div>
+          
+          <div class="skeleton-expansion-indicator skeleton-element"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bouton de test skeleton -->
+    <div class="skeleton-test-button-container mt-4">
+      <div class="skeleton-test-button skeleton-element"></div>
+    </div>
+  </div>
+
+
+</div>

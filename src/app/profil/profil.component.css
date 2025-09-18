@@ -1,0 +1,415 @@
+/* Custom styles for the profile component */
+
+/* Global Variables for Consistency */
+:root {
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    --purple-color: #6f42c1;
+    --orange-color: #fd7e14;
+    --light-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --background-light: #f8f9fa;
+    --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+}
+
+/* Loading and Error Screens */
+.loading-screen, .error-screen {
+    min-height: 100vh;
+    background-color: var(--background-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity var(--transition-speed) ease-in-out;
+}
+
+.loading-card, .error-card {
+    max-width: 400px;
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed) ease-in-out;
+}
+
+.loading-card:hover, .error-card:hover {
+    transform: translateY(-5px);
+}
+
+.loading-card .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.4em;
+}
+
+/* Avatar Styles */
+.avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+    line-height: 100px;
+    text-transform: uppercase;
+    border-radius: 50%;
+    transition: box-shadow var(--transition-speed) ease-in-out;
+}
+
+.avatar-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right:-990px;
+    border-radius: 50%;
+    border: 2px solid var(--light-gray);
+}
+
+.avatar-section:hover .avatar, .avatar-section:hover .avatar-img {
+    box-shadow: var(--card-shadow);
+}
+
+/* Status Badges */
+.status-badge.active {
+    background-color: var(--success-color) !important;
+    color: white;
+}
+
+.status-badge.inactive {
+    background-color: var(--danger-color) !important;
+    color: white;
+}
+
+.status-badge.pending {
+    background-color: var(--warning-color) !important;
+    color: black;
+}
+
+/* Progress Bars */
+.progress-bar-container {
+    background-color: var(--light-gray);
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+    height: 100%;
+    transition: width var(--transition-speed) ease-in-out;
+}
+
+.week-progress-bar {
+    background-color: var(--light-gray);
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 8px 0;
+}
+
+.week-progress-fill {
+    background-color: var(--success-color);
+    height: 100%;
+    transition: width var(--transition-speed) ease-in-out;
+}
+
+/* Stat Cards */
+.stat-card {
+    border-radius: 8px;
+    transition: transform var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--card-shadow);
+}
+
+.stat-blue {
+    background-color: #e7f1ff;
+    color: var(--primary-color);
+}
+
+.stat-green {
+    background-color: #e6ffed;
+    color: var(--success-color);
+}
+
+.stat-purple {
+    background-color: #f3e8ff;
+    color: var(--purple-color);
+}
+
+.stat-orange {
+    background-color: #fff3e0;
+    color: var(--orange-color);
+}
+
+.stat-value {
+    font-size: 2.2rem;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size:1.6rem;
+    text-transform: uppercase;
+    opacity: 0.8;
+    color: #e3f2fd;
+}
+
+/* Chart Bars */
+.chart-bars {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: flex-end;
+    height: 200px;
+    padding: 10px;
+    background-color: var(--background-light);
+    border-radius: 8px;
+}
+
+.chart-bar {
+    flex: 1;
+    max-width: 50px;
+    text-align: center;
+}
+
+.bar-fill {
+    background-color: var(--primary-color);
+    width: 100%;
+    border-radius: 4px;
+    transition: height var(--transition-speed) ease-in-out, background-color var(--transition-speed) ease-in-out;
+}
+
+.bar-fill.success {
+    background-color: var(--success-color);
+}
+
+.bar-fill.warning {
+    background-color: var(--warning-color);
+}
+
+.bar-fill.danger {
+    background-color: var(--danger-color);
+}
+
+.bar-label {
+    font-size: 1.8rem;
+    color: var(--dark-gray);
+    margin-top: 5px;
+}
+
+/* Achievement Cards */
+.achievement-card {
+    border-radius: 8px;
+    opacity: 0.5;
+    transition: opacity var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
+}
+
+.achievement-card.earned {
+    opacity: 1;
+}
+
+.achievement-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--card-shadow);
+}
+
+.achievement-icon i {
+    color: var(--warning-color);
+}
+
+.achievement-card.earned .achievement-icon i {
+    color: var(--success-color);
+}
+
+/* Tabs */
+.nav-tabs .nav-link {
+    color: var(--dark-gray);
+    transition: color var(--transition-speed) ease-in-out, background-color var(--transition-speed) ease-in-out;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--primary-color);
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    background-color: var(--background-light);
+    border-color: var(--primary-color);
+}
+
+.nav-tabs .nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Test Items */
+.test-item {
+    border-radius: 8px;
+    transition: transform var(--transition-speed) ease-in-out;
+}
+
+.test-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--card-shadow);
+}
+
+.test-score.success {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.test-score.warning {
+    color: var(--warning-color);
+    font-weight: bold;
+}
+
+.test-score.danger {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+/* Time Cards */
+.time-card {
+    border-radius: 8px;
+    transition: transform var(--transition-speed) ease-in-out;
+}
+
+.time-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--card-shadow);
+}
+
+.time-icon {
+    color: var(--primary-color);
+}
+
+.time-value {
+    font-size: 2.25rem;
+    font-weight: bold;
+}
+
+/* Profile Details */
+.detail-card {
+    border-radius: 8px;
+    transition: transform var(--transition-speed) ease-in-out;
+}
+
+.detail-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--card-shadow);
+}
+
+/* Text Styles */
+.no-data {
+    color: var(--dark-gray);
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+.warning-text {
+    color: var(--danger-color);
+    font-weight: bold;
+    text-align: center;
+}
+
+.success-text {
+    color: var(--success-color);
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Accessibility Enhancements */
+button:focus, .nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+@media (max-width: 576px) {
+    .avatar, .avatar-img {
+        width: 80px;
+        height: 80px;
+        font-size: 2.8rem;
+        line-height: 80px;
+    }
+
+    .stat-value {
+        font-size: 2.2rem;
+    }
+
+    .chart-bars {
+        height: 150px;
+    }
+
+    .chart-bar {
+        max-width: 40px;
+    }
+}
+/* Stat Cards */
+.stat-card {
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  height: 100%;
+}
+.stat-card.stat-blue {
+  background-color: #e3f2fd; /* Light blue */
+}
+.stat-card.stat-green {
+  background-color: #e8f5e9; /* Light green */
+}
+.stat-card.stat-purple {
+  background-color: #f3e5f5; /* Light purple */
+}
+.stat-card .stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.stat-card .stat-label {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Status Badges */
+.badge {
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 12px;
+}
+.badge-success {
+  background-color: #28a745; /* Green for "Admis" */
+  color: white;
+}
+.badge-danger {
+  background-color: #dc3545; /* Red for "Non admis" */
+  color: white;
+}
+.badge-warning {
+  background-color: #ffc107; /* Orange for "En cours" */
+  color: black;
+}
+.badge-secondary {
+  background-color: #6c757d; /* Gray for "Non passé" */
+  color: white;
+}
+
+/* Avatar Section */
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.avatar {
+  width: 100px;
+  height: 100px;
+  font-size: 2rem;
+  line-height: 100px;
+}
+.avatar-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}

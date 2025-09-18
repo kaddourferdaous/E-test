@@ -1,0 +1,599 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <header class="custom-header" id="header">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4 py-2">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://vectorseek.com/wp-content/uploads/2023/08/Yazaki-Logo-Vector.svg-.png" alt="Yazaki Logo" class="logo-img">
+            </a>
+
+            <!-- Search Bar -->
+            <div class="search-container mx-3">
+                <input type="search" class="search-input" placeholder="Search Courses" aria-label="Search courses">
+                <button class="search-btn" type="button" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="nav justify-content-center flex-grow-1" aria-label="Main navigation">
+                <a class="nav-link " href="/" aria-current="page">Home</a>
+                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="/supp">Courses</a>
+                <a class="nav-link" href="/quiz">Test</a>
+                <div class="nav-dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">Add Survey</a>
+                    <div class="dropdown-content">
+                        <a href="/traineeTheoriqueForm">Theoretical</a>
+                        <a href="/traineePratiqueForm">Practical</a>
+                        <a href="/traineeOjtForm">OJT</a>
+                    </div>
+                </div>
+                <a class="nav-link" href="/contact">Contact</a>
+            </nav>
+
+            <!-- Logout Button -->
+            <a class="btn-logout" href="#" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-1"></i> Log Out
+            </a>
+        </div>
+    </header>
+<!-- Chronomètre fixe en haut à droite -->
+<div class="quiz-timer-fixed" style="position: fixed; top: 15px; right: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px; padding: 15px 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); z-index: 1000; min-width: 200px; text-align: center; backdrop-filter: blur(10px);">
+  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 5px;">
+    <i class="fas fa-stopwatch" style="color: #ffd700;"></i>
+    <span style="font-weight: bold; font-size: 14px;">الوقت المنقضي</span>
+  </div>
+  <div style="font-size: 24px; font-weight: bold; font-family: 'Consolas', monospace; letter-spacing: 1px;">
+    {{ elapsedTime }}
+  </div>
+  <div style="font-size: 11px; opacity: 0.8; margin-top: 3px;">
+    منذ بدء الاختبار
+  </div>
+</div>
+
+<!-- En-tête du quiz avec informations -->
+<div class="quiz-header" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 20px; margin-bottom: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);" dir="rtl">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 250px;">
+      <h2 style="margin: 0; color: #2c3e50; font-size: 28px; font-weight: bold;">
+        <i class="fas fa-clipboard-check" style="color: #3498db; margin-left: 10px;"></i>
+      
+      </h2>
+      <div style="margin-top: 8px; color: #7f8c8d;">
+        <span style="margin-left: 20px;">
+          <i class="fas fa-user" style="color: #e74c3c; margin-left: 5px;"></i>
+          {{ candidateEmail }}
+        </span>
+        <span>
+          <i class="fas fa-question-circle" style="color: #f39c12; margin-left: 5px;"></i>
+          {{ questions.length }} سؤال
+        </span>
+      </div>
+    </div>
+    
+    <!-- <div class="timer-stats" style="text-align: center; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; min-width: 200px;">
+      <div style="font-size: 20px; font-weight: bold; color: #27ae60; margin-bottom: 5px;">
+        <i class="fas fa-clock" style="margin-left: 8px;"></i>
+        {{ elapsedTime }}
+      </div>
+      <div style="font-size: 12px; color: #7f8c8d; margin-bottom: 3px;">الوقت الإجمالي</div>
+      <div style="font-size: 11px; color: #95a5a6;">
+        متوسط: {{ getAverageTimePerQuestion() }} لكل سؤال
+      </div>
+    </div> -->
+  </div>
+</div>
+
+<!-- شريط التقدم -->
+<div class="progress-bar" style="background: #ecf0f1; border-radius: 10px; padding: 3px; margin-bottom: 20px;" dir="rtl">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px;">
+    <!-- <span style="font-weight: bold; color: #2c3e50;">
+      <i class="fas fa-tasks" style="color: #3498db; margin-left: 5px;"></i>
+      تقدم الاختبار: {{ getProgressPercentage() }}%
+    </span> -->
+    <span style="color: #7f8c8d; font-size: 14px;">
+      <i class="fas fa-hourglass-half" style="margin-left: 5px;"></i>
+      الوقت: {{ elapsedTime }}
+    </span>
+  </div>
+  <!-- Barre de progression visuelle -->
+  <div style="background: #bdc3c7; height: 8px; border-radius: 4px; overflow: hidden;">
+    <!-- <div style="background: linear-gradient(90deg, #27ae60, #2ecc71); height: 100%; transition: width 0.3s ease;" [style.width.%]="getProgressPercentage()"></div> -->
+  </div>
+</div>
+
+<!-- عرض الأسئلة -->
+<div *ngIf="questions.length > 0" dir="rtl">
+  <div *ngFor="let question of questions; let questionIndex = index" class="question-container" 
+       style="background: white; margin-bottom: 25px; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); border-right: 5px solid #3498db; position: relative;">
+    
+    <!-- رقم السؤال والوقت -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #ecf0f1;">
+      <h3 style="margin: 0; color: #2c3e50; font-size: 18px;">
+        <span style="background: #3498db; color: white; padding: 5px 12px; border-radius: 50%; margin-left: 10px; font-size: 14px;">
+          {{ questionIndex + 1 }}
+        </span>
+        {{ question.texte }}
+      </h3>
+      <div style="text-align: center; font-size: 12px; color: #95a5a6; display: flex; flex-direction: column; align-items: center;">
+        <div style="margin-bottom: 3px;">
+          <i class="fas fa-stopwatch" style="margin-left: 3px;"></i>
+          {{ elapsedTime }}
+        </div>
+        <div style="font-size: 10px; opacity: 0.7;">
+          الوقت المنقضي
+        </div>
+      </div>
+    </div>
+
+    <!-- عرض حسب نوع السؤال -->
+    <div [ngSwitch]="question.type.toUpperCase()">
+
+  
+  <!-- الإجابة الحرة -->
+  <div *ngSwitchCase="'LIBRE'" class="mb-4">
+    <div style="position: relative;">
+      <textarea 
+        [id]="'libre_question_' + questionIndex + '_' + (question._id?.$oid || question.id)"
+        class="form-control" 
+        rows="5"
+        [(ngModel)]="libreAnswers[question._id?.$oid || question.id]"
+        (change)="updateLibreAnswer(question._id?.$oid || question.id, libreAnswers[question._id?.$oid || question.id])"
+        placeholder="اكتب إجابتك هنا..."
+        style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; resize: vertical; transition: border-color 0.3s ease;"
+      ></textarea>
+      <div style="position: absolute; bottom: 10px; left: 10px; font-size: 12px; color: #95a5a6; display: flex; gap: 15px;">
+        <span>
+          <i class="fas fa-clock" style="margin-left: 3px;"></i>
+          {{ elapsedTime }}
+        </span>
+        <span>
+          <i class="fas fa-keyboard" style="margin-left: 3px;"></i>
+          {{ getCharacterCount(question._id?.$oid || question.id) }} حرف
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- الترتيب -->
+  <div *ngSwitchCase="'ORDONNER'">
+    <div style="background: #e8f4fd; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+      <p style="margin: 0; font-weight: bold; color: #2980b9;">
+        <i class="fas fa-sort-numeric-down" style="margin-left: 8px;"></i>
+        قم بترتيب الخطوات بالترتيب الزمني:
+      </p>
+    </div>
+    <div class="cable-flow-grid" style="display: grid; gap: 15px;">
+      <div *ngFor="let etape of question.etapes; let i = index" 
+           class="cable-flow-item" 
+           style="display: flex; align-items: center; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 2px solid #dee2e6; transition: all 0.3s ease;">
+        <div class="cable-flow-label" style="flex: 1; font-weight: 500; color: #2c3e50;">
+          {{ etape.texte_etape }}
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 14px; color: #7f8c8d;">الترتيب:</span>
+          <input
+            type="number"
+            class="order-input"
+            [id]="'order_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_etape_' + i"
+            [(ngModel)]="userOrder[etape.texte_etape]"
+            (change)="updateOrderAnswer(question._id?.$oid || question.id, etape.texte_etape, $event)"
+            min="1"
+            [max]="question.etapes.length"
+            placeholder="رقم"
+            style="width: 70px; padding: 8px; border: 2px solid #ddd; border-radius: 5px; text-align: center; font-weight: bold;"
+            required />
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- QCM - Version corrigée avec names uniques -->
+  <div *ngSwitchCase="'QCM'">
+    <div *ngIf="question.reponses && question.reponses.length > 0">
+      <ul style="list-style: none; padding: 0;">
+        <li *ngFor="let reponse of question.reponses; let i = index"
+            [style.margin-bottom.px]="12"
+            [style.padding.px]="12"
+            [style.font-size]="20"
+            [style.border-radius.px]="8"
+            [style.border]="'2px solid ' + (isAnswerSelectedByIndex(question, i) ? '#27ae60' : 'transparent')"
+            [style.transition]="'all 0.3s ease'"
+            [style.background-color]="isAnswerSelectedByIndex(question, i) ? '#d4edda' : '#ffffff'">
+          
+          <label style="display: flex; align-items: center; cursor: pointer; font-weight: 500;"
+                 [style.color]="isAnswerSelectedByIndex(question, i) ? '#155724' : 'black'">
+            
+            <input 
+              type="checkbox"
+              [name]="'qcm_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_option_' + i"
+              [id]="'qcm_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_option_' + i"
+              [checked]="isAnswerSelectedByIndex(question, i)"
+              (change)="toggleAnswerByIndex(question, i, $event)"
+              style="margin-left: 10px; transform: scale(1.2);" />
+            
+            <span style="margin-left: 10px;">{{ reponse.texte_reponse }}</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+ <div *ngSwitchCase="'MULTI_VRAI_FAUX'">
+  <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+    <p style="margin: 0; font-weight: bold; color: #856404;">
+      <i class="fas fa-check-double" style="margin-left: 8px;"></i>
+      حدد ما إذا كانت العبارات التالية صحيحة (✓ص) أو خاطئة (✗خ):
+    </p>
+  </div>
+  <ul class="multi-true-false-list" style="list-style: none; padding: 0;">
+    <li *ngFor="let option of question.options; let i = index" 
+        class="multi-option"
+        style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 2px solid #dee2e6;">
+      <div class="option-container" style="display: flex; justify-content: space-between; align-items: center;">
+        <span class="option-text" style="flex: 1; font-weight: 500; color: #2c3e50;">{{ option.texte_option }}</span>
+        <div class="response-buttons" style="display: flex; gap: 10px;">
+          <label class="true-false-button true-btn" 
+                 style="display: flex; align-items: center; padding: 8px 15px; background: #d4edda; border: 2px solid #c3e6cb; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;"
+                 [style.background]="getMultiTrueFalseAnswer(question, i) === true ? '#27ae60' : '#d4edda'"
+                 [style.color]="getMultiTrueFalseAnswer(question, i) === true ? 'white' : '#155724'">
+            <input
+              type="radio"
+              [name]="'multi_tf_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_option_' + i"
+              [id]="'multi_tf_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_option_' + i + '_true'"
+              [value]="'true'"
+              [checked]="getMultiTrueFalseAnswer(question, i) === true"
+              (change)="updateMultiTrueFalseAnswer(question, i, true)"
+              style="margin-left: 5px;" />
+            <span class="true-label">✓ ص</span>
+          </label>
+          <label class="true-false-button false-btn"
+                 style="display: flex; align-items: center; padding: 8px 15px; background: #f8d7da; border: 2px solid #f5c6cb; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;"
+                 [style.background]="getMultiTrueFalseAnswer(question, i) === false ? '#e74c3c' : '#f8d7da'"
+                 [style.color]="getMultiTrueFalseAnswer(question, i) === false ? 'white' : '#721c24'">
+            <input
+              type="radio"
+              [name]="'multi_tf_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_option_' + i"
+              [id]="'multi_tf_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_option_' + i + '_false'"
+              [value]="'false'"
+              [checked]="getMultiTrueFalseAnswer(question, i) === false"
+              (change)="updateMultiTrueFalseAnswer(question, i, false)"
+              style="margin-left: 5px;" />
+            <span class="false-label">✗ خ</span>
+          </label>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- CORRECTION VRAI_FAUX -->
+<div *ngSwitchCase="'VRAI_FAUX'">
+  <div class="true-false-options">
+    <div class="option-container" *ngFor="let reponse of question.reponses; let i = index"
+         style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 2px solid #dee2e6;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span class="option-text" style="flex: 1; font-weight: 500; color: #2c3e50;">{{ reponse.texte_reponse }}</span>
+        <div class="true-false-buttons" style="display: flex; gap: 10px;">
+          <label class="true-false-button"
+                 style="display: flex; align-items: center; padding: 8px 15px; background: #d4edda; border: 2px solid #c3e6cb; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;"
+                 [style.background]="getMultiTrueFalseAnswer(question, i) === true ? '#27ae60' : '#d4edda'"
+                 [style.color]="getMultiTrueFalseAnswer(question, i) === true ? 'white' : '#155724'">
+            <input
+              type="radio"
+              [name]="'vrai_faux_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_reponse_' + i"
+              [id]="'vrai_faux_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_reponse_' + i + '_true'"
+              [value]="'true'"
+              [checked]="getMultiTrueFalseAnswer(question, i) === true"
+              (change)="updateMultiTrueFalseAnswer(question, i, true)"
+              style="margin-left: 5px;" />
+            <span class="true-label">صحيح</span>
+          </label>
+          <label class="true-false-button"
+                 style="display: flex; align-items: center; padding: 8px 15px; background: #f8d7da; border: 2px solid #f5c6cb; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;"
+                 [style.background]="getMultiTrueFalseAnswer(question, i) === false ? '#e74c3c' : '#f8d7da'"
+                 [style.color]="getMultiTrueFalseAnswer(question, i) === false ? 'white' : '#721c24'">
+            <input
+              type="radio"
+              [name]="'vrai_faux_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_reponse_' + i"
+              [id]="'vrai_faux_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_reponse_' + i + '_false'"
+              [value]="'false'"
+              [checked]="getMultiTrueFalseAnswer(question, i) === false"
+              (change)="updateMultiTrueFalseAnswer(question, i, false)"
+              style="margin-left: 5px;" />
+            <span class="false-label">خاطئ</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+
+  <!-- المطابقة - Version corrigée -->
+  <div *ngSwitchCase="'APPARIEMENT'">
+    <div class="container">
+      <div class="instructions" *ngIf="question.instructions" 
+           style="background: #e1f5fe; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-right: 4px solid #03a9f4;">
+        <i class="fas fa-info-circle" style="color: #0288d1; margin-left: 8px;"></i>
+        {{ question.instructions }}
+      </div>
+      
+      <div class="answers-area">
+        <div *ngFor="let gauche of question.options_gauche; let idx = index" 
+             class="answer-pair"
+             style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 2px solid #dee2e6;">
+          <div class="term-label full-width" 
+               style="font-weight: bold; color: #2c3e50; margin-bottom: 10px; font-size: 16px;">
+            <span style="background: #3498db; color: white; padding: 4px 8px; border-radius: 50%; margin-left: 8px; font-size: 12px;">
+              {{ idx + 1 }}
+            </span>
+            {{ gauche.texte }}
+          </div>
+          
+          <div class="inputs-wrapper" style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <ng-container *ngIf="hasMultipleInputs(question, gauche); else singleInput">
+              <div class="input-container" *ngFor="let inputIndex of getInputIndices(question, gauche)"
+                   style="flex: 1; min-width: 150px;">
+                <input 
+                  type="text" 
+                  [id]="'appariement_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_gauche_' + gauche.id + '_input_' + inputIndex"
+                  [placeholder]="'الإجابة ' + inputIndex"
+                  [ngModel]="getInputValue(question, gauche, inputIndex)"
+                  (ngModelChange)="updateInputValue(question, gauche, inputIndex, $event)"
+                  class="input-field"
+                  style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; transition: border-color 0.3s ease;"
+                />
+              </div>
+            </ng-container>
+            
+            <ng-template #singleInput>
+              <div class="input-container" style="flex: 1;">
+                <input 
+                  type="text" 
+                  [id]="'appariement_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_gauche_' + gauche.id + '_input_single'"
+                  [placeholder]="'اكتب إجابتك هنا'"
+                  [ngModel]="getInputValue(question, gauche, 1)"
+                  (ngModelChange)="updateInputValue(question, gauche, 1, $event)"
+                  class="input-field"
+                  style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; transition: border-color 0.3s ease;"
+                />
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      
+      <div class="options-droites-liste full-width" *ngIf="question.options_droite && question.options_droite.length > 0"
+           style="background: #f1f8e9; padding: 15px; border-radius: 10px; margin-top: 20px;">
+        <h5 style="color: #2e7d32; margin-bottom: 10px;">
+          <i class="fas fa-list-ol" style="margin-left: 8px;"></i>
+          الخيارات المتاحة:
+        </h5>
+        <ul class="options-list" style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;">
+          <li *ngFor="let droite of question.options_droite; let i = index" 
+              class="option-item"
+              style="padding: 8px 12px; background: white; border-radius: 6px; border-right: 3px solid #4caf50;">
+            <strong>{{ i+1 }}.</strong> {{ droite.texte }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+ <!-- المساحات الفارغة -->
+  <div *ngSwitchCase="'ESPACES_VIDES'" class="espaces-vides-container">
+    <h4 style="color: #2c3e50; margin-bottom: 15px;">{{ question.texte_question }}</h4>
+    <div class="espacesVides" *ngFor="let espace of question.espaces" style="margin-bottom: 15px;">
+      <label class="espace-label" style="display: block; font-weight: 500; color: #34495e; margin-bottom: 8px;">
+        <i class="fas fa-edit" style="color: #3498db; margin-left: 5px;"></i>
+        المساحة {{ espace.position }} :
+        <input
+          type="text"
+          class="form-control blank-input"
+          [attr.id]="'blank_question_' + questionIndex + '_' + (question._id?.$oid || question.id) + '_' + espace.position"
+          [attr.placeholder]="'أدخل إجابتك هنا'"
+          [ngModel]="blankAnswers[(question._id?.$oid || question.id) + '_' + espace.position]"
+          (ngModelChange)="updateBlankAnswer(question._id?.$oid || question.id, espace.position, $event)"
+          style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; margin-top: 8px; font-size: 16px; transition: border-color 0.3s ease;"
+        />
+      </label>
+    </div>
+  </div>
+</div>
+  </div>
+
+  <!-- إحصائيات الاختبار -->
+  <div class="quiz-statistics" 
+       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; margin: 30px 0; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+    <h4 style="margin: 0 0 15px 0; text-align: center;">
+      <i class="fas fa-chart-line" style="margin-left: 8px;"></i>
+      إحصائيات الاختبار
+    </h4>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: center;">
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; backdrop-filter: blur(10px);">
+        <div style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">
+          <i class="fas fa-clock" style="color: #ffd700; margin-left: 5px;"></i>
+          {{ elapsedTime }}
+        </div>
+        <div style="font-size: 14px; opacity: 0.9;">الوقت المنقضي</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; backdrop-filter: blur(10px);">
+        <div style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">
+          <i class="fas fa-question-circle" style="color: #ff6b6b; margin-left: 5px;"></i>
+          {{ questions.length }}
+        </div>
+        <div style="font-size: 14px; opacity: 0.9;">إجمالي الأسئلة</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; backdrop-filter: blur(10px);">
+        <!-- <div style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">
+          <i class="fas fa-tachometer-alt" style="color: #4ecdc4; margin-left: 5px;"></i>
+          {{ getAverageTimePerQuestion() }}
+        </div> -->
+        <div style="font-size: 14px; opacity: 0.9;">متوسط الوقت/سؤال</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; backdrop-filter: blur(10px);">
+        <!-- <div style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">
+          <i class="fas fa-percentage" style="color: #a8e6cf; margin-left: 5px;"></i>
+          {{ getProgressPercentage() }}%
+        </div> -->
+        <div style="font-size: 14px; opacity: 0.9;">نسبة الإنجاز</div>
+      </div>
+    </div>
+    
+    <!-- Message d'encouragement basé sur le timing -->
+    <div style="margin-top: 20px; text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+      <div style="font-size: 16px; margin-bottom: 8px;">
+        <i class="fas fa-lightbulb" style="color: #ffd700; margin-left: 8px;"></i>
+        <strong>رسالة تشجيعية</strong>
+      </div>
+      <!-- <div style="font-size: 14px; opacity: 0.9; line-height: 1.4;">
+        {{ getTimingEncouragementMessage() }}
+      </div> -->
+    </div>
+  </div>
+
+  <!-- قسم الإرسال -->
+  <div class="submit-section" style="text-align: center; margin: 40px 0;">
+    <div style="background: #fff3cd; border: 2px solid #ffeaa7; border-radius: 10px; padding: 20px; margin-bottom: 25px;">
+      <h5 style="color: #856404; margin-bottom: 10px;">
+        <i class="fas fa-exclamation-triangle" style="margin-left: 8px;"></i>
+        تنبيه مهم
+      </h5>
+      <p style="margin: 0; color: #856404; line-height: 1.6;">
+        بمجرد إرسال الاختبار، سيتم تسجيل الوقت تلقائياً ولن تتمكن من العودة لتعديل الإجابات.
+        <br>
+        <strong>الوقت الحالي: {{ elapsedTime }}</strong>
+        <br>
+        <!-- <small style="opacity: 0.8;">بدء الاختبار: {{ getFormattedStartTime() }}</small> -->
+      </p>
+    </div>
+    
+    <button (click)="submitQuiz()" 
+            class="submit-button"
+            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 18px 40px; font-size: 20px; font-weight: bold; border-radius: 50px; cursor: pointer; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px;"
+            onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 35px rgba(102, 126, 234, 0.6)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(102, 126, 234, 0.4)'">
+      <i class="fas fa-paper-plane"></i>
+      إرسال الإجابات 
+    </button>
+    
+    <div style="margin-top: 15px; font-size: 14px; color: #7f8c8d;">
+      <i class="fas fa-info-circle" style="margin-left: 5px;"></i>
+      تأكد من مراجعة جميع إجاباتك قبل الإرسال
+    </div>
+    
+    <!-- Informations additionnelles sur le timing -->
+    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 1px solid #dee2e6;">
+      <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; font-size: 13px; color: #6c757d;">
+        <!-- <span>
+          <i class="fas fa-play" style="color: #28a745; margin-left: 3px;"></i>
+          بدء: {{ getFormattedStartTime() }}
+        </span> -->
+        <span>
+          <i class="fas fa-hourglass-half" style="color: #17a2b8; margin-left: 3px;"></i>
+          المدة: {{ elapsedTime }}
+        </span>
+        <!-- <span>
+          <i class="fas fa-chart-bar" style="color: #ffc107; margin-left: 3px;"></i>
+          التقدم: {{ getProgressPercentage() }}%
+        </span> -->
+        <!-- <span>
+          <i class="fas fa-calculator" style="color: #6f42c1; margin-left: 3px;"></i>
+          متوسط: {{ getAverageTimePerQuestion() }}/سؤال
+        </span> -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- رسالة عدم وجود أسئلة -->
+<div *ngIf="questions.length === 0" 
+     style="text-align: center; padding: 60px 20px; background: #f8f9fa; border-radius: 15px; margin: 40px 0;">
+  <i class="fas fa-question-circle" style="font-size: 48px; color: #bdc3c7; margin-bottom: 20px;"></i>
+  <h3 style="color: #7f8c8d; margin-bottom: 10px;">لا توجد أسئلة متاحة</h3>
+  <p style="color: #95a5a6;">يرجى المحاولة مرة أخرى لاحقاً أو التواصل مع المسؤول</p>
+</div>
+
+<!-- Chronomètre mobile - visible uniquement sur petits écrans -->
+<div class="mobile-timer" style="display: none; position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 50px; padding: 10px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 999;">
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <i class="fas fa-clock" style="color: #ffd700; font-size: 14px;"></i>
+    <span style="font-weight: bold; font-size: 14px;">{{ elapsedTime }}</span>
+  </div>
+</div>
+
+<!-- Styles responsifs -->
+<style>
+  @media (max-width: 768px) {
+    .quiz-timer-fixed {
+      display: none !important;
+    }
+    
+    .mobile-timer {
+      display: block !important;
+    }
+    
+    .timer-stats {
+      min-width: 150px !important;
+      font-size: 12px !important;
+    }
+    
+    .quiz-statistics {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .quiz-header {
+      padding: 15px !important;
+    }
+    
+    .question-container {
+      padding: 15px !important;
+      margin-bottom: 20px !important;
+    }
+    
+    .submit-section button {
+      padding: 15px 30px !important;
+      font-size: 18px !important;
+    }
+  }
+  
+  /* Animation pour la barre de progression */
+  .progress-bar div div {
+    transition: width 0.5s ease-in-out;
+  }
+  
+  /* Animation pour le chronomètre */
+  .quiz-timer-fixed, .mobile-timer {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+    50% { box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4); }
+    100% { box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+  }
+  
+  /* Styles pour les inputs avec focus */
+  input:focus, textarea:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+    outline: none !important;
+  }
+  
+  /* Indicateur visuel pour les questions complétées */
+  .question-container.completed {
+    border-right-color: #27ae60 !important;
+  }
+  
+  .question-container.partial {
+    border-right-color: #f39c12 !important;
+  }
+  
+  .question-container.empty {
+    border-right-color: #e74c3c !important;
+  }
+</style>

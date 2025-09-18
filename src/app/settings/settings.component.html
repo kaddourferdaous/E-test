@@ -1,0 +1,107 @@
+<div class="settings-container">
+  <div class="card">
+    <div class="card-header">
+      <h2>Paramètres de Seuil d'Acceptation</h2>
+    </div>
+    
+    <div class="card-body">
+      <!-- Messages d'alerte -->
+      <div *ngIf="message" class="alert" [ngClass]="{'alert-success': messageType === 'success', 'alert-error': messageType === 'error'}">
+        {{ message }}
+      </div>
+
+      <!-- Formulaire de paramètres -->
+      <form [formGroup]="settingsForm" (ngSubmit)="updateThreshold()">
+        <div class="form-group">
+          <label for="threshold">Seuil d'acceptation (%)</label>
+          <input 
+            type="number" 
+            id="threshold" 
+            formControlName="threshold" 
+            class="form-control"
+            min="0" 
+            max="100"
+            (input)="onThresholdChange()"
+            [disabled]="isLoading">
+          
+          <div *ngIf="settingsForm.get('threshold')?.invalid && settingsForm.get('threshold')?.touched" class="error-message">
+            <small *ngIf="settingsForm.get('threshold')?.errors?.['required']">Le seuil est requis</small>
+            <small *ngIf="settingsForm.get('threshold')?.errors?.['min']">Le seuil doit être supérieur ou égal à 0</small>
+            <small *ngIf="settingsForm.get('threshold')?.errors?.['max']">Le seuil doit être inférieur ou égal à 100</small>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="settingsForm.invalid || isLoading">
+            <span *ngIf="isLoading" class="spinner"></span>
+            {{ isLoading ? 'Mise à jour...' : 'Mettre à jour' }}
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn btn-secondary"
+            (click)="resetToDefault()"
+            [disabled]="isLoading">
+            Réinitialiser ({{ currentThreshold }}%)
+          </button>
+        </div>
+      </form>
+
+      <!-- Affichage du seuil actuel -->
+      <div class="current-threshold">
+        <p><strong>Seuil actuel : {{ acceptanceThreshold }}%</strong></p>
+        <p>Nombre de candidats acceptés : {{ acceptedCandidates.length }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tableau des candidats acceptés -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Candidats Acceptés (Score ≥ {{ acceptanceThreshold }}%)</h3>
+    </div>
+    
+    <div class="card-body">
+      <div *ngIf="isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Chargement des candidats...</p>
+      </div>
+
+      <div *ngIf="!isLoading && acceptedCandidates.length === 0" class="no-candidates">
+        <p>Aucun candidat n'atteint le seuil d'acceptation de {{ acceptanceThreshold }}%</p>
+      </div>
+
+      <div *ngIf="!isLoading && acceptedCandidates.length > 0" class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Score (%)</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let candidate of acceptedCandidates" class="candidate-row">
+              <td>{{ candidate.id }}</td>
+              <td>{{ candidate.nom }}</td>
+              <td>{{ candidate.prenom }}</td>
+              <td>
+                <span class="score-badge" [ngClass]="{'high-score': candidate.score >= 90, 'medium-score': candidate.score >= 80 && candidate.score < 90}">
+                  {{ candidate.score }}%
+                </span>
+              </td>
+              <td>
+                <span class="status-badge accepted">Accepté</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

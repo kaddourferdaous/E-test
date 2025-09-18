@@ -1,0 +1,983 @@
+/* Style général pour tout */
+.question-container {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 2px solid #d1d1d1;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+/* Style pour les questions */
+.question-container h3 {
+  margin-bottom: 15px;
+  font-size: 22px;
+  color: #333;
+}
+
+/* Style pour QCM */
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+li label {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+/* Style pour textarea dans question libre */
+.text-response {
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+  margin-top: 10px;
+}
+
+/* Style pour ordre */
+.cable-flow-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.cable-flow-item {
+  background-color: #eef3f7;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.order-input {
+  margin-top: 10px;
+  width: 60px;
+  padding: 5px;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style pour vrai/faux simple */
+.true-false-options {
+  margin-top: 15px;
+}
+
+.option-container,
+.multi-option .option-container {
+  padding: 15px;
+  background-color: #eef3f7;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.true-false-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.true-false-button {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.true-false-button.selected {
+  background-color: #4CAF50; /* Vert pour "Vrai" ou sélectionné */
+  color: white;
+}
+
+.true-false-button.false.selected {
+  background-color: #f44336; /* Rouge pour "Faux" ou sélectionné */
+  color: white;
+}
+
+.true-false-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Style pour espaces vides */
+.blank-options {
+  margin-top: 15px;
+}
+
+.blank-options li {
+  margin-bottom: 10px;
+}
+
+.blank-input {
+  margin-left: 10px;
+  padding: 8px;
+  width: 250px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style pour appariement spécial 5S */
+.answers-area {
+  margin-top: 20px;
+}
+
+.answer-pair {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.term-label {
+  width: 150px;
+  font-weight: bold;
+}
+
+.input-container input[type="text"] {
+  flex-grow: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #fdfcfc;
+}
+
+/* Style pour appariement classique */
+.options-list {
+  margin-bottom: 20px;
+}
+
+.options-list li {
+  margin-bottom: 5px;
+}
+
+.input-field {
+  margin-top: 8px;
+  width: 100px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Multi vrai/faux: améliorer le style */
+.multi-true-false-list {
+  margin-top: 15px;
+}
+
+.multi-option {
+  margin-bottom: 20px;
+}
+
+.multi-option .option-container {
+  padding: 15px;
+  background-color: #eef3f7;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.multi-option .response-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.multi-true-false-buttons label {
+  display: flex;
+  align-items: center;
+}
+
+.multi-true-false-buttons input[type="radio"] {
+  margin-right: 5px;
+  transform: scale(1.2);
+}
+
+.multi-true-false-buttons .true-label {
+  color: green;
+  font-weight: bold;
+}
+
+.multi-true-false-buttons .false-label {
+  color: red;
+  font-weight: bold;
+}
+true-false-options {
+  margin: 20px 0;
+}
+
+.option-container {
+  background: linear-gradient(145deg, #ffffff, #f0f4f8);
+  border-radius: 16px;
+  box-shadow: 
+    8px 8px 16px rgba(174, 174, 192, 0.4),
+    -8px -8px 16px rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.option-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    12px 12px 20px rgba(174, 174, 192, 0.5),
+    -12px -12px 20px rgba(255, 255, 255, 0.9);
+}
+
+.option-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #3498db, #2ecc71);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.option-container:hover::before {
+  opacity: 1;
+}
+
+.option-text {
+  flex: 1;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #2c3e50;
+  padding-right: 20px;
+  position: relative;
+  z-index: 1;
+  text-align: right;
+  line-height: 1.6;
+}
+
+.true-false-buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.true-false-button {
+  position: relative;
+  cursor: pointer;
+  border-radius: 50px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.true-false-button:hover {
+  transform: scale(1.05);
+}
+
+.true-false-button input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.true-label, .false-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  min-width: 100px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Style du bouton Vrai (صحيح) */
+.true-label {
+  background: linear-gradient(145deg, #e6f7ee, #d4e6dd);
+  color: #2ecc71;
+  box-shadow: 
+    4px 4px 8px rgba(174, 174, 192, 0.3),
+    -4px -4px 8px rgba(255, 255, 255, 0.7);
+}
+
+.true-false-button input:checked + .true-label {
+  background: linear-gradient(145deg, #2ecc71, #27ae60);
+  color: white;
+  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.15),
+              inset -3px -3px 6px rgba(255, 255, 255, 0.1);
+  transform: translateY(2px);
+}
+
+/* Style du bouton Faux (خاطئ) */
+.false-label {
+  background: linear-gradient(145deg, #fdedec, #f9dcda);
+  color: #e74c3c;
+  box-shadow: 
+    4px 4px 8px rgba(174, 174, 192, 0.3),
+    -4px -4px 8px rgba(255, 255, 255, 0.7);
+}
+
+.true-false-button input:checked + .false-label {
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
+  color: white;
+  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.15),
+              inset -3px -3px 6px rgba(255, 255, 255, 0.1);
+  transform: translateY(2px);
+}
+
+/* Effet de blob en arrière-plan pour ajouter du dynamisme */
+.option-container::after {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(45, 152, 218, 0.08) 0%, rgba(45, 152, 218, 0) 70%);
+  border-radius: 50%;
+  right: -75px;
+  top: -75px;
+  z-index: 0;
+  transition: all 0.5s ease;
+}
+
+.option-container:hover::after {
+  width: 200px;
+  height: 200px;
+  right: -100px;
+  top: -100px;
+}
+
+/* Animation légère lors du chargement */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.option-container {
+  animation: fadeIn 0.5s ease forwards;
+color: #3182ce;
+}
+
+.option-container:nth-child(1) { animation-delay: 0.1s; }
+.option-container:nth-child(2) { animation-delay: 0.2s; }
+.option-container:nth-child(3) { animation-delay: 0.3s; }
+.option-container:nth-child(4) { animation-delay: 0.4s; }
+.option-container:nth-child(5) { animation-delay: 0.5s; }
+
+/* Pour les écrans tactiles */
+@media (hover: none) {
+  .true-false-button:active {
+    transform: scale(0.98);
+  }
+
+  .option-container:active {
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .option-container {
+    flex-direction: column;
+    align-items: flex-start;
+
+  }
+  
+  .option-text {
+    margin-bottom: 15px;
+    padding-right: 0;
+  }
+  
+  .true-false-buttons {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+  /* Styles pour le bouton de soumission */
+.submit-section {
+  margin-top: 30px;
+  text-align: center;
+  padding: 20px;
+}
+
+.submit-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.submit-button i {
+  margin-right: 8px;
+}
+
+/* Style pour améliorer l'apparence des champs de texte */
+.text-response {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-family: inherit;
+  direction: rtl;
+}
+
+/* Animation pour le feedback de soumission */
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.submission-feedback {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  animation: fadeInOut 3s forwards;
+  z-index: 1000;
+}
+}
+.multi-true-false-list {
+  list-style: none;
+  padding: 0;
+}
+
+.option-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+}
+
+.option-text {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.response-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.true-false-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.true-false-button:hover {
+  background-color: #e9ecef;
+}
+
+.true-label {
+  color: #198754;
+  font-weight: bold;
+}
+
+.false-label {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Support RTL pour l'arabe */
+[dir="rtl"] .option-container {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .option-text {
+  margin-right: 0;
+  margin-left: 10px;
+}
+.answer-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.left-text {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+  direction: rtl;
+  word-wrap: break-word;
+}
+
+.right-input {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 4px;
+}
+/* Styles for APPARIEMENT component */
+.container {
+  width: 100%;
+  direction: rtl; /* For Arabic interface */
+  margin-bottom: 20px;
+}
+
+.instructions {
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: right;
+}
+
+/* Full width classes */
+.full-width {
+  width: 100%;
+  display: block;
+}
+
+/* Answers area styling */
+.answers-area {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Individual answer pair styling with horizontal layout */
+.answer-pair {
+  width: 100%;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+/* Horizontal layout for inputs beside options */
+.answer-row-horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.term-label, .left-text {
+  font-weight: bold;
+  text-align: right;
+  flex: 1;
+  padding-left: 15px;
+}
+
+/* Horizontal inputs wrapper */
+.inputs-wrapper-horizontal, .right-input-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  min-width: 150px;
+}
+
+.input-container, .input-container-horizontal {
+  margin: 0;
+}
+
+.input-field {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 120px;
+  text-align: right;
+}
+
+/* Options droites styling */
+.options-droites-liste {
+  margin-top: 15px;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: right;
+  width: 100%;
+}
+
+.options-list {
+  list-style-position: inside;
+  padding-right: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.option-item {
+  padding: 5px 0;
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .answer-row-horizontal {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .term-label, .left-text {
+    margin-bottom: 8px;
+    width: 100%;
+    padding-left: 0;
+  }
+  
+  .inputs-wrapper-horizontal, .right-input-horizontal {
+    width: 100%;
+  }
+  
+  .input-field {
+    width: 100%;
+  }
+}
+/* Styles for the ordering component */
+.cable-flow-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.cable-flow-item {
+  background-color: #f7f9fc;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cable-flow-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.cable-flow-label {
+  flex: 1;
+  font-size: 17px;
+  margin-left: 15px;
+  margin-right: 15px;
+  color: #333;
+}
+
+.order-input {
+  width:120px;
+  height: 50px;
+  text-align: center;
+  font-size: 18px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  margin-right: 10px;
+  background-color: white;
+  color: #333;
+  font-weight: 600;
+  transition: border-color 0.3s;
+}
+
+.order-input:focus {
+  border-color: #3182ce;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.25);
+}
+
+.order-input::placeholder {
+  color: #aaa;
+}
+
+/* RTL support for Arabic */
+[dir="rtl"] .cable-flow-label {
+  margin-right: 15px;
+  margin-left: 0;
+}
+
+[dir="rtl"] .order-input {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+/* Title styling */
+p {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .cable-flow-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .cable-flow-item {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .cable-flow-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Optional: Add a visual indicator for completed inputs */
+.order-input:valid {
+  border-color: #38a169;
+  background-color: #f0fff4;
+}
+/* ================= HEADER ================= */
+.custom-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  border-bottom: 2px solid #e6f3fa;
+  transition: var(--transition-smooth);
+  padding: 1rem 0;
+  box-shadow: var(--shadow-light);
+}
+
+.custom-header.scrolled {
+  background: linear-gradient(135deg, #ffffff 0%, #e6f3fa 100%);
+  border-bottom-color: var(--accent-blue);
+  box-shadow: var(--shadow-medium);
+}
+
+/* Effet shine */
+.custom-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.custom-header:hover::before {
+  opacity: 1;
+  animation: headerShine 2s ease-in-out;
+}
+
+@keyframes headerShine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ================= LOGO ================= */
+.logo-img {
+  height: 40px;
+  margin-right: 40px;
+  transition: var(--transition-smooth);
+  filter: drop-shadow(0 4px 8px rgba(139, 92, 246, 0.2));
+}
+.logo-img:hover {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 6px 15px rgba(139, 92, 246, 0.4));
+}
+
+/* ================= SEARCH ================= */
+.search-container {
+  position: relative;
+  max-width: 500px;
+  flex: 1;
+  margin: 0 2rem;
+margin-left: 100px;
+}
+.search-input {
+  width: 100%;
+  padding: 14px 55px 14px 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 50px; /* pill */
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition-smooth);
+  outline: none;
+}
+.search-input::placeholder {
+  color: var(--text-secondary);
+}
+.search-input:focus {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+  background: #fff;
+}
+.search-btn {
+  position: absolute;
+  right: 10px; top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  width: 40px; height: 40px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent-purple);
+  font-size: 1.3rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+.search-btn:hover {
+  color: var(--accent-pink);
+  transform: translateY(-50%) scale(1.15);
+}
+
+/* ================= NAVIGATION ================= */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.nav-link {
+  color: var(--text-primary) !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem; /* texte agrandi */
+  padding: 10px 15px;
+  position: relative;
+  transition: var(--transition-smooth);
+  background: none; border: none; /* pas d'encadrement */
+}
+.nav-link::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-pink) 100%);
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+.nav-link:hover::before,
+.nav-link.active::before {
+  left: 0;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+/* ================= DROPDOWN ================= */
+.nav-dropdown {
+  position: relative;
+}
+.dropdown-content {
+  position: absolute; top: 100%; left: 0;
+  background: #fff;
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  min-width: 220px;
+  opacity: 0; visibility: hidden;
+  transform: translateY(-10px);
+  transition: var(--transition-smooth);
+  border: 2px solid #e6f3fa;
+  box-shadow: var(--shadow-medium);
+}
+.nav-dropdown:hover .dropdown-content {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.dropdown-content a {
+  display: block;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  transition: var(--transition-smooth);
+  font-weight: 500;
+}
+.dropdown-content a:hover {
+  background: rgba(139, 92, 246, 0.1);
+  transform: translateX(5px);
+  color: var(--accent-purple);
+}
+
+/* ================= LOGOUT BUTTON ================= */
+.btn-logout {
+  background: linear-gradient(135deg, #ff6f61 0%, #ff4d6d 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--border-radius-lg);
+  font-weight: 600;
+  transition: var(--transition-smooth);
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 111, 97, 0.3);
+  cursor: pointer;
+}
+.btn-logout:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 111, 97, 0.4);
+}
+
+/* ================= MAIN CONTAINER ================= */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  margin-top: 100px; /* espace pour header fixe */
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .custom-header { padding: 0.75rem 1rem; }
+  .nav { gap: 1rem; flex-wrap: wrap; }
+  .search-container { margin: 1rem 0; order: 3; flex-basis: 100%; }
+  .nav-link { font-size: 1rem; padding: 8px 12px; }
+  .btn-logout { padding: 8px 16px; font-size: 0.9rem; }
+  .container { padding: 1rem; margin-top: 120px; }
+}
+@media (max-width: 480px) {
+  .custom-header { padding: 0.5rem; }
+  .logo-img { height: 32px; }
+  .nav { gap: 0.5rem; }
+  .nav-link { font-size: 0.9rem; padding: 6px 10px; }
+}

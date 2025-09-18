@@ -1,0 +1,111 @@
+
+<!-- trainee-theorique-survey.component.html -->
+   <header class="custom-header" id="header">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4 py-2">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://vectorseek.com/wp-content/uploads/2023/08/Yazaki-Logo-Vector.svg-.png" alt="Yazaki Logo" class="logo-img">
+            </a>
+
+        
+
+            <!-- Navigation -->
+            <nav class="nav justify-content-center flex-grow-1" aria-label="Main navigation">
+                <a class="nav-link " href="/home">Home</a>
+                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="/supp">Courses</a>
+                <a class="nav-link" href="/quiz">Test</a>
+                <div class="nav-dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">Add Survey</a>
+                    <div class="dropdown-content">
+                        <a href="/traineeTheoriqueForm">Theoretical</a>
+                        <a href="/traineePratiqueForm">Practical</a>
+                        <a href="/traineeOjtForm">OJT</a>
+                    </div>
+                </div>
+                <a class="nav-link" href="/contact">Contact</a>
+            </nav>
+
+            <!-- Logout Button -->
+            <a class="btn-logout" href="#" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-1"></i> Log Out
+            </a>
+        </div>
+    </header>
+<div class="survey-container" [ngClass]="{'rtl-mode': currentLanguage === 'ar'}">
+  <!-- Language selector -->
+  <div class="language-selector">
+    <button [class.active]="currentLanguage === 'en'" (click)="changeLanguage('en')">English</button>
+    <button [class.active]="currentLanguage === 'ar'" (click)="changeLanguage('ar')">العربية</button>
+  </div>
+  
+  <!-- Loading spinner -->
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>{{ currentLanguage === 'en' ? 'Loading questions...' : 'جاري تحميل الأسئلة...' }}</p>
+  </div>
+  
+  <!-- Messages -->
+  <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
+  
+  <!-- Survey form -->
+  <div *ngIf="!loading" class="survey-form-container">
+    <h1>{{ uiTexts[currentLanguage].formTitle }}</h1>
+    
+    <form [formGroup]="surveyForm" (ngSubmit)="onSubmit()">
+      <!-- Trainee and session IDs -->
+    
+      <!-- Survey questions -->
+      <div class="survey-questions">
+        <div *ngFor="let question of questions" class="question-group">
+          <div class="question-header">
+            <h3>{{ question.title }}</h3>
+            <p>{{ currentLanguage === 'en' ? question.text_en : question.text_ar }}</p>
+          </div>
+          
+          <!-- Correctly using the question group -->
+          <div [formGroupName]="'question' + question.question_id" class="question-controls">
+            <div class="rating-options">
+              <div *ngFor="let option of ratingOptions" class="rating-option">
+                <input 
+                  type="radio" 
+                  [id]="'question' + question.question_id + '_' + option.key" 
+                  [value]="option.key" 
+                  formControlName="rating">
+                <label [for]="'question' + question.question_id + '_' + option.key">
+                  {{ currentLanguage === 'en' ? option.text_en : option.text_ar }}
+                </label>
+              </div>
+            </div>
+            
+            <div *ngIf="submitted && getQuestionControl(question.question_id, 'rating')?.errors" class="validation-error">
+              <div *ngIf="getQuestionControl(question.question_id, 'rating')?.errors?.['required']">
+                {{ uiTexts[currentLanguage].ratingRequired }}
+              </div>
+            </div>
+            
+            <div class="observation-field">
+              <label [for]="'observation_' + question.question_id">{{ uiTexts[currentLanguage].observationLabel }}</label>
+              <textarea 
+                [id]="'observation_' + question.question_id" 
+                formControlName="observation" 
+                class="form-control">
+              </textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Submit button -->
+      <div class="form-actions">
+        <button type="submit" [disabled]="isSubmitting" class="submit-button">
+          <span *ngIf="!isSubmitting">{{ uiTexts[currentLanguage].submitButton }}</span>
+          <span *ngIf="isSubmitting">
+            {{ currentLanguage === 'en' ? 'Submitting...' : 'جاري الإرسال...' }}
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

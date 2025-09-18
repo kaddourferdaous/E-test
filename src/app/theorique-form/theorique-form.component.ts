@@ -11,8 +11,11 @@ import { CandidateService } from '../candidate.service';
 export class TheoriqueFormComponent implements OnInit {
   theorieForm!: FormGroup;
   trainerId!: string | null;
+  candidateId!: string | null;
   scoreOptions = [1, 2, 3, 4, 5]; 
-  constructor(private fb: FormBuilder, private http: HttpClient,private candidateService:CandidateService) {}
+  
+  constructor(private fb: FormBuilder, private http: HttpClient, private candidateService: CandidateService) {}
+  
   ngOnInit(): void {
     // Get trainer ID
     this.trainerId = this.getTrainerId();
@@ -23,15 +26,20 @@ export class TheoriqueFormComponent implements OnInit {
     }
     
     // Get candidate ID
-    const candidateId = localStorage.getItem('selectedCandidateId');
-    if (candidateId) {
-      console.log('Retrieved candidateId from localStorage:', candidateId);
+    this.candidateId = localStorage.getItem('selectedCandidateId');
+    if (!this.candidateId) {
+      console.error('Erreur : ID du candidat non disponible.');
+      alert('Erreur : Impossible de récupérer l\'ID du candidat.');
+      return;
     }
     
-    // Initialize form
+    console.log('Retrieved candidateId from localStorage:', this.candidateId);
+    console.log('Retrieved trainerId from localStorage:', this.trainerId);
+    
+    // Initialize form - CORRECTION: Utiliser id_trainer et id_candidate au lieu de trainer_id et candidate_id
     this.theorieForm = this.fb.group({
-      id_trainer: [this.trainerId, Validators.required],
-      id_candidate: [candidateId || '', Validators.required],
+      id_trainer: [this.trainerId, Validators.required],      // CORRIGÉ: id_trainer au lieu de trainer_id
+      id_candidate: [this.candidateId, Validators.required],  // CORRIGÉ: id_candidate au lieu de candidate_id
       
       // Speed
       speed_score: ['', Validators.required],
@@ -69,21 +77,14 @@ export class TheoriqueFormComponent implements OnInit {
       motivation_score: ['', Validators.required],
       motivation_remark: [''],
       
-      // General Score
-      score: ['', Validators.required]
+      // General Score (initialisé à 0, sera calculé automatiquement)
+      score: [{ value: 0, disabled: true }]  // Désactivé par défaut
     });
+    
+    // Configurer le calcul automatique du score général
     this.calculateGeneralScore();
-    // Optional: Clear the localStorage after retrieving the ID
-    // to prevent it from being reused unintentionally on page refresh
-    if (candidateId) {
-      localStorage.removeItem('selectedCandidateId');
-    }
   }
 
-  /**
-   * Ouvre le modal pour ajouter une évaluation et définit l'ID du candidat sélectionné.
-   * @param candidateId ID du candidat sélectionné.
-   */
   calculateGeneralScore() {
     const scoreControls = [
       'speed_score',
@@ -130,8 +131,11 @@ export class TheoriqueFormComponent implements OnInit {
     console.group('[Soumission du Formulaire]');
     console.log('État actuel du formulaire:', this.theorieForm);
   
-    // Activer le champ "score" pour qu'il soit inclus dans les données
+    // Activer temporairement le champ "score" pour qu'il soit inclus dans les données
     this.theorieForm.get('score')?.enable();
+  
+    // Marquer tous les champs comme "touchés" pour afficher les erreurs de validation
+    this.theorieForm.markAllAsTouched();
   
     // Vérifier si le formulaire est valide
     if (this.theorieForm.valid) {
@@ -139,35 +143,46 @@ export class TheoriqueFormComponent implements OnInit {
       console.log('Données du formulaire préparées pour envoi:', formData);
   
       // Appel de l'API Flask avec HttpClient
-      this.http.post('http://localhost:5000/eval/trainer/theorique/evaluations', formData).subscribe({
+      this.http.post('https://training-backend-1pda.onrender.com/eval/trainer/theorique/evaluations', formData).subscribe({
         next: (response) => {
           console.log('Réponse du serveur:', response);
           alert('Évaluation enregistrée avec succès!');
   
-          // Save the IDs before resetting the form
-          const trainerId = this.theorieForm.get('id_trainer')?.value;
-          const candidateId = this.theorieForm.get('id_candidate')?.value;
+          // Sauvegarder les IDs avant de réinitialiser le formulaire
+          const trainerId = this.theorieForm.get('id_trainer')?.value;  // CORRIGÉ: id_trainer
+          const candidateId = this.theorieForm.get('id_candidate')?.value;  // CORRIGÉ: id_candidate
   
           // Réinitialiser le formulaire après soumission
           this.theorieForm.reset();
   
-          // Restore the IDs after form reset
+          // Restaurer les IDs après la réinitialisation
           this.theorieForm.patchValue({
-            id_trainer: trainerId,
-            id_candidate: candidateId
+            id_trainer: trainerId,    // CORRIGÉ: id_trainer
+            id_candidate: candidateId, // CORRIGÉ: id_candidate
+            score: 0
           });
-  
-          // Make sure candidateId remains in localStorage
-          if (candidateId) {
-            localStorage.setItem('selectedCandidateId', candidateId);
-          }
   
           // Désactiver à nouveau le champ "score" après soumission
           this.theorieForm.get('score')?.disable();
+          
+          // Recalculer le score (qui sera 0 après reset)
+          this.calculateGeneralScore();
         },
         error: (error) => {
           console.error('Erreur lors de la soumission:', error);
-          alert(`Erreur: ${error.error?.message || error.message}`);
+          
+          // Afficher un message d'erreur plus détaillé
+          let errorMessage = 'Une erreur est survenue lors de la soumission.';
+          if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+          
+          alert(`Erreur: ${errorMessage}`);
+          
+          // Désactiver à nouveau le champ "score" en cas d'erreur
+          this.theorieForm.get('score')?.disable();
         }
       });
     } else {
@@ -175,12 +190,13 @@ export class TheoriqueFormComponent implements OnInit {
       console.error('Le formulaire est invalide.');
       console.error('Erreurs de validation:', this.getFormErrors(this.theorieForm));
       alert('Veuillez remplir tous les champs obligatoires.');
+      
+      // Désactiver à nouveau le champ "score" si la validation échoue
+      this.theorieForm.get('score')?.disable();
     }
-  
-    // Désactiver à nouveau le champ "score" si la soumission échoue
-    this.theorieForm.get('score')?.disable();
+    
     console.groupEnd();
-}
+  }
 
   /**
    * Récupère les erreurs de validation du formulaire.

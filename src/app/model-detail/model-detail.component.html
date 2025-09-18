@@ -3,8 +3,22 @@
 <div class="container" *ngIf="!questions || questions.length === 0">
   <h2>{{ modelName }} Courses</h2>
 
+  <!-- Loader pendant le chargement des supports -->
+  <div *ngIf="isLoadingSupports" class="loading-container">
+    <div class="loader"></div>
+    <div class="loading-content">
+      <h3 class="loading-title">Loading Supports<span class="loading-dots"></span></h3>
+      <p class="loading-message">Please wait while we fetch the course materials</p>
+    </div>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage && !isLoadingSupports" class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}
+  </div>
+
   <!-- Afficher la liste des supports si showContent est false -->
-  <div *ngIf="!showContent && supports.length > 0" >
+  <div *ngIf="!showContent && supports.length > 0 && !isLoadingSupports" >
     <div class="card-container">
       <div *ngFor="let support of supports; let i = index" 
            class="card" 
@@ -37,7 +51,7 @@
         
         <div *ngIf="support.filename?.endsWith('.mp4') || support.filename?.endsWith('.mov')">
           <button (click)="viewSupport(support)">
-            <i class="bi bi-play-circle"></i> See video
+            <i class="bi bi-play-circle"></i> Watch Video
           </button>
           <button (click)="displayQuestions(support)" style="margin-left: 20px;">
             <i class="bi bi-question-circle"></i> Respond Questions</button>
@@ -73,12 +87,21 @@
 
     <!-- Bouton retour -->
     <button class="back-button" (click)="backToList()">
-      <i class="bi bi-arrow-left"></i> Retour à la liste
+      <i class="bi bi-arrow-left"></i> Back To List
     </button>
   </div>
 </div>
-<div *ngIf="questions && questions.length > 0" class="questions-container" dir="rtl">
-  <!-- Correction: using selectedSupport instead of supports -->
+
+<!-- Loader pendant le chargement des questions -->
+<div *ngIf="isLoadingQuestions" class="loading-container">
+  <div class="loader"></div>
+  <div class="loading-content">
+    <h3 class="loading-title">Loading Questions<span class="loading-dots"></span></h3>
+    <p class="loading-message">Preparing your assessment questions</p>
+  </div>
+</div>
+
+<div *ngIf="questions && questions.length > 0 && !isLoadingQuestions" class="questions-container" dir="rtl">
   <form (ngSubmit)="submitAnswers(selectedSupport)">
     <!-- Indicateur de progression -->
     <div class="progress mb-4">
@@ -93,7 +116,7 @@
     <div class="question-item p-4 border rounded shadow-sm mb-4">
       <!-- Affichage de la question -->
       <h5 class="question-text mb-3">{{ questions[currentQuestionIndex].text }}</h5>
-      
+
       <!-- Indication pour les questions multiples -->
       <div *ngIf="questions[currentQuestionIndex].isMultipleChoice" class="alert alert-info mb-3">
         <i class="bi bi-info-circle"></i> يمكن اختيار أكثر من إجابة صحيحة
@@ -137,44 +160,6 @@
       </div>
     </div>
 
-    <!-- Bouton Valider pour les questions à choix multiple -->
-   <!-- For multiple choice questions, use specific handling -->
-<div *ngIf="questions[currentQuestionIndex].isMultipleChoice">
-  <div *ngFor="let option of questions[currentQuestionIndex].options; let i = index" 
-       class="option-item form-check p-2 mb-2 rounded"
-       [ngClass]="{
-         'correct-option': isAnswerCorrect(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered,
-         'incorrect-option': !isAnswerCorrect(questions[currentQuestionIndex], option) && isOptionSelected(questions[currentQuestionIndex], option) && questions[currentQuestionIndex].isAnswered,
-         'selected-option': isOptionSelected(questions[currentQuestionIndex], option) && !questions[currentQuestionIndex].isAnswered
-       }">
-    
-    <!-- Checkboxes for multiple choice -->
-    <input 
-      type="checkbox"
-      [name]="'question_' + questions[currentQuestionIndex].id + '_' + i" 
-      [value]="option"
-      class="form-check-input"
-      [id]="'option_' + questions[currentQuestionIndex].id + '_' + i"
-      [checked]="isOptionSelected(questions[currentQuestionIndex], option)"
-      (click)="$event.stopPropagation(); onOptionSelected(questions[currentQuestionIndex], option)"
-      [disabled]="questions[currentQuestionIndex].isAnswered">
-    
-    <!-- Label -->
-    <label class="form-check-label w-100" 
-           [for]="'option_' + questions[currentQuestionIndex].id + '_' + i">
-      <div class="d-flex justify-content-between align-items-center">
-        <span>{{ option }}</span>
-        <span *ngIf="questions[currentQuestionIndex].isAnswered">
-          <i *ngIf="isAnswerCorrect(questions[currentQuestionIndex], option)" 
-             class="bi bi-check-circle-fill text-success"></i>
-          <i *ngIf="!isAnswerCorrect(questions[currentQuestionIndex], option) && isOptionSelected(questions[currentQuestionIndex], option)" 
-             class="bi bi-x-circle-fill text-danger"></i>
-        </span>
-      </div>
-    </label>
-  </div>
-</div>
-
     <!-- Navigation des questions -->
     <div class="d-flex justify-content-between mt-3">
       <!-- Bouton Précédent -->
@@ -193,11 +178,18 @@
       </ng-container>
 
       <ng-template #submitButton>
-        <button type="submit" class="btn btn-success">
-          <i class="bi bi-send-check"></i> تسجيل الإجابات
+        <button type="submit" class="btn btn-success" [disabled]="isSubmittingAnswers">
+          <span *ngIf="isSubmittingAnswers">
+            <i class="bi bi-hourglass-split"></i> جاري الإرسال...
+          </span>
+          <span *ngIf="!isSubmittingAnswers">
+            <i class="bi bi-send-check"></i> تسجيل الإجابات
+          </span>
         </button>
       </ng-template>
     </div>
   </form>
 </div>
+<!-- Bouton Passer le test - Affiché en fin de test -->
+
 </html>

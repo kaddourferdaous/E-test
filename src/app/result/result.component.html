@@ -1,0 +1,205 @@
+<!-- Result component template -->
+<div class="container">
+  <h2 class="my-4">Candidates Results</h2>
+  
+  <!-- Search filters -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="searchText">
+    </div>
+    <div class="col-md-2">
+      <select class="form-control" [(ngModel)]="filterTest1">
+        <option value="all">All Test Day 1</option>
+        <option value="completed">Test 1 Completed</option>
+        <option value="not_completed">Test 1 Not Completed</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-control" [(ngModel)]="filterTest2">
+        <option value="all">All Test Day 2</option>
+        <option value="completed">Test 2 Completed</option>
+        <option value="not_completed">Test 2 Not Completed</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-control" [(ngModel)]="filterFinal">
+        <option value="all">All Final Tests</option>
+        <option value="completed">Final Test Completed</option>
+        <option value="not_completed">Final Test Not Completed</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-control" [(ngModel)]="filterStatus">
+        <option value="all">All Statuses</option>
+        <option value="complete">Complete</option>
+        <option value="incomplete">Incomplete</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Candidates display -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Test Day 1</th>
+          <th>Test Day 2</th>
+          <th>Final Test</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let candidate of filteredCandidates()">
+          <td>{{ candidate.nom }}</td>
+          <td>{{ candidate.email }}</td>
+          <td>
+            <span *ngIf="candidate.test1">
+              {{ candidate.test1.score }} ({{ candidate.test1.percentage }}%)
+              <button class="btn btn-sm btn-info ms-2" (click)="viewResponses(candidate._id, 'jour1')">
+                View Responses
+              </button>
+            </span>
+            <span *ngIf="!candidate.test1">Not Completed</span>
+          </td>
+          <td>
+            <span *ngIf="candidate.test2">
+              {{ candidate.test2.score }} ({{ candidate.test2.percentage }}%)
+              <button class="btn btn-sm btn-info ms-2" (click)="viewResponses(candidate._id, 'jour2')">
+                View Responses
+              </button>
+            </span>
+            <span *ngIf="!candidate.test2">Not Completed</span>
+          </td>
+          <td>
+            <span *ngIf="candidate.final_test">
+              {{ candidate.final_test.score }} ({{ candidate.final_test.percentage }}%)
+              <button class="btn btn-sm btn-info ms-2" (click)="viewResponses(candidate._id, 'final')">
+                View Responses
+              </button>
+            </span>
+            <span *ngIf="!candidate.final_test">Not Completed</span>
+          </td>
+          <td>
+            <span [ngClass]="isComplete(candidate) ? 'badge bg-success' : 'badge bg-warning'">
+              {{ isComplete(candidate) ? 'Complete' : 'Incomplete' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal for viewing candidate responses -->
+  <div class="modal fade show" 
+  [ngClass]="{ 'd-block': showResponsesModal }" 
+  tabindex="-1" 
+  role="dialog" 
+  aria-modal="true" 
+  style="background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!-- Header -->
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ selectedCandidate?.nom }} - {{ formatTestType(selectedTestType) }}
+          </h5>
+          <button type="button" class="btn-close" (click)="closeResponsesView()"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+          <!-- Loading spinner -->
+          <div *ngIf="loadingResponses" class="text-center my-4">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <!-- Error message -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+
+
+
+<!-- Styles CSS -->
+<style>
+  .response-container {
+    margin-bottom: 2rem;
+  }
+  
+  .answer-section {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    height: 100%;
+  }
+  
+  .correct-answer {
+    background-color: #f8f9fa;
+  }
+  
+  .section-title {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .ordered-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .ordered-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .position-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: #6c757d;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .position-badge.correct {
+    background-color: #198754;
+  }
+  
+  .item-text {
+    flex: 1;
+  }
+</style>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeResponsesView()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark overlay behind modal -->
+  <div class="modal-backdrop fade show" *ngIf="showResponsesModal"></div>
+</div>

@@ -1,235 +1,275 @@
 <div class="form-container">
-    <h2>OJT Survey Form</h2>
-  
-    <!-- Formulaire avec Angular Reactive Forms -->
-    <form [formGroup]="ojtForm" (ngSubmit)="onSubmit()">
-      <!-- Champ caché pour l'ID du formateur -->
-      <input type="hidden" formControlName="id_trainer">
-      <input type="hidden" formControlName="id_candidate">
-      
-      <!-- Speed -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">Speed</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <select formControlName="speed_score" required>
-              <option value="" disabled selected>Select a score</option>
-              <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
-            </select>
-            <div *ngIf="ojtForm.get('speed_score')?.invalid && ojtForm.get('speed_score')?.touched" class="error">
-              Speed score is required.
-            </div>
-          </div>
-        </div>
-        <div class="remark-group">
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea formControlName="speed_remark"></textarea>
+  <h2>OJT Survey Form</h2>
+
+  <!-- Formulaire avec Angular Reactive Forms -->
+  <form [formGroup]="ojtForm" (ngSubmit)="onSubmit()">
+    <!-- Champs cachés pour les IDs -->
+    <input type="hidden" formControlName="id_trainer">
+    <input type="hidden" formControlName="id_candidate">
+    
+    <!-- Speed -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Speed</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="speed_score" required>
+            <option value="" disabled>Select a score</option>
+            <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
+          </select>
+          <div *ngIf="hasFieldError('speed_score')" class="error">
+            {{ getFieldErrorMessage('speed_score') }}
           </div>
         </div>
       </div>
-  
-      <!-- Quality -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">Quality</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <select formControlName="quality_score" required>
-              <option value="" disabled selected>Select a score</option>
-              <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
-            </select>
-            <div *ngIf="ojtForm.get('quality_score')?.invalid && ojtForm.get('quality_score')?.touched" class="error">
-              Quality score is required.
-            </div>
-          </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="speed_remark" rows="3" placeholder="Optional remarks..."></textarea>
         </div>
-        <div class="remark-group">
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea formControlName="quality_remark"></textarea>
+      </div>
+    </div>
+
+    <!-- Quality -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Quality</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="quality_score" required>
+            <option value="" disabled>Select a score</option>
+            <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
+          </select>
+          <div *ngIf="hasFieldError('quality_score')" class="error">
+            {{ getFieldErrorMessage('quality_score') }}
           </div>
         </div>
       </div>
-  
-      <!-- EHS Rules Respect -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">EHS Rules Respect</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <select formControlName="ehs_rules_respect_score" required>
-              <option value="" disabled selected>Select a score</option>
-              <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
-            </select>
-            <div *ngIf="ojtForm.get('ehs_rules_respect_score')?.invalid && ojtForm.get('ehs_rules_respect_score')?.touched" class="error">
-              EHS rules respect score is required.
-            </div>
-          </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="quality_remark" rows="3" placeholder="Optional remarks..."></textarea>
         </div>
-        <div class="remark-group">
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea formControlName="ehs_rules_respect_remark"></textarea>
+      </div>
+    </div>
+
+    <!-- EHS Rules Respect -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">EHS Rules Respect</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="ehs_rules_respect_score" required>
+            <option value="" disabled>Select a score</option>
+            <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
+          </select>
+          <div *ngIf="hasFieldError('ehs_rules_respect_score')" class="error">
+            {{ getFieldErrorMessage('ehs_rules_respect_score') }}
           </div>
         </div>
       </div>
-  
-      <!-- Presence Respect -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">Presence Respect</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <select formControlName="presence_respect_score" required>
-              <option value="" disabled selected>Select a score</option>
-              <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
-            </select>
-            <div *ngIf="ojtForm.get('presence_respect_score')?.invalid && ojtForm.get('presence_respect_score')?.touched" class="error">
-              Presence respect score is required.
-            </div>
-          </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="ehs_rules_respect_remark" rows="3" placeholder="Optional remarks..."></textarea>
         </div>
-        <div class="remark-group">
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea formControlName="presence_respect_remark"></textarea>
+      </div>
+    </div>
+
+    <!-- Presence Respect -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Presence Respect</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="presence_respect_score" required>
+            <option value="" disabled>Select a score</option>
+            <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
+          </select>
+          <div *ngIf="hasFieldError('presence_respect_score')" class="error">
+            {{ getFieldErrorMessage('presence_respect_score') }}
           </div>
         </div>
       </div>
-  
-      <!-- LL Instruction Respect -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">LL Instruction Respect</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <select formControlName="ll_instruction_respect_score" required>
-              <option value="" disabled selected>Select a score</option>
-              <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
-            </select>
-            <div *ngIf="ojtForm.get('ll_instruction_respect_score')?.invalid && ojtForm.get('ll_instruction_respect_score')?.touched" class="error">
-              LL instruction respect score is required.
-            </div>
-          </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="presence_respect_remark" rows="3" placeholder="Optional remarks..."></textarea>
         </div>
-        <div class="remark-group">
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea formControlName="ll_instruction_respect_remark"></textarea>
+      </div>
+    </div>
+
+    <!-- LL Instruction Respect -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">LL Instruction Respect</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="ll_instruction_respect_score" required>
+            <option value="" disabled>Select a score</option>
+            <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
+          </select>
+          <div *ngIf="hasFieldError('ll_instruction_respect_score')" class="error">
+            {{ getFieldErrorMessage('ll_instruction_respect_score') }}
           </div>
         </div>
       </div>
-  
-      <!-- Time Management Respect -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">Time Management Respect</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <select formControlName="time_management_respect_score" required>
-              <option value="" disabled selected>Select a score</option>
-              <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
-            </select>
-            <div *ngIf="ojtForm.get('time_management_respect_score')?.invalid && ojtForm.get('time_management_respect_score')?.touched" class="error">
-              Time management respect score is required.
-            </div>
-          </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="ll_instruction_respect_remark" rows="3" placeholder="Optional remarks..."></textarea>
         </div>
-        <div class="remark-group">
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea formControlName="time_management_respect_remark"></textarea>
+      </div>
+    </div>
+
+    <!-- Time Management Respect -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Time Management Respect</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="time_management_respect_score" required>
+            <option value="" disabled>Select a score</option>
+            <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
+          </select>
+          <div *ngIf="hasFieldError('time_management_respect_score')" class="error">
+            {{ getFieldErrorMessage('time_management_respect_score') }}
           </div>
         </div>
       </div>
-  
-      <!-- Memory -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">Memory</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <select formControlName="memory_score" required>
-              <option value="" disabled selected>Select a score</option>
-              <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
-            </select>
-            <div *ngIf="ojtForm.get('memory_score')?.invalid && ojtForm.get('memory_score')?.touched" class="error">
-              Memory score is required.
-            </div>
-          </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="time_management_respect_remark" rows="3" placeholder="Optional remarks..."></textarea>
         </div>
-        <div class="remark-group">
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea formControlName="memory_remark"></textarea>
+      </div>
+    </div>
+
+    <!-- Memory -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Memory</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="memory_score" required>
+            <option value="" disabled>Select a score</option>
+            <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
+          </select>
+          <div *ngIf="hasFieldError('memory_score')" class="error">
+            {{ getFieldErrorMessage('memory_score') }}
           </div>
         </div>
       </div>
-  
-      <!-- Logic -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">Logic</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <select formControlName="logic_score" required>
-              <option value="" disabled selected>Select a score</option>
-              <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
-            </select>
-            <div *ngIf="ojtForm.get('logic_score')?.invalid && ojtForm.get('logic_score')?.touched" class="error">
-              Logic score is required.
-            </div>
-          </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="memory_remark" rows="3" placeholder="Optional remarks..."></textarea>
         </div>
-        <div class="remark-group">
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea formControlName="logic_remark"></textarea>
+      </div>
+    </div>
+
+    <!-- Logic -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Logic</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="logic_score" required>
+            <option value="" disabled>Select a score</option>
+            <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
+          </select>
+          <div *ngIf="hasFieldError('logic_score')" class="error">
+            {{ getFieldErrorMessage('logic_score') }}
           </div>
         </div>
       </div>
-  
-      <!-- Motivation -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">Motivation</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <select formControlName="motivation_score" required>
-              <option value="" disabled selected>Select a score</option>
-              <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
-            </select>
-            <div *ngIf="ojtForm.get('motivation_score')?.invalid && ojtForm.get('motivation_score')?.touched" class="error">
-              Motivation score is required.
-            </div>
-          </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="logic_remark" rows="3" placeholder="Optional remarks..."></textarea>
         </div>
-        <div class="remark-group">
-          <div class="form-group">
-            <label>Remarks</label>
-            <textarea formControlName="motivation_remark"></textarea>
+      </div>
+    </div>
+
+    <!-- Motivation -->
+    <div class="evaluation-row">
+      <div class="evaluation-title">Motivation</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Score</label>
+          <select formControlName="motivation_score" required>
+            <option value="" disabled>Select a score</option>
+            <option *ngFor="let score of scoreOptions" [value]="score">{{score}}</option>
+          </select>
+          <div *ngIf="hasFieldError('motivation_score')" class="error">
+            {{ getFieldErrorMessage('motivation_score') }}
           </div>
         </div>
       </div>
-  
-      <!-- General Score -->
-      <div class="evaluation-row">
-        <div class="evaluation-title">General Score</div>
-        <div class="score-group">
-          <div class="form-group">
-            <label>Score</label>
-            <div class="calculated-score">{{ ojtForm.get('score')?.value || 0 }}/50</div>
-            <input type="hidden" formControlName="score">
-          </div>
+      <div class="remark-group">
+        <div class="form-group">
+          <label>Remarks</label>
+          <textarea formControlName="motivation_remark" rows="3" placeholder="Optional remarks..."></textarea>
         </div>
       </div>
-  
-      <!-- Bouton de soumission -->
-      <button type="submit" class="submit-button">
+    </div>
+
+    <!-- General Score -->
+    <div class="evaluation-row general-score">
+      <div class="evaluation-title">General Score</div>
+      <div class="score-group">
+        <div class="form-group">
+          <label>Total Score</label>
+          <div class="calculated-score">
+            <span class="score-value">{{ ojtForm.get('score')?.value || 0 }}</span>
+            <span class="score-max">/{{ getMaxScore() }}</span>
+            <span class="score-percentage">({{ getScorePercentage() }}%)</span>
+          </div>
+          <input type="hidden" formControlName="score">
+        </div>
+      </div>
+    </div>
+
+    <!-- Informations de validation générale -->
+    <div *ngIf="ojtForm.invalid && ojtForm.touched" class="form-validation-summary">
+      <h4>Please correct the following errors:</h4>
+      <ul>
+        <li *ngIf="hasFieldError('id_trainer')">Trainer ID is required</li>
+        <li *ngIf="hasFieldError('id_candidate')">Candidate ID is required</li>
+        <li *ngIf="hasFieldError('speed_score')">Speed score is required</li>
+        <li *ngIf="hasFieldError('quality_score')">Quality score is required</li>
+        <li *ngIf="hasFieldError('ehs_rules_respect_score')">EHS rules respect score is required</li>
+        <li *ngIf="hasFieldError('presence_respect_score')">Presence respect score is required</li>
+        <li *ngIf="hasFieldError('ll_instruction_respect_score')">LL instruction respect score is required</li>
+        <li *ngIf="hasFieldError('time_management_respect_score')">Time management respect score is required</li>
+        <li *ngIf="hasFieldError('memory_score')">Memory score is required</li>
+        <li *ngIf="hasFieldError('logic_score')">Logic score is required</li>
+        <li *ngIf="hasFieldError('motivation_score')">Motivation score is required</li>
+      </ul>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="form-actions">
+ 
+      <button type="submit" class="submit-button" [disabled]="ojtForm.invalid">
         Submit Evaluation
       </button>
-    </form>
-  </div>
-  
+    </div>
+
+    <!-- Debug information (remove in production) -->
+    <div class="debug-info" *ngIf="showScores">
+      <button type="button" (click)="toggleScores()">Hide Debug Info</button>
+      <h4>Form Status:</h4>
+      <p>Valid: {{ ojtForm.valid }}</p>
+      <p>Touched: {{ ojtForm.touched }}</p>
+      <p>Current Score: {{ ojtForm.get('score')?.value || 0 }}/{{ getMaxScore() }}</p>
+      <pre>{{ ojtForm.value | json }}</pre>
+    </div>
+    
+    <div *ngIf="!showScores" class="debug-toggle">
+      <button type="button" class="debug-button" (click)="toggleScores()">
+        Show Debug Info
+      </button>
+    </div>
+  </form>
+</div>

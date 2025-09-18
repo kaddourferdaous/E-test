@@ -14,7 +14,13 @@ export class OjtFormComponent implements OnInit {
   scores: any;
   showScores: boolean = false;
   scoreOptions: number[] = [1, 2, 3, 4, 5];
-  constructor(private fb: FormBuilder, private http: HttpClient, private candidateService: CandidateService) {}
+  private apiUrl = 'https://training-backend-1pda.onrender.com';
+
+  constructor(
+    private fb: FormBuilder, 
+    private http: HttpClient, 
+    private candidateService: CandidateService
+  ) {}
 
   ngOnInit(): void {
     // Récupérer l'ID du formateur
@@ -29,109 +35,109 @@ export class OjtFormComponent implements OnInit {
     const candidateId = localStorage.getItem('selectedCandidateId');
     if (candidateId) {
       console.log('ID du candidat récupéré depuis localStorage:', candidateId);
+    } else {
+      console.warn('Aucun ID de candidat trouvé dans localStorage');
     }
 
-    // Initialiser le formulaire avec des valeurs par défaut pour éviter les valeurs `null`
+    // Initialiser le formulaire avec des valeurs par défaut
     this.ojtForm = this.fb.group({
       id_trainer: [this.trainerId, Validators.required],
       id_candidate: [candidateId || '', Validators.required],
 
       // Vitesse
-      speed_score: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
+      speed_score: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       speed_remark: [''],
 
       // Qualité
-      quality_score: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
+      quality_score: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       quality_remark: [''],
 
       // Respect des règles EHS
-      ehs_rules_respect_score: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
+      ehs_rules_respect_score: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       ehs_rules_respect_remark: [''],
 
       // Respect de la présence
-      presence_respect_score: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
+      presence_respect_score: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       presence_respect_remark: [''],
 
       // Respect des instructions LL
-      ll_instruction_respect_score: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
+      ll_instruction_respect_score: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       ll_instruction_respect_remark: [''],
 
       // Gestion du temps
-      time_management_respect_score: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
+      time_management_respect_score: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       time_management_respect_remark: [''],
 
       // Mémoire
-      memory_score: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
+      memory_score: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       memory_remark: [''],
 
       // Logique
-      logic_score: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
+      logic_score: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       logic_remark: [''],
 
       // Motivation
-      motivation_score: [0, [Validators.required, Validators.min(1), Validators.max(5)]],
+      motivation_score: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       motivation_remark: [''],
 
-      // Score général (désactivé par défaut)
-      score: [{ value: 0, disabled: true }, Validators.required]
+      // Score général (calculé automatiquement)
+      score: [0]
     });
 
     // Calculer le score général en temps réel
     this.calculateGeneralScore();
 
     // Optionnel : Supprimer l'ID du candidat du localStorage après utilisation
-    if (candidateId) {
-      localStorage.removeItem('selectedCandidateId');
-    }
+    // Commenté pour permettre la réutilisation
+    // if (candidateId) {
+    //   localStorage.removeItem('selectedCandidateId');
+    // }
   }
 
   /**
    * Calcul du score général en temps réel.
    */
- /**
- * Calcul du score général en temps réel.
- */
- calculateGeneralScore() {
-  const scoreControls = [
-    'speed_score',
-    'quality_score',
-    'ehs_rules_respect_score',
-    'presence_respect_score',
-    'll_instruction_respect_score',
-    'time_management_respect_score',
-    'memory_score',
-    'logic_score',
-    'motivation_score'
-  ];
+  calculateGeneralScore(): void {
+    const scoreControls = [
+      'speed_score',
+      'quality_score',
+      'ehs_rules_respect_score',
+      'presence_respect_score',
+      'll_instruction_respect_score',
+      'time_management_respect_score',
+      'memory_score',
+      'logic_score',
+      'motivation_score'
+    ];
 
-  // Function to calculate and update the total score
-  const updateTotalScore = () => {
-    const totalScore = scoreControls.reduce((sum, name) => {
-      const value = this.ojtForm.get(name)?.value;
+    // Function to calculate and update the total score
+    const updateTotalScore = () => {
+      const totalScore = scoreControls.reduce((sum, name) => {
+        const value = this.ojtForm.get(name)?.value;
+        
+        // Convertir la valeur en nombre et ignorer les valeurs invalides
+        const numericValue = Number(value);
+        if (isNaN(numericValue) || numericValue < 1 || numericValue > 5) {
+          return sum; // Ne pas inclure cette valeur dans le calcul
+        }
+        
+        return sum + numericValue;
+      }, 0);
       
-      // Convertir la valeur en nombre et ignorer les valeurs invalides
-      const numericValue = Number(value);
-      if (isNaN(numericValue) || numericValue < 1 || numericValue > 5) {
-        return sum; // Ne pas inclure cette valeur dans le calcul
-      }
-      
-      return sum + numericValue;
-    }, 0);
+      // Mettre à jour le champ "score" avec la somme calculée
+      this.ojtForm.get('score')?.setValue(totalScore, { emitEvent: false });
+    };
+
+    // Calculate initial score
+    updateTotalScore();
     
-    // Mettre à jour le champ "score" avec la somme calculée
-    this.ojtForm.get('score')?.setValue(totalScore, { emitEvent: false });
-  };
-
-  // Calculate initial score
-  updateTotalScore();
-  
-  // Subscribe to changes in score controls to update total score
-  scoreControls.forEach(controlName => {
-    this.ojtForm.get(controlName)?.valueChanges.subscribe(() => {
-      updateTotalScore();
+    // Subscribe to changes in score controls to update total score
+    scoreControls.forEach(controlName => {
+      this.ojtForm.get(controlName)?.valueChanges.subscribe(() => {
+        updateTotalScore();
+      });
     });
-  });
-}
+  }
 
   /**
    * Soumission du formulaire.
@@ -140,36 +146,101 @@ export class OjtFormComponent implements OnInit {
     console.group('[Soumission du Formulaire]');
     console.log('État actuel du formulaire:', this.ojtForm);
 
-    // Activer le champ "score" pour qu'il soit inclus dans les données
-    this.ojtForm.get('score')?.enable();
+    // Marquer tous les champs comme touched pour afficher les erreurs
+    this.markFormGroupTouched(this.ojtForm);
 
     // Vérifier si le formulaire est valide
     if (this.ojtForm.valid) {
       const formData = this.ojtForm.value;
-      console.log('Données du formulaire préparées pour envoi:', formData);
+      
+      // Convertir les scores en nombres
+      const processedData = this.processFormData(formData);
+      console.log('Données du formulaire préparées pour envoi:', processedData);
 
       // Appel de l'API Flask avec HttpClient
-      this.http.post('http://localhost:5000/eval/trainer/ojt/evaluations', formData).subscribe({
-        next: (response) => {
+this.http.post(`${this.apiUrl}/eval/trainer/ojt/evaluations`, processedData).subscribe({        next: (response) => {
           console.log('Réponse du serveur:', response);
           alert('Évaluation enregistrée avec succès!');
-          this.ojtForm.reset();
+          this.resetForm();
         },
         error: (error) => {
           console.error('Erreur lors de la soumission:', error);
-          alert(`Erreur: ${error.error?.message || error.message}`);
+          let errorMessage = 'Erreur lors de l\'enregistrement de l\'évaluation';
+          
+          if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.error?.errors) {
+            errorMessage = error.error.errors.join(', ');
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+          
+          alert(`Erreur: ${errorMessage}`);
         }
       });
     } else {
       // Afficher les erreurs de validation
       console.error('Le formulaire est invalide.');
       console.error('Erreurs de validation:', this.getFormErrors(this.ojtForm));
-      alert('Veuillez remplir tous les champs obligatoires.');
+      alert('Veuillez remplir tous les champs obligatoires correctement.');
     }
 
-    // Désactiver à nouveau le champ "score" après soumission
-    this.ojtForm.get('score')?.disable();
     console.groupEnd();
+  }
+
+  /**
+   * Traite les données du formulaire avant envoi
+   */
+  private processFormData(formData: any): any {
+    const processed = { ...formData };
+    
+    // Convertir les scores en nombres
+    const scoreFields = [
+      'speed_score', 'quality_score', 'ehs_rules_respect_score',
+      'presence_respect_score', 'll_instruction_respect_score',
+      'time_management_respect_score', 'memory_score', 'logic_score',
+      'motivation_score', 'score'
+    ];
+    
+    scoreFields.forEach(field => {
+      if (processed[field] !== null && processed[field] !== undefined) {
+        processed[field] = Number(processed[field]);
+      }
+    });
+    
+    return processed;
+  }
+
+  /**
+   * Marque tous les champs du formulaire comme touched
+   */
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+      
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
+  /**
+   * Remet à zéro le formulaire
+   */
+  private resetForm(): void {
+    // Garder les IDs du formateur et du candidat
+    const trainerId = this.ojtForm.get('id_trainer')?.value;
+    const candidateId = this.ojtForm.get('id_candidate')?.value;
+    
+    this.ojtForm.reset();
+    
+    // Remettre les IDs
+    this.ojtForm.patchValue({
+      id_trainer: trainerId,
+      id_candidate: candidateId,
+      score: 0
+    });
   }
 
   /**
@@ -203,7 +274,71 @@ export class OjtFormComponent implements OnInit {
   /**
    * Basculer l'affichage des scores.
    */
-  toggleScores() {
+  toggleScores(): void {
     this.showScores = !this.showScores;
+  }
+
+  /**
+   * Vérifie si un champ a une erreur et a été touché
+   */
+  hasFieldError(fieldName: string): boolean {
+    const field = this.ojtForm.get(fieldName);
+    return !!(field && field.invalid && field.touched);
+  }
+
+  /**
+   * Récupère le message d'erreur pour un champ donné
+   */
+  getFieldErrorMessage(fieldName: string): string {
+    const field = this.ojtForm.get(fieldName);
+    if (field && field.errors && field.touched) {
+      if (field.errors['required']) {
+        return `${this.getFieldDisplayName(fieldName)} est requis.`;
+      }
+      if (field.errors['min']) {
+        return `${this.getFieldDisplayName(fieldName)} doit être au minimum ${field.errors['min'].min}.`;
+      }
+      if (field.errors['max']) {
+        return `${this.getFieldDisplayName(fieldName)} doit être au maximum ${field.errors['max'].max}.`;
+      }
+    }
+    return '';
+  }
+
+  /**
+   * Récupère le nom d'affichage convivial pour un champ
+   */
+  private getFieldDisplayName(fieldName: string): string {
+    const fieldNames: { [key: string]: string } = {
+      'speed_score': 'Score de vitesse',
+      'quality_score': 'Score de qualité',
+      'ehs_rules_respect_score': 'Score de respect des règles EHS',
+      'presence_respect_score': 'Score de respect de présence',
+      'll_instruction_respect_score': 'Score de respect des instructions LL',
+      'time_management_respect_score': 'Score de gestion du temps',
+      'memory_score': 'Score de mémoire',
+      'logic_score': 'Score de logique',
+      'motivation_score': 'Score de motivation',
+      'id_trainer': 'ID du formateur',
+      'id_candidate': 'ID du candidat'
+    };
+    
+    return fieldNames[fieldName] || fieldName;
+  }
+
+  /**
+   * Récupère le score total maximum possible
+   */
+  getMaxScore(): number {
+    return this.scoreOptions.length * 9; // 9 critères × score max (5)
+  }
+
+  /**
+   * Calcule le pourcentage du score actuel
+   */
+  getScorePercentage(): number {
+    const currentScore = this.ojtForm.get('score')?.value || 0;
+    const maxScore = this.getMaxScore();
+    return Math.round((currentScore / maxScore) * 100);
   }
 }

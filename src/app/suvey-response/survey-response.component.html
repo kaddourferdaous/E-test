@@ -1,0 +1,216 @@
+<!-- English Survey Dashboard with charts -->
+<div class="survey-dashboard-container">
+  <h1 class="dashboard-title">Survey Dashboard</h1>
+
+  <!-- Charts overview section -->
+  <div *ngIf="!loading" class="charts-overview">
+    <div class="row">
+      <!-- Survey Type Distribution Chart -->
+      <div class="col-md-4">
+        <div class="card chart-card">
+          <div class="card-body">
+            <canvas #surveyTypeChart></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Overall Satisfaction Chart -->
+      <div class="col-md-4">
+        <div class="card chart-card">
+          <div class="card-body">
+            <canvas #satisfactionChart></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Satisfaction Trend Chart -->
+      <div class="col-md-4">
+        <div class="card chart-card">
+          <div class="card-body">
+            <canvas #satisfactionTrendChart></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card chart-card">
+          <div class="card-body">
+            <canvas #satisfactionByCategoryChart></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Simplified filters -->
+  <div class="filters-container">
+    <div class="card">
+      <div class="card-header">
+        <h3>Filters</h3>
+      </div>
+      <div class="card-body">
+        <div class="filters-form">
+          <div class="filter-row">
+            <!-- Filter by type -->
+            <div class="form-group">
+              <label for="typeFilter">Training Type</label>
+              <select id="typeFilter" class="form-control" [(ngModel)]="filterOptions.type" (change)="applyFilters()">
+                <option value="all">All</option>
+                <option value="ojt">On-the-Job Training</option>
+                <option value="pratique">Practical Training</option>
+                <option value="theorique">Theoretical Training</option>
+              </select>
+            </div>
+            
+            <!-- Filter by Trainee ID -->
+            <div class="form-group">
+              <label for="traineeIdFilter">Matricule</label>
+              <input id="traineeIdFilter" type="text" class="form-control" [(ngModel)]="filterOptions.traineeId" (input)="applyFilters()">
+            </div>
+            
+        
+          
+          <div class="filter-row">
+            <!-- Filter by start date -->
+            <div class="form-group">
+              <label for="dateFromFilter">From Date</label>
+              <input id="dateFromFilter" type="date" class="form-control" [(ngModel)]="filterOptions.dateFrom" (change)="applyFilters()">
+            </div>
+            
+            <!-- Filter by end date -->
+            <div class="form-group">
+              <label for="dateToFilter">To Date</label>
+              <input id="dateToFilter" type="date" class="form-control" [(ngModel)]="filterOptions.dateTo" (change)="applyFilters()">
+            </div>
+            
+            <!-- Reset filters button -->
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <button class="btn btn-danger btn-block" (click)="resetFilters()">
+                Reset Filters
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <p>Loading data...</p>
+  </div>
+
+  <!-- Survey cards -->
+  <div *ngIf="!loading" class="surveys-cards-container">
+    <h2>Overview ({{ filteredSurveys.length }} surveys)</h2>
+    
+    <div class="cards-grid">
+      <div *ngFor="let survey of filteredSurveys" 
+           class="card survey-card" 
+           [ngClass]="'survey-type-' + survey.survey_type" 
+           (click)="viewSurveyDetails(survey)">
+        
+        <div class="card-header">
+          <div class="card-type-icon" [ngClass]="'icon-' + survey.survey_type"></div>
+          <div class="card-title">
+            <h5>{{ getSurveyTypeLabel(survey.survey_type) }}</h5>
+            <span class="date">{{ survey.formatted_date }}</span>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <p><strong>Matricule:</strong> {{ survey.trainee_id }}</p>
+          <p><strong>Number of Responses:</strong> {{ survey.responses.length }}</p>
+          
+          <!-- Response tag list - commented out as per original template -->
+          <!-- <div class="response-tag-list">
+            <span *ngFor="let response of survey.responses" 
+                  class="badge" 
+                  [ngClass]="getRatingClass(response.rating)"
+                  title="{{ response.question_details?.title }}">
+              {{ response.question_details?.category || 'Uncategorized' }}
+            </span>
+          </div> -->
+        </div>
+        
+        <div class="card-footer">
+          <button class="btn btn-primary" (click)="viewSurveyDetails(survey); $event.stopPropagation()">
+            VIEW DETAILS
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Selected survey details with chart -->
+  <div *ngIf="selectedSurvey" class="survey-details-overlay">
+    <div class="survey-details-dialog">
+      <div class="dialog-header">
+        <h3>{{ getSurveyTypeLabel(selectedSurvey.survey_type) }} - Survey Details</h3>
+        <button type="button" class="close-button" aria-label="Close" (click)="selectedSurvey = null">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      
+      <div class="dialog-body">
+        <div class="survey-info">
+          <p><strong>Date:</strong> {{ selectedSurvey.formatted_date }}</p>
+          <p><strong>Session ID:</strong> {{ selectedSurvey.session_id }}</p>
+          <p><strong>Trainee ID:</strong> {{ selectedSurvey.trainee_id }}</p>
+        </div>
+        
+        <!-- Selected Survey Chart -->
+        <div class="survey-details-chart">
+          <canvas #selectedSurveyChart></canvas>
+        </div>
+       
+        
+        <div class="survey-responses">
+          <h4>Responses ({{ selectedSurvey.responses?.length || 0 }})</h4>
+          
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Title</th>
+                  <th>Question (EN)</th>
+                  <th>Question (AR)</th>
+                  <th>Rating</th>
+                  <th>Observation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let response of selectedSurvey.responses">
+                  <td>{{ response.question_details?.category || 'Uncategorized' }}</td>
+                  <td>{{ response.question_details?.title || 'No Title' }}</td>
+                  <td>{{ response.question_details?.text_en || response.question_details?.text_fr || response.question_text || '-' }}</td>
+                  <td class="rtl-text">{{ response.question_details?.text_ar || '-' }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="getRatingClass(response.rating)">
+                      {{ getRatingLabel(response.rating) }}
+                      <span *ngIf="response.rating_text_ar">({{ response.rating_text_ar }})</span>
+                    </span>
+                  </td>
+                  <td>{{ response.observation || '-' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message if no results -->
+  <div *ngIf="!loading && filteredSurveys.length === 0" class="no-results">
+    <div class="no-data-icon">🔍</div>
+    <p>No surveys match the search criteria.</p>
+  </div>
+</div>

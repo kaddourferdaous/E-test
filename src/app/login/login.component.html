@@ -1,97 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Signin-Eduguard</title>
-        <link rel="stylesheet" href="login.component.css" />
-        <link rel="icon" type="image/png" href="assets/images/favicon/favicon.png" />
-    </head>
+<section class="section" style="background-color: #fff;">
+  <div class="container" style="width: 30%; margin-top: 20px;">
+    <div class="row align-items-center">
+      <div class="col-xl-5 order-2 order-xl-0">
+        <div class="signup-area-textwrapper">
 
-   
-        <!-- <div class="loader">
-            <span class="loader-spinner">Loading...</span>
-        </div> -->
+          <!-- Logo Yazaki -->
+         
 
-        <!-- Header Starts Here -->
-       
+          <!-- Titre -->
+            <div class="logo-wrapper" style="margin-bottom: 10px;">
+            <img 
+              src="https://iconape.com/wp-content/png_logo_vector/yazaki-group-logo.png" 
+              alt="Yazaki Logo"
+              style="max-width: 160px; display: block; margin: 0 auto;"
+            />
+          </div>
+          <p class="subtitle">Enter your Matricule For Start theorictical Phase</p>
 
-        <!-- SignIn Area Starts Here -->
-        <section class="section " style="background-color: #fff;">
-            <div class="container" style="width: 30%; margin-top: 20px;">
-              <div class="row align-items-center">
-                <div class="col-xl-5 order-2 order-xl-0">
-                  <div class="signup-area-textwrapper">
-                    <h2 class="font-title--md mb-0">Sign in</h2>
-                    <p class="mt-2 mb-lg-4 mb-3">
-                      Don't have an account?
-                      <a [routerLink]="'/signup'" class="text-black-50">Sign up</a>
-                    </p>
-          
-                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                      <!-- Email -->
-                      <div class="form-element">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="Enter your email" formControlName="email" />
-                        <div >
+          <!-- Formulaire -->
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-                        </div>
-                      </div>
-                    
-                      <!-- Mot de passe -->
-                      <div class="form-element">
-                        <div class="d-flex justify-content-between">
-                          <label for="password">Password</label>
-                          <a class="text-primary fs-6" (click)="togglePasswordVisibility()">
-                            <i class="fa" [class.fa-eye]="!passwordVisible" [class.fa-eye-slash]="passwordVisible"></i>
-                            Show Password
-                          </a>
-                        </div>
-                        <input 
-                          [type]="passwordVisible ? 'text' : 'password'" 
-                          id="password" 
-                          placeholder="Type here..." 
-                          formControlName="password" />
-                        <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="alert alert-danger">
-                          Password is required
-                        </div>
-                      </div>
-                    
-                      <!-- Message d'erreur global -->
-                      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-                    
-                      <!-- Bouton de soumission -->
-                      <div class="form-element">
-                        <button type="submit" class="button button-lg button--primary w-100" [disabled]="loginForm.invalid">
-                          Sign in
-                        </button>
-                      </div>
-                    </form>
-                    
-                    
-                  </div>
-                </div>
-              </div>
+            <!-- Champ matricule -->
+            <div class="form-element">
+              <label for="matricule">Matricule</label>
+              <input 
+                id="matricule"
+                type="text"
+                class="form-control"
+                formControlName="id"
+                placeholder="Enter your matricule"
+              />
             </div>
-          </section>
-          
-        <!-- SignIn Area Ends Here -->
 
-        <!-- Dot Images Starts Here -->
-        <div class="dot-images">
-            <img src="assets/images/shape/dots/dots-img-10.png" alt="shape" style="z-index: 1;" class="img-fluid first-dotimage" />
-            <img src="assets/images/shape/dots/dots-img-07.png" alt="shape" class="img-fluid second-dotimage" />
+            <!-- Message d'erreur -->
+            <div *ngIf="errorMessage" class="alert alert-danger">
+              <i class="fa fa-exclamation-circle me-2"></i>{{ errorMessage }}
+            </div>
+
+            <!-- Bouton avec loading -->
+            <button 
+              type="submit" 
+              class="button button-lg button--primary w-100"
+              [disabled]="loginForm.invalid || isLoading"
+              [ngClass]="{ 'loading': isLoading }"
+            >
+              <i class="fa fa-sign-in me-2" *ngIf="!isLoading"></i>
+              <span *ngIf="!isLoading">Se connecter</span>
+              <span *ngIf="isLoading">Connexion...</span>
+            </button>
+          </form>
+
+          <!-- Liens additionnels -->
+          <div class="text-center mt-4">
+            <p class="text-muted">
+              Are you a Trainer?
+              <a [routerLink]="'/trainerLogin'" class="text-primary">
+                Login as Trainer
+              </a>
+            </p>
+          </div>
+
         </div>
-        <!-- Dot Images Ends Here -->
-
-        <!-- <script src="src/js/jquery.min.js"></script>
-        <script src="src/js/bootstrap.bundle.min.js"></script>
-        <script src="src/scss/vendors/plugin/js/isotope.pkgd.min.js"></script>
-        <script src="src/scss/vendors/plugin/js/jquery.magnific-popup.min.js"></script>
-        <script src="src/scss/vendors/plugin/js/slick.min.js"></script>
-        <script src="src/scss/vendors/plugin/js/jquery.nice-select.min.js"></script>
-        <script src="src/js/app.js"></script>
-        <script src="assets/main.js"></script> -->
-    
-</html>
+      </div>
+    </div>
+  </div>
+</section>
